@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>02 Tipografia — Ilumiluz DS</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  /* TYPE SHOWCASE */
+  .type-hero {
+    padding: 72px 48px;
+    border-bottom: 0.5px solid var(--line);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+    background: var(--line);
+  }
+  .type-half { background: var(--off); padding: 56px; }
+  .type-half-dark { background: var(--deep); padding: 56px; }
+
+  .font-specimen-condensed {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600; font-size: 96px; line-height: 0.88;
+    letter-spacing: -0.02em; text-transform: uppercase;
+    color: var(--deep);
+  }
+  .font-specimen-serif {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-weight: 300;
+    font-size: 80px; line-height: 1.0;
+    color: #F2E8D0;
+  }
+  .font-meta {
+    margin-top: 32px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .font-meta-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--gold);
+  }
+  .font-meta-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
+  .font-meta-desc-light { font-size: 12px; color: rgba(184,205,217,0.5); line-height: 1.6; }
+
+  /* TYPE SCALE */
+  .type-scale { padding: 72px 48px; border-bottom: 0.5px solid var(--line); }
+  .type-scale-row {
+    display: grid; grid-template-columns: 180px 1fr 120px;
+    align-items: baseline;
+    padding: 20px 0; border-bottom: 0.5px solid var(--line-dark);
+    gap: 32px;
+  }
+  .type-scale-meta {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .type-scale-meta strong { display: block; font-size: 12px; color: var(--deep); margin-bottom: 4px; font-weight: 500; }
+  .type-scale-spec {
+    font-family: monospace; font-size: 10px; color: var(--gold);
+    text-align: right;
+  }
+
+  /* WEIGHTS */
+  .weights-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); }
+  .weight-card { background: var(--off); padding: 32px; }
+  .weight-sample {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 40px; line-height: 1; letter-spacing: -0.01em;
+    text-transform: uppercase; color: var(--deep);
+    margin-bottom: 16px;
+  }
+  .weight-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 4px;
+  }
+  .weight-use { font-size: 11.5px; color: var(--muted); line-height: 1.5; }
+
+  /* PAIRING */
+  .pairing-block {
+    padding: 72px 48px;
+    border-bottom: 0.5px solid var(--line);
+    background: var(--off);
+  }
+  .pairing-demo {
+    margin-top: 48px;
+    max-width: 600px;
+  }
+  .pairing-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .pairing-eyebrow::before { content:''; width:24px; height:0.5px; background:var(--gold); }
+  .pairing-h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600; font-size: 64px; line-height: 0.9;
+    letter-spacing: -0.02em; text-transform: uppercase;
+    color: var(--deep); margin-bottom: 8px;
+  }
+  .pairing-h1 em {
+    font-style: italic; font-family: 'Cormorant Garamond', serif;
+    font-weight: 300; font-size: 72px; text-transform: none;
+    color: var(--gold);
+  }
+  .pairing-body {
+    font-size: 13px; line-height: 1.8; color: var(--muted);
+    margin-top: 24px; max-width: 440px;
+  }
+  .pairing-cta {
+    margin-top: 32px;
+    display: inline-flex; align-items: center; gap: 12px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--deep); cursor: pointer;
+  }
+  .pairing-cta-line { width: 28px; height: 0.5px; background: var(--gold); transition: width 0.3s ease; }
+  .pairing-cta:hover .pairing-cta-line { width: 48px; }
+
+  /* LETTER SPACING */
+  .tracking-section { padding: 48px; border-bottom: 0.5px solid var(--line); }
+  .tracking-row { margin-bottom: 28px; }
+  .tracking-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 8px; font-family: monospace;
+  }
+  .tracking-sample {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px; text-transform: uppercase;
+    color: var(--deep); font-weight: 400;
+  }
+
+  /* RULES */
+  .rules-block { padding: 48px; border-bottom: 0.5px solid var(--line); }
+  .rule-item {
+    display: grid; grid-template-columns: 2fr 3fr;
+    gap: 40px; padding: 20px 0; border-bottom: 0.5px solid var(--line-dark);
+  }
+  .rule-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 500; font-size: 14px; text-transform: uppercase;
+    color: var(--deep);
+  }
+  .rule-desc { font-size: 12px; line-height: 1.7; color: var(--muted); }
+
+  /* ITALIC USAGE */
+  .italic-block {
+    padding: 72px 48px;
+    background: var(--deep);
+    border-bottom: 0.5px solid rgba(201,169,110,0.15);
+  }
+  .italic-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--ether); margin-bottom: 32px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .italic-label::before { content:''; width:16px; height:0.5px; background:var(--ether); }
+  .italic-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 500; font-size: 22px; text-transform: uppercase;
+    color: rgba(240,236,228,0.6); margin-bottom: 40px;
+  }
+  .italic-examples { display: flex; flex-direction: column; gap: 32px; }
+  .italic-ex {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-weight: 300;
+    color: var(--gold-light);
+    border-left: 1px solid rgba(201,169,110,0.25);
+    padding-left: 24px;
+  }
+</style>
+</head>
+<body>
+
+<nav class="ds-nav">
+  <a href="index.html" class="ds-nav-logo">ilumiluz <span>/ design system</span></a>
+  <div class="ds-nav-links">
+    <a href="index.html">Visão Geral</a>
+    <a href="01-fundacao.html">Fundação</a>
+    <a href="02-tipografia.html" class="active">Tipografia</a>
+    <a href="03-cores.html">Cores</a>
+    <a href="04-componentes.html">Componentes</a>
+    <a href="05-voz.html">Voz & Tom</a>
+    <a href="06-movimento.html">Movimento</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-bg">TYPE</div>
+  <p class="page-num fade-up">02 — Tipografia</p>
+  <h1 class="page-title fade-up-2">Tipografia<br><em>& Escala</em></h1>
+  <p class="page-subtitle fade-up-3">Duas famílias tipográficas em tensão constante — força e delicadeza, estrutura e gesto. Essa dualidade é a voz visual da Ilumiluz.</p>
+</div>
+
+<!-- SPECIMEN -->
+<div class="type-hero">
+  <div class="type-half">
+    <p class="font-specimen-condensed">Barlow<br>Condensed</p>
+    <div class="font-meta">
+      <p class="font-meta-name">Display — Estrutural</p>
+      <p class="font-meta-desc">Títulos, labels, navegação, números grandes, headings de seção. Referência direta à tipografia editorial e contemporânea da referência visual — peso, presença, clareza. Pesos usados: 300, 500, 600, 700.</p>
+    </div>
+  </div>
+  <div class="type-half-dark">
+    <p class="font-specimen-serif">Cormorant<br>Garamond</p>
+    <div class="font-meta">
+      <p class="font-meta-name" style="color:var(--ether-light);">Serif — Expressiva</p>
+      <p class="font-meta-desc-light">Usada sempre em itálico para criar contraste com a Barlow. Citações, destaques dentro de títulos, manifesto, nomes de peças. Peso 300 apenas — sua força vem da forma, não da espessura.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SCALE -->
+<div class="type-scale">
+  <p class="ds-section-label">Escala tipográfica</p>
+
+  <div class="type-scale-row">
+    <div class="type-scale-meta"><strong>Display XL</strong>Hero principal</div>
+    <p style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:88px;line-height:0.9;letter-spacing:-0.02em;text-transform:uppercase;color:var(--deep);">Ilumiluz</p>
+    <p class="type-scale-spec">88px / 600<br>−0.02em</p>
+  </div>
+
+  <div class="type-scale-row">
+    <div class="type-scale-meta"><strong>Display L</strong>Page header</div>
+    <p style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:72px;line-height:0.9;letter-spacing:-0.02em;text-transform:uppercase;color:var(--deep);">Tipografia</p>
+    <p class="type-scale-spec">72px / 600<br>−0.02em</p>
+  </div>
+
+  <div class="type-scale-row">
+    <div class="type-scale-meta"><strong>Heading 1</strong>Título de seção</div>
+    <p style="font-family:'Barlow Condensed',sans-serif;font-weight:500;font-size:40px;letter-spacing:0.01em;text-transform:uppercase;color:var(--deep);">Joias Sob Medida</p>
+    <p class="type-scale-spec">40px / 500<br>+0.01em</p>
+  </div>
+
+  <div class="type-scale-row">
+    <div class="type-scale-meta"><strong>Heading 2</strong>Subtítulo</div>
+    <p style="font-family:'Barlow Condensed',sans-serif;font-weight:500;font-size:26px;letter-spacing:0.02em;text-transform:uppercase;color:var(--deep);">O Processo de Criação</p>
+    <p class="type-scale-spec">26px / 500<br>+0.02em</p>
+  </div>
+
+  <div class="type-scale-row">
+    <div class="type-scale-meta"><strong>Serif Display</strong>Acento / destaque</div>
+    <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:40px;color:var(--gold);">Do desenho ao metal</p>
+    <p class="type-scale-spec">40px / 300i<br>Cormorant</p>
+  </div>
+
+  <div class="type-scale-row">
+    <div class="type-scale-meta"><strong>Body L</strong>Texto principal</div>
+    <p style="font-family:'Barlow',sans-serif;font-weight:300;font-size:14px;line-height:1.85;color:var(--text);max-width:500px;">Acreditamos que uma joia pode ser um ponto de presença — algo que ancora, fortalece e atravessa ciclos ao lado de quem a usa.</p>
+    <p class="type-scale-spec">14px / 300<br>1.85 lh</p>
+  </div>
+
+  <div class="type-scale-row">
+    <div class="type-scale-meta"><strong>Body M</strong>Texto secundário</div>
+    <p style="font-family:'Barlow',sans-serif;font-weight:300;font-size:12.5px;line-height:1.8;color:var(--muted);">Cada etapa respeita o tempo necessário para criar com intenção.</p>
+    <p class="type-scale-spec">12.5px / 300<br>1.8 lh</p>
+  </div>
+
+  <div class="type-scale-row">
+    <div class="type-scale-meta"><strong>Label</strong>Eyebrow / tag</div>
+    <p style="font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);">Sobre a Ilumiluz</p>
+    <p class="type-scale-spec">9px / 400<br>+0.3em caps</p>
+  </div>
+</div>
+
+<!-- WEIGHTS -->
+<section class="ds-section">
+  <p class="ds-section-label">Pesos — Barlow Condensed</p>
+  <div class="weights-grid">
+    <div class="weight-card">
+      <p class="weight-sample" style="font-weight:300;">Aa</p>
+      <p class="weight-name">Light 300</p>
+      <p class="weight-use">Navegação, texto de apoio em caps, rodapé</p>
+    </div>
+    <div class="weight-card">
+      <p class="weight-sample" style="font-weight:400;">Aa</p>
+      <p class="weight-name">Regular 400</p>
+      <p class="weight-use">Labels de seção, chips, tags</p>
+    </div>
+    <div class="weight-card">
+      <p class="weight-sample" style="font-weight:500;">Aa</p>
+      <p class="weight-name">Medium 500</p>
+      <p class="weight-use">Títulos de seção, nomes de produtos, CTAs</p>
+    </div>
+    <div class="weight-card">
+      <p class="weight-sample" style="font-weight:700;">Aa</p>
+      <p class="weight-name">Bold 700</p>
+      <p class="weight-use">Display hero, números grandes de destaque</p>
+    </div>
+  </div>
+</section>
+
+<!-- PAIRING DEMO -->
+<div class="pairing-block">
+  <p class="ds-section-label">Combinação em uso</p>
+  <p class="ds-section-title">Exemplo de Página Real</p>
+  <div class="pairing-demo">
+    <p class="pairing-eyebrow">É a tua luz que ilumina o mundo</p>
+    <h1 class="pairing-h1">Joias para<br>quem vive com<br><em>intenção.</em></h1>
+    <p class="pairing-body">Ilumiluz é um ateliê de joias contemporâneas criadas com intenção. Peças sob medida que marcam momentos, traduzem histórias e acompanham quem você é — ou está se tornando.</p>
+    <div class="pairing-cta"><span class="pairing-cta-line"></span>Criar uma joia</div>
+  </div>
+</div>
+
+<!-- LETTER SPACING -->
+<div class="tracking-section">
+  <p class="ds-section-label">Letter Spacing — Escala de rastreamento</p>
+  <div class="tracking-row">
+    <p class="tracking-label">letter-spacing: -0.02em — Headlines</p>
+    <p class="tracking-sample" style="font-weight:600;letter-spacing:-0.02em;font-size:32px;">ILUMILUZ JOIAS AUTORAIS</p>
+  </div>
+  <div class="tracking-row">
+    <p class="tracking-label">letter-spacing: 0 — Texto normal</p>
+    <p class="tracking-sample" style="font-size:18px;letter-spacing:0;font-weight:400;">Barlow Condensed em peso normal</p>
+  </div>
+  <div class="tracking-row">
+    <p class="tracking-label">letter-spacing: +0.18em — Nav links</p>
+    <p class="tracking-sample" style="font-size:11px;letter-spacing:0.18em;font-weight:300;">COLEÇÃO / SOBRE / CONTATO</p>
+  </div>
+  <div class="tracking-row">
+    <p class="tracking-label">letter-spacing: +0.3em — Labels / eyebrows</p>
+    <p class="tracking-sample" style="font-size:9px;letter-spacing:0.3em;font-weight:400;color:var(--gold);">SOBRE A ILUMILUZ</p>
+  </div>
+</div>
+
+<!-- ITÁLICO -->
+<div class="italic-block">
+  <p class="italic-label">Cormorant em itálico — usos corretos</p>
+  <p class="italic-title">A Cormorant existe como acento. Nunca como corpo de texto.</p>
+  <div class="italic-examples">
+    <div class="italic-ex" style="font-size:52px;">joias com intenção.</div>
+    <div class="italic-ex" style="font-size:36px;">"O luxo está na atenção, no tempo, no sentido."</div>
+    <div class="italic-ex" style="font-size:28px;">Do desenho ao metal — um processo que une tradição e tecnologia.</div>
+    <div class="italic-ex" style="font-size:20px;">Criamos sob medida, respeitando o tempo de cada processo.</div>
+  </div>
+</div>
+
+<!-- REGRAS -->
+<div class="rules-block">
+  <p class="ds-section-label">Regras de uso</p>
+  <div class="rule-item">
+    <p class="rule-name">Nunca use Cormorant sem itálico</p>
+    <p class="rule-desc">A Cormorant Garamond só aparece em font-style: italic e font-weight: 300. O roman (não itálico) não faz parte da linguagem da Ilumiluz.</p>
+  </div>
+  <div class="rule-item">
+    <p class="rule-name">Nunca misture as duas em body text</p>
+    <p class="rule-desc">Barlow para parágrafos, sempre. A Cormorant é reservada para destaques, títulos com acento, citações e manifesto.</p>
+  </div>
+  <div class="rule-item">
+    <p class="rule-name">Caps apenas em Barlow Condensed</p>
+    <p class="rule-desc">text-transform: uppercase só funciona na Barlow. Nunca aplique caps em Cormorant — destrói a elegância natural das serifas.</p>
+  </div>
+  <div class="rule-item">
+    <p class="rule-name">Tamanho mínimo de texto</p>
+    <p class="rule-desc">Corpo de texto: 12px mínimo. Labels em caps: 9px mínimo com letter-spacing ≥ 0.2em para manter legibilidade.</p>
+  </div>
+</div>
+
+<footer class="ds-footer">
+  <span class="ds-footer-left">02 — Tipografia</span>
+  <span class="ds-footer-logo">ilumiluz</span>
+  <a href="03-cores.html" style="font-size:11px;color:rgba(184,205,217,0.4);text-decoration:none;">03 Cores →</a>
+</footer>
+
+</body>
+</html>

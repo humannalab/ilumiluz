@@ -39,7 +39,7 @@ export default async function SecuritySettingsPage() {
       id: true,
       passwordHash: true,
       totpEnabled: true,
-      totpBackupCodes: true,
+      backupCodes: true,
     },
   });
   if (!user) redirect("/login");
@@ -57,7 +57,7 @@ export default async function SecuritySettingsPage() {
     select: {
       id: true,
       action: true,
-      ip: true,
+      ipAddress: true,
       userAgent: true,
       createdAt: true,
     },
@@ -82,7 +82,7 @@ export default async function SecuritySettingsPage() {
       <TwoFactorSection
         totpEnabled={user.totpEnabled}
         hasPassword={hasPassword}
-        backupCodesRemaining={user.totpBackupCodes.length}
+        backupCodesRemaining={user.backupCodes.length}
       />
 
       <RecentActivity events={activity} />

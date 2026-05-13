@@ -10,8 +10,9 @@ import { visionTool } from '@sanity/vision'
 import { schemaTypes } from './sanity/schemas'
 
 export default defineConfig({
-  name: 'ilumiluz-store',
+  name: 'default',
   title: 'Ilumiluz',
+  basePath: '/studio',
 
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
   dataset:   process.env.NEXT_PUBLIC_SANITY_DATASET ?? 'production',

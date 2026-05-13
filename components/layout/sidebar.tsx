@@ -1,26 +1,24 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
 import {
-  LayoutDashboard,
-  ArrowLeftRight,
-  Wallet,
-  Tags,
+  User,
+  ShoppingBag,
+  MapPin,
+  Lock,
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { BarthoLogo } from "@/components/brand/bartho-dog";
 
-// Exportado pra reutilizar no MobileNav (drawer hamburger)
+// Exportado para reutilizar no MobileNav (drawer hamburger)
 export const NAV_ITEMS: Array<{ href: string; label: string; icon: LucideIcon }> =
   [
-    { href: "/dashboard", label: "Visão Geral", icon: LayoutDashboard },
-    { href: "/transacoes", label: "Transações", icon: ArrowLeftRight },
-    { href: "/centros-de-custo", label: "Centros de Custo", icon: Wallet },
-    { href: "/categorias", label: "Categorias", icon: Tags },
+    { href: "/settings/account",  label: "Minha conta",  icon: User },
+    { href: "/conta/pedidos",     label: "Pedidos",       icon: ShoppingBag },
+    { href: "/conta/enderecos",   label: "Endereços",     icon: MapPin },
+    { href: "/settings/security", label: "Segurança",     icon: Lock },
   ];
 
 interface SidebarProps {
@@ -32,20 +30,20 @@ interface SidebarProps {
 
 export function Sidebar({ hideLogo = false, onNavClick }: SidebarProps = {}) {
   const pathname = usePathname();
-  const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const isDark = mounted && resolvedTheme === "dark";
 
   return (
     <aside className="flex h-full w-64 flex-col bg-sidebar text-sidebar-foreground">
       {!hideLogo && (
         <div className="flex h-16 items-center px-6 border-b border-sidebar-border">
-          <BarthoLogo height={36} variant={isDark ? "negative" : "positive"} />
+          <Link href="/" aria-label="Ilumiluz — página inicial">
+            <Image
+              src="/logo-ilumiluz.svg"
+              alt="Ilumiluz"
+              width={100}
+              height={26}
+              priority
+            />
+          </Link>
         </div>
       )}
 
@@ -57,7 +55,7 @@ export function Sidebar({ hideLogo = false, onNavClick }: SidebarProps = {}) {
             onClick={onNavClick}
             className={cn(
               "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
-              pathname === href
+              pathname === href || pathname.startsWith(href + "/")
                 ? "bg-sidebar-primary text-sidebar-primary-foreground"
                 : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
             )}
@@ -67,8 +65,6 @@ export function Sidebar({ hideLogo = false, onNavClick }: SidebarProps = {}) {
           </Link>
         ))}
       </nav>
-
-      {/* Configurações / Admin / Sair migraram pro dropdown do Header */}
     </aside>
   );
 }

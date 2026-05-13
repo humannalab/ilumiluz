@@ -16,11 +16,11 @@ import { checkRateLimit } from "@/lib/rate-limit";
  */
 
 const FROM_EMAIL =
-  process.env.RESEND_FROM_EMAIL ?? "Bartho Finance <onboarding@resend.dev>";
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  process.env.RESEND_FROM_EMAIL ?? "Ilumiluz <onboarding@resend.dev>";
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3001";
 
 function getResend(): Resend | null {
-  const key = process.env.AUTH_RESEND_KEY;
+  const key = process.env.RESEND_API_KEY;
   if (!key) return null;
   return new Resend(key);
 }
@@ -78,7 +78,7 @@ function baseTemplate(opts: {
     ${opts.outro}
   </p>
   <p style="color: #94a3b8; font-size: 12px; margin-top: 32px; border-top: 1px solid #e5e7eb; padding-top: 16px;">
-    Bartho Finance • <a href="${APP_URL}" style="color: #94a3b8;">${APP_URL.replace(/^https?:\/\//, "")}</a>
+    Ilumiluz • <a href="${APP_URL}" style="color: #94a3b8;">${APP_URL.replace(/^https?:\/\//, "")}</a>
   </p>
 </div>
   `.trim();
@@ -116,7 +116,7 @@ export async function isNewDeviceLogin(opts: {
     where: {
       userId: opts.userId,
       action: "auth.login.success",
-      ip: opts.ip,
+      ipAddress: opts.ip,
       createdAt: { gte: since },
     },
     select: { id: true },
@@ -146,14 +146,14 @@ export async function sendPasswordChangedEmail(ctx: SecurityCtx, userId: string)
   const firstName = ctx.name?.split(" ")[0];
   const html = baseTemplate({
     title: "Sua senha foi alterada 🔐",
-    intro: `${firstName ? `Oi, ${firstName}. ` : ""}Sua senha do Bartho Finance acabou de ser trocada.`,
+    intro: `${firstName ? `Oi, ${firstName}. ` : ""}Sua senha do Ilumiluz acabou de ser trocada.`,
     details: [
       { label: "Quando", value: formatBR(ctx.when) },
       ...(ctx.ip ? [{ label: "IP de origem", value: ctx.ip }] : []),
     ],
     outro: `Se foi você, ignora este e-mail. Se <strong>não foi você</strong>, sua conta pode ter sido acessada — peça uma redefinição de senha imediatamente em <a href="${APP_URL}/forgot-password">${APP_URL}/forgot-password</a>.`,
   });
-  await send(ctx.email, "Sua senha foi alterada — Bartho Finance", html);
+  await send(ctx.email, "Sua senha foi alterada — Ilumiluz", html);
 }
 
 export async function sendNewDeviceLoginEmail(ctx: SecurityCtx, userId: string) {
@@ -178,7 +178,7 @@ export async function sendNewDeviceLoginEmail(ctx: SecurityCtx, userId: string) 
     ],
     outro: `Se foi você (talvez um celular novo, hotel, café), pode ignorar este e-mail. Se <strong>não foi você</strong>, troque sua senha em <a href="${APP_URL}/settings/security">${APP_URL}/settings/security</a>.`,
   });
-  await send(ctx.email, "Novo login detectado — Bartho Finance", html);
+  await send(ctx.email, "Novo login detectado — Ilumiluz", html);
 }
 
 export async function sendAccountLockedEmail(ctx: SecurityCtx, userId: string) {
@@ -201,7 +201,7 @@ export async function sendAccountLockedEmail(ctx: SecurityCtx, userId: string) {
     cta: { label: "Redefinir minha senha", url: `${APP_URL}/forgot-password` },
     outro: `Se foi você esquecendo a senha, redefina pelo botão acima. Se você não tentou entrar, alguém pode estar tentando — recomendamos trocar a senha mesmo assim.`,
   });
-  await send(ctx.email, "Conta bloqueada por segurança — Bartho Finance", html);
+  await send(ctx.email, "Conta bloqueada por segurança — Ilumiluz", html);
 }
 
 export async function sendAccountDeletedEmail(ctx: SecurityCtx) {
@@ -209,12 +209,12 @@ export async function sendAccountDeletedEmail(ctx: SecurityCtx) {
   const firstName = ctx.name?.split(" ")[0];
   const html = baseTemplate({
     title: "Sua conta foi excluída",
-    intro: `${firstName ? `${firstName}, ` : ""}sua conta no Bartho Finance e todos os dados associados foram removidos permanentemente, conforme sua solicitação.`,
+    intro: `${firstName ? `${firstName}, ` : ""}sua conta no Ilumiluz e todos os dados associados foram removidos permanentemente, conforme sua solicitação.`,
     details: [
       { label: "Quando", value: formatBR(ctx.when) },
       { label: "E-mail da conta", value: ctx.email },
     ],
-    outro: `Se você mudar de ideia, é só criar uma nova conta — mas os dados antigos não podem ser recuperados. Obrigado por ter usado o Bartho Finance. 🐾`,
+    outro: `Se você mudar de ideia, é só criar uma nova conta — mas os dados antigos não podem ser recuperados. Obrigado por ter usado o Ilumiluz. 🐾`,
   });
-  await send(ctx.email, "Conta excluída — Bartho Finance", html);
+  await send(ctx.email, "Conta excluída — Ilumiluz", html);
 }

@@ -23,8 +23,8 @@ import { NextRequest, NextResponse } from "next/server";
  */
 
 const ALLOWED_ORIGINS_PROD = [
-  "https://barthofinance.com",
-  "https://www.barthofinance.com",
+  "https://ilumiluz.com",
+  "https://www.ilumiluz.com",
 ];
 
 const ALLOWED_ORIGINS_DEV = [

@@ -9,7 +9,6 @@ const PROTECTED_PATHS = [
   "/settings",
   "/onboarding",
   "/admin",
-  "/studio",
 ];
 const AUTH_COOKIE = "authjs.session-token";
 const SECURE_AUTH_COOKIE = "__Secure-authjs.session-token";

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>04 Componentes — Ilumiluz DS</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  .comp-section { padding: 64px 48px; border-bottom: 0.5px solid var(--line); }
+
+  /* ── BUTTONS ── */
+  .btn-grid { display: flex; flex-wrap: wrap; gap: 32px; align-items: center; margin-top: 40px; }
+  
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 14px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--deep); cursor: pointer; background: none; border: none;
+    padding: 0; transition: gap 0.3s cubic-bezier(0.4,0,0.2,1);
+    text-decoration: none;
+  }
+  .btn-ghost-line { width: 32px; height: 0.5px; background: var(--gold); transition: width 0.35s cubic-bezier(0.4,0,0.2,1); }
+  .btn-ghost:hover .btn-ghost-line { width: 56px; }
+  .btn-ghost:hover { gap: 20px; }
+
+  .btn-outline {
+    display: inline-flex; align-items: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--deep); border: 0.5px solid var(--deep);
+    padding: 12px 28px; cursor: pointer; background: none;
+    transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+    text-decoration: none;
+  }
+  .btn-outline:hover { background: var(--deep); color: var(--off); }
+
+  .btn-outline-gold {
+    display: inline-flex; align-items: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--gold); border: 0.5px solid var(--gold);
+    padding: 12px 28px; cursor: pointer; background: none;
+    transition: background 0.25s ease, color 0.25s ease;
+    text-decoration: none;
+  }
+  .btn-outline-gold:hover { background: var(--gold); color: white; }
+
+  .btn-solid {
+    display: inline-flex; align-items: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--off); background: var(--ether-deep);
+    padding: 13px 28px; cursor: pointer; border: none;
+    transition: background 0.25s ease;
+    text-decoration: none;
+  }
+  .btn-solid:hover { background: #1E3648; }
+
+  .btn-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--muted); margin-top: 10px; display: block;
+  }
+
+  /* ── CARDS ── */
+  .cards-preview { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 40px; }
+
+  .card-product {
+    background: var(--off);
+    border: 0.5px solid var(--line);
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+  }
+  .card-product:hover { border-color: var(--gold); }
+  .card-product-img {
+    height: 200px;
+    background: linear-gradient(160deg, #EDE6D8, #D8CFBE);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .card-product-img::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: rgba(201,169,110,0);
+    transition: background 0.3s ease;
+  }
+  .card-product:hover .card-product-img::after { background: rgba(201,169,110,0.06); }
+  .card-product-img-ornament {
+    width: 56px; height: 80px; border: 0.5px solid rgba(201,169,110,0.3);
+    border-radius: 50%; transition: transform 0.4s ease;
+  }
+  .card-product:hover .card-product-img-ornament { transform: scale(1.05); }
+  .card-product-body { padding: 20px 24px 24px; }
+  .card-product-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 8px;
+  }
+  .card-product-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 20px; color: var(--deep); margin-bottom: 8px;
+  }
+  .card-product-desc { font-size: 12px; line-height: 1.65; color: var(--muted); }
+  .card-product-cta {
+    margin-top: 16px;
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--deep); opacity: 0; transition: opacity 0.25s ease;
+  }
+  .card-product:hover .card-product-cta { opacity: 1; }
+  .card-product-cta::before { content:''; width:16px; height:0.5px; background:var(--gold); }
+
+  /* ── INPUTS ── */
+  .inputs-demo { display: flex; flex-direction: column; gap: 24px; max-width: 480px; margin-top: 40px; }
+  
+  .input-group { display: flex; flex-direction: column; gap: 8px; }
+  .input-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold);
+  }
+  .input-field {
+    background: transparent;
+    border: none; border-bottom: 0.5px solid var(--line-dark);
+    padding: 12px 0; font-family: 'Barlow', sans-serif;
+    font-size: 13px; font-weight: 300; color: var(--text);
+    outline: none; width: 100%;
+    transition: border-color 0.25s ease;
+  }
+  .input-field::placeholder { color: var(--muted); font-size: 12px; }
+  .input-field:focus { border-color: var(--gold); }
+
+  .textarea-field {
+    background: transparent; border: 0.5px solid var(--line-dark);
+    padding: 16px; font-family: 'Barlow', sans-serif;
+    font-size: 13px; font-weight: 300; color: var(--text);
+    outline: none; width: 100%; resize: vertical; min-height: 100px;
+    transition: border-color 0.25s ease;
+  }
+  .textarea-field:focus { border-color: var(--gold); }
+  .textarea-field::placeholder { color: var(--muted); }
+
+  /* ── NAV COMPONENT ── */
+  .nav-demo {
+    margin-top: 40px; background: var(--off);
+    border: 0.5px solid var(--line); padding: 20px 40px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .nav-demo-logo {
+    font-family: 'Jost', sans-serif;
+    font-weight: 200; font-size: 16px; letter-spacing: 0.14em; color: var(--deep);
+  }
+  .nav-demo-links { display: flex; gap: 28px; }
+  .nav-demo-link {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--muted); cursor: pointer; position: relative;
+    padding-bottom: 2px; transition: color 0.2s ease;
+  }
+  .nav-demo-link::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+    height: 0.5px; background: var(--gold);
+    transform: scaleX(0); transition: transform 0.3s ease;
+  }
+  .nav-demo-link:hover { color: var(--deep); }
+  .nav-demo-link:hover::after { transform: scaleX(1); }
+
+  /* ── QUOTE / BLOCKQUOTE ── */
+  .quote-demo { margin-top: 40px; display: flex; flex-direction: column; gap: 32px; max-width: 600px; }
+  .quote-il {
+    border-left: 1px solid var(--gold);
+    padding: 4px 0 4px 24px;
+  }
+  .quote-il p {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 22px; font-weight: 300;
+    line-height: 1.5; color: var(--deep);
+  }
+  .quote-il-blue { border-left-color: var(--ether); }
+  .quote-il-blue p { color: var(--ether-deep); }
+
+  /* ── TAGS / CHIPS ── */
+  .chips-demo { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 32px; }
+
+  /* ── DIVIDERS ── */
+  .divider-demo { margin-top: 40px; display: flex; flex-direction: column; gap: 32px; }
+  .divider-row { display: flex; align-items: center; gap: 24px; }
+  .divider-name { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); min-width: 140px; }
+  .divider-gold { flex: 1; height: 0.5px; background: var(--gold); opacity: 0.3; }
+  .divider-dark { flex: 1; height: 0.5px; background: var(--text); opacity: 0.08; }
+  .divider-blue { flex: 1; height: 0.5px; background: var(--ether); opacity: 0.3; }
+  .divider-accent { display: flex; align-items: center; gap: 12px; }
+  .divider-accent-line { width: 32px; height: 0.5px; background: var(--gold); }
+  .divider-accent-text { font-family: 'Barlow Condensed', sans-serif; font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); }
+
+  /* ── EYEBROW PATTERN ── */
+  .eyebrow-demo { margin-top: 40px; display: flex; flex-direction: column; gap: 24px; }
+  .eyebrow-il {
+    display: flex; align-items: center; gap: 12px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase;
+  }
+  .eyebrow-il::before { content: ''; display: block; height: 0.5px; }
+
+  /* STATE TABLE */
+  .state-table { margin-top: 40px; }
+  .state-row { display: grid; grid-template-columns: 120px 1fr 1fr 200px; gap: 16px; padding: 14px 0; border-bottom: 0.5px solid var(--line-dark); align-items: center; }
+  .state-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 500; font-size: 12px; text-transform: uppercase; color: var(--deep); }
+  .state-trigger { font-size: 12px; color: var(--muted); }
+  .state-visual { }
+  .state-css { font-family: monospace; font-size: 10px; color: var(--ether); }
+</style>
+</head>
+<body>
+
+<nav class="ds-nav">
+  <a href="index.html" class="ds-nav-logo">ilumiluz <span>/ design system</span></a>
+  <div class="ds-nav-links">
+    <a href="index.html">Visão Geral</a>
+    <a href="01-fundacao.html">Fundação</a>
+    <a href="02-tipografia.html">Tipografia</a>
+    <a href="03-cores.html">Cores</a>
+    <a href="04-componentes.html" class="active">Componentes</a>
+    <a href="05-voz.html">Voz & Tom</a>
+    <a href="06-movimento.html">Movimento</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-bg">UI</div>
+  <p class="page-num fade-up">04 — Componentes</p>
+  <h1 class="page-title fade-up-2">Componentes<br><em>& Estados</em></h1>
+  <p class="page-subtitle fade-up-3">Cada elemento de interface com seus estados completos — default, hover, focus, active. A interação é parte da identidade.</p>
+</div>
+
+<!-- BUTTONS -->
+<div class="comp-section">
+  <p class="ds-section-label">Botões</p>
+  <p class="ds-section-title">Hierarquia de ações</p>
+  <p class="ds-section-desc">A Ilumiluz usa botões discretos. Nunca botões com muito preenchimento ou sombra — a ação é sugerida, não imposta.</p>
+
+  <div class="btn-grid">
+    <div>
+      <a class="btn-ghost"><span class="btn-ghost-line"></span>Criar uma joia</a>
+      <span class="btn-label">Ghost (primário) — hover expande a linha</span>
+    </div>
+    <div>
+      <a class="btn-outline">Descobrir</a>
+      <span class="btn-label">Outline dark — hover inverte</span>
+    </div>
+    <div>
+      <a class="btn-outline-gold">Agendar conversa</a>
+      <span class="btn-label">Outline gold — hover preenche</span>
+    </div>
+    <div>
+      <a class="btn-solid">Consultar via WhatsApp</a>
+      <span class="btn-label">Solid blue — ações transacionais</span>
+    </div>
+  </div>
+
+  <div class="state-table" style="margin-top:40px;">
+    <p style="font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;">Estados dos botões</p>
+    <div class="state-row" style="background:rgba(201,169,110,0.03);">
+      <p class="state-name" style="color:var(--muted);font-size:10px;letter-spacing:0.1em;">ESTADO</p>
+      <p class="state-trigger" style="font-size:10px;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.1em;">Trigger</p>
+      <p style="font-size:10px;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);">Visual</p>
+      <p style="font-size:10px;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);">CSS / Duração</p>
+    </div>
+    <div class="state-row">
+      <p class="state-name">Default</p>
+      <p class="state-trigger">Repouso</p>
+      <p class="state-trigger">Linha 32px, texto em --deep</p>
+      <p class="state-css">— base state</p>
+    </div>
+    <div class="state-row">
+      <p class="state-name">Hover</p>
+      <p class="state-trigger">:hover</p>
+      <p class="state-trigger">Linha expande para 56px</p>
+      <p class="state-css">transition: 0.35s cubic-bezier(0.4,0,0.2,1)</p>
+    </div>
+    <div class="state-row">
+      <p class="state-name">Focus</p>
+      <p class="state-trigger">:focus-visible</p>
+      <p class="state-trigger">Outline 1px --gold offset 3px</p>
+      <p class="state-css">outline: 1px solid var(--gold)</p>
+    </div>
+    <div class="state-row">
+      <p class="state-name">Active</p>
+      <p class="state-trigger">:active</p>
+      <p class="state-trigger">Scale 0.98 por 100ms</p>
+      <p class="state-css">transform: scale(0.98) / 0.1s ease</p>
+    </div>
+    <div class="state-row">
+      <p class="state-name">Disabled</p>
+      <p class="state-trigger">disabled</p>
+      <p class="state-trigger">Opacity 0.35, cursor not-allowed</p>
+      <p class="state-css">opacity: 0.35; pointer-events: none</p>
+    </div>
+  </div>
+</div>
+
+<!-- CARDS -->
+<div class="comp-section">
+  <p class="ds-section-label">Cards de produto</p>
+  <p class="ds-section-title">Produto & Coleção</p>
+  <p class="ds-section-desc">Cards mantêm borda fina no default. No hover, a borda acende em ouro e o CTA aparece. Imagem faz zoom suave.</p>
+  <div class="cards-preview">
+    <div class="card-product">
+      <div class="card-product-img"><div class="card-product-img-ornament"></div></div>
+      <div class="card-product-body">
+        <p class="card-product-label">Sob medida</p>
+        <p class="card-product-title">O Essencial, Refeito</p>
+        <p class="card-product-desc">Metal reimaginado. Uma peça pensada para marcar um novo ciclo.</p>
+        <span class="card-product-cta">Ver mais</span>
+      </div>
+    </div>
+    <div class="card-product">
+      <div class="card-product-img" style="background:linear-gradient(160deg,var(--ether-pale),var(--ether-light));"><div class="card-product-img-ornament" style="border-color:rgba(123,159,184,0.5);"></div></div>
+      <div class="card-product-body">
+        <p class="card-product-label">Transformação</p>
+        <p class="card-product-title">Joias com História</p>
+        <p class="card-product-desc">Peças herdadas que ganham nova forma sem perder a memória.</p>
+        <span class="card-product-cta">Ver mais</span>
+      </div>
+    </div>
+    <div class="card-product">
+      <div class="card-product-img" style="background:linear-gradient(160deg,#2A1E14,#1A1208);">
+        <div class="card-product-img-ornament" style="border-color:rgba(201,169,110,0.4);"></div>
+      </div>
+      <div class="card-product-body">
+        <p class="card-product-label">Pronta entrega</p>
+        <p class="card-product-title">Colar Portal</p>
+        <p class="card-product-desc">Ouro 18k com esmeralda brasileira. Peço sob consulta.</p>
+        <span class="card-product-cta">Consultar</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="comp-section">
+  <p class="ds-section-label">Navegação</p>
+  <p class="ds-section-title">Nav principal</p>
+  <p class="ds-section-desc">Posição fixed. Fundo off white com blur. Links em caps com underline dourado no hover que cresce da esquerda.</p>
+  <div class="nav-demo">
+    <span class="nav-demo-logo">ilumiluz</span>
+    <div class="nav-demo-links">
+      <span class="nav-demo-link">Coleção</span>
+      <span class="nav-demo-link">Sobre</span>
+      <span class="nav-demo-link">Processo</span>
+      <span class="nav-demo-link">Contato</span>
+    </div>
+  </div>
+  <p style="margin-top:16px;font-size:12px;color:var(--muted);">Hover sobre os links acima para ver o underline animado.</p>
+</div>
+
+<!-- INPUTS -->
+<div class="comp-section">
+  <p class="ds-section-label">Formulários</p>
+  <p class="ds-section-title">Inputs & Campos</p>
+  <p class="ds-section-desc">Campos com borda apenas na parte inferior. No focus, a borda vira dourada. Sem boxes quadradas — formulário como diálogo.</p>
+  <div class="inputs-demo">
+    <div class="input-group">
+      <label class="input-label">Seu nome</label>
+      <input class="input-field" type="text" placeholder="Como prefere ser chamada?">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Email</label>
+      <input class="input-field" type="email" placeholder="seu@email.com">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Sua história</label>
+      <textarea class="textarea-field" placeholder="Conte sobre a joia que deseja criar ou transformar..."></textarea>
+    </div>
+    <a class="btn-ghost" style="margin-top:8px;"><span class="btn-ghost-line"></span>Enviar mensagem</a>
+  </div>
+</div>
+
+<!-- QUOTES -->
+<div class="comp-section">
+  <p class="ds-section-label">Citações e Destaques</p>
+  <p class="ds-section-title">Blockquote Ilumiluz</p>
+  <div class="quote-demo">
+    <div class="quote-il">
+      <p>"O metal não é apenas matéria. Ele é memória, forma e possibilidade."</p>
+    </div>
+    <div class="quote-il quote-il-blue">
+      <p>"Aqui, o luxo está na atenção, no tempo e no sentido."</p>
+    </div>
+  </div>
+</div>
+
+<!-- CHIPS -->
+<div class="comp-section">
+  <p class="ds-section-label">Tags & Chips</p>
+  <p class="ds-section-title">Classificação e labels</p>
+  <div class="chips-demo">
+    <span class="chip">Sob medida</span>
+    <span class="chip">Ouro 18k</span>
+    <span class="chip gold-tag" style="border-color:var(--line);color:var(--gold);">Transformação</span>
+    <span class="chip blue" style="border-color:var(--line-blue);color:var(--ether);">Pronta entrega</span>
+    <span class="chip dark" style="border-color:rgba(30,26,20,0.12);color:var(--muted);">Prata</span>
+    <span class="chip dark" style="border-color:rgba(30,26,20,0.12);color:var(--muted);">Bronze</span>
+  </div>
+</div>
+
+<!-- DIVIDERS -->
+<div class="comp-section">
+  <p class="ds-section-label">Divisores</p>
+  <p class="ds-section-title">Linhas e separadores</p>
+  <div class="divider-demo">
+    <div class="divider-row">
+      <span class="divider-name">Ouro — seção</span>
+      <div class="divider-gold"></div>
+    </div>
+    <div class="divider-row">
+      <span class="divider-name">Neutro — conteúdo</span>
+      <div class="divider-dark"></div>
+    </div>
+    <div class="divider-row">
+      <span class="divider-name">Azul — citação</span>
+      <div class="divider-blue"></div>
+    </div>
+    <div class="divider-row">
+      <span class="divider-name">Acento com label</span>
+      <div class="divider-accent">
+        <div class="divider-accent-line"></div>
+        <span class="divider-accent-text">Sobre a Ilumiluz</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="ds-footer">
+  <span class="ds-footer-left">04 — Componentes</span>
+  <span class="ds-footer-logo">ilumiluz</span>
+  <a href="05-voz.html" style="font-size:11px;color:rgba(184,205,217,0.4);text-decoration:none;">05 Voz & Tom →</a>
+</footer>
+
+</body>
+</html>

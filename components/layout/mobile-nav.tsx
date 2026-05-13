@@ -1,21 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import { Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { Sidebar } from "@/components/layout/sidebar";
-import { BarthoLogo } from "@/components/brand/bartho-dog";
-import { useTheme } from "next-themes";
 
 /**
  * Botão hambúrguer + Sheet drawer com a Sidebar dentro.
- * Visível só em viewport <md. Fecha sozinho quando o usuário clica
- * num item de nav.
+ * Visível apenas em viewport <md. Fecha quando o usuário clica num link.
  */
 export function MobileNav() {
   const [open, setOpen] = useState(false);
-  const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === "dark";
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -29,12 +26,19 @@ export function MobileNav() {
       </button>
 
       <SheetContent side="left" className="w-72 p-0 flex flex-col">
-        {/* Header próprio do drawer (substitui o do sidebar quando hideLogo=true) */}
         <div className="flex h-16 items-center px-6 border-b border-sidebar-border bg-sidebar">
           <SheetTitle asChild>
             <span className="sr-only">Navegação</span>
           </SheetTitle>
-          <BarthoLogo height={36} variant={isDark ? "negative" : "positive"} />
+          <Link href="/" aria-label="Ilumiluz — página inicial">
+            <Image
+              src="/logo-ilumiluz.svg"
+              alt="Ilumiluz"
+              width={100}
+              height={26}
+              priority
+            />
+          </Link>
         </div>
 
         <div className="flex-1 overflow-y-auto">

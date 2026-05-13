@@ -1,0 +1,274 @@
+@import "tailwindcss";
+
+/* ─── Tokens ───────────────────────────────────────────────────────────── */
+:root {
+  --il-white:      #FAF8F5;
+  --il-off:        #F2F2F2;
+  --il-warm-mid:   #EDE6D8;
+  --il-muted:      #8A857E;
+  --il-text:       #3D3830;
+  --il-deep:       #1E1A14;
+
+  --il-gold-wash:  #F5ECF0;
+  --il-gold-pale:  #E8C9D4;
+  --il-gold-light: #C9839A;
+  --il-gold:       #561730;
+  --il-gold-dark:  #2E0A18;
+
+  --il-ether-pale:  #E4EFF5;
+  --il-ether-light: #B8CDD9;
+  --il-ether:       #7B9FB8;
+  --il-ether-mid:   #5F8BA8;
+  --il-ether-deep:  #2A4A5E;
+
+  --il-line:       rgba(86, 23, 48, 0.18);
+  --il-line-blue:  rgba(123, 159, 184, 0.20);
+  --il-line-dark:  rgba(30, 26, 20, 0.08);
+
+  --il-font-display: var(--font-barlow-condensed), 'Arial Narrow', sans-serif;
+  --il-font-body:    var(--font-barlow), system-ui, sans-serif;
+  --il-font-serif:   var(--font-cormorant), Georgia, serif;
+
+  --il-track-headline: -0.02em;
+  --il-track-nav:       0.18em;
+  --il-track-label:     0.3em;
+
+  --il-space-1:  8px;
+  --il-space-2:  16px;
+  --il-space-3:  24px;
+  --il-space-4:  32px;
+  --il-space-6:  48px;
+  --il-space-9:  72px;
+  --il-space-12: 96px;
+  --il-space-20: 160px;
+
+  --il-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --il-ease-enter:    cubic-bezier(0, 0, 0.2, 1);
+  --il-ease-exit:     cubic-bezier(0.4, 0, 1, 1);
+  --il-dur-instant:   100ms;
+  --il-dur-fast:      200ms;
+  --il-dur-base:      300ms;
+  --il-dur-deliberate:400ms;
+  --il-dur-slow:      500ms;
+}
+
+/* ─── Reset ────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+body {
+  background: var(--il-off);
+  color: var(--il-text);
+  font-family: var(--il-font-body);
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.85;
+}
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; border: none; background: none; font: inherit; }
+::selection { background: var(--il-gold); color: var(--il-off); }
+
+/* ─── Tipografia utilitária ─────────────────────────────────────────────── */
+.il-eyebrow {
+  font-family: var(--il-font-display);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: var(--il-track-label);
+  text-transform: uppercase;
+  color: var(--il-gold);
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.il-eyebrow::before {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 0.5px;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.il-h {
+  font-family: var(--il-font-display);
+  font-weight: 600;
+  letter-spacing: var(--il-track-headline);
+  text-transform: uppercase;
+  color: var(--il-deep);
+  line-height: 1.05;
+  margin: 0;
+}
+.il-h em {
+  font-style: italic;
+  font-family: var(--il-font-serif);
+  font-weight: 300;
+  color: var(--il-gold);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.il-body  { font-size: 13.5px; line-height: 1.85; color: var(--il-muted); margin: 0; }
+.il-label { font-family: var(--il-font-display); font-size: 9px; letter-spacing: .25em; text-transform: uppercase; color: var(--il-gold); margin: 0; }
+
+/* ─── CTAs ──────────────────────────────────────────────────────────────── */
+.il-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--il-font-display);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--il-deep);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: gap var(--il-dur-base) var(--il-ease-standard);
+}
+.il-ghost > i {
+  display: block;
+  width: 32px;
+  height: 0.5px;
+  background: var(--il-gold);
+  font-style: normal;
+  flex-shrink: 0;
+  transition: width 350ms var(--il-ease-standard);
+}
+.il-ghost:hover     { gap: 20px; }
+.il-ghost:hover > i { width: 56px; }
+.il-ghost:active    { scale: 0.98; }
+
+.il-out {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--il-font-display);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--il-deep);
+  border: 0.5px solid var(--il-deep);
+  padding: 13px 28px;
+  background: none;
+  transition: background var(--il-dur-fast), color var(--il-dur-fast);
+}
+.il-out:hover  { background: var(--il-deep); color: var(--il-off); }
+.il-out:active { scale: 0.98; }
+
+.il-solid {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--il-font-display);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--il-off);
+  background: var(--il-ether-deep);
+  padding: 14px 30px;
+  border: none;
+  transition: background var(--il-dur-fast) var(--il-ease-standard);
+}
+.il-solid:hover  { background: #1E3648; }
+.il-solid:active { scale: 0.98; }
+
+/* ─── Nav links ─────────────────────────────────────────────────────────── */
+.il-navlink {
+  position: relative;
+  padding-bottom: 4px;
+  transition: color var(--il-dur-fast) var(--il-ease-standard);
+}
+.il-navlink::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 0.5px;
+  background: var(--il-gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--il-dur-base) var(--il-ease-standard);
+}
+.il-navlink:hover               { color: var(--il-deep) !important; }
+.il-navlink:hover::after,
+.il-navlink[data-active]::after { transform: scaleX(1); }
+
+/* ─── Cards ─────────────────────────────────────────────────────────────── */
+.il-card {
+  background: var(--il-off);
+  border: 0.5px solid var(--il-line);
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: border-color var(--il-dur-base) var(--il-ease-standard);
+}
+.il-card:hover             { border-color: var(--il-gold); }
+.il-card-img               { transition: transform var(--il-dur-slow) var(--il-ease-standard); }
+.il-card:hover .il-card-img { transform: scale(1.05); }
+.il-card-cta               { opacity: 0; transition: opacity var(--il-dur-base) var(--il-ease-standard); }
+.il-card:hover .il-card-cta { opacity: 1; }
+.il-card-bar {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  height: 1.5px;
+  background: var(--il-gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 350ms var(--il-ease-standard);
+}
+.il-card:hover .il-card-bar { transform: scaleX(1); }
+
+/* ─── Inputs ────────────────────────────────────────────────────────────── */
+.il-input {
+  background: transparent;
+  border: none;
+  border-bottom: 0.5px solid rgba(224, 201, 154, 0.3);
+  padding: 12px 0;
+  font-family: var(--il-font-body);
+  font-size: 13.5px;
+  font-weight: 300;
+  color: var(--il-off);
+  outline: none;
+  width: 100%;
+  transition: border-color var(--il-dur-fast) var(--il-ease-standard);
+}
+.il-input:focus            { border-bottom-color: var(--il-gold); }
+.il-input::placeholder     { color: rgba(184, 205, 217, 0.5); }
+
+.il-textarea {
+  background: transparent;
+  border: 0.5px solid rgba(224, 201, 154, 0.3);
+  padding: 14px;
+  font-family: var(--il-font-body);
+  font-size: 13.5px;
+  font-weight: 300;
+  color: var(--il-off);
+  outline: none;
+  resize: vertical;
+  width: 100%;
+  transition: border-color var(--il-dur-fast) var(--il-ease-standard);
+}
+.il-textarea:focus        { border-color: var(--il-gold); }
+.il-textarea::placeholder { color: rgba(184, 205, 217, 0.5); }
+
+/* ─── Footer links ──────────────────────────────────────────────────────── */
+.il-footer-link {
+  font-size: 12.5px;
+  color: var(--il-gold-light);
+  transition: color var(--il-dur-fast) var(--il-ease-standard);
+}
+.il-footer-link:hover { color: var(--il-off); }
+
+/* ─── Chip ──────────────────────────────────────────────────────────────── */
+.il-chip {
+  display: inline-block;
+  font-family: var(--il-font-display);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border: 0.5px solid var(--il-line);
+  color: var(--il-gold);
+  border-radius: 2px;
+  background: transparent;
+}

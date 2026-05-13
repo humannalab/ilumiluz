@@ -1,0 +1,114 @@
+/* ==========================================================================
+   Ilumiluz Design System — Colors & Type
+   Primary tokens for the Ilumiluz brand (off-white dominant, gold + ether blue accents,
+   Barlow Condensed structural + Cormorant Garamond italic serif accent)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* ── Neutrals ─────────────────────────────────────────── */
+  --il-white:       #FAF8F5;   /* true white, rarely used */
+  --il-off:         #F2F2F2;   /* dominant background — 90% of surface */
+  --il-warm-mid:    #EDE6D8;   /* warm neutral, product image bg gradient */
+  --il-muted:       #8A857E;   /* secondary text, captions, placeholders */
+  --il-text:        #2A4A5E;   /* body copy — ether deep */
+  --il-deep:        #2A4A5E;   /* titles, dark backgrounds, high contrast — ether deep */
+
+  /* ── Vinho — cor do logo (primary accent) ── */
+  --il-gold-wash:   #F5ECF0;   /* section bg com leve calor vinho */
+  --il-gold-pale:   #E8C9D4;   /* cards, áreas de destaque */
+  --il-gold-light:  #C9839A;   /* texto em fundo escuro */
+  --il-gold:        #561730;   /* ★ vinho logo — labels, dividers, accents */
+  --il-gold-dark:   #2E0A18;   /* destaque profundo */
+
+  /* ── Ether Blue (secondary accent — depth, closure) ── */
+  --il-ether-pale:  #E4EFF5;
+  --il-ether-light: #B8CDD9;
+  --il-ether:       #7B9FB8;   /* quote bars, divider accent */
+  --il-ether-mid:   #5F8BA8;
+  --il-ether-deep:  #2A4A5E;   /* ★ hero "conversa" section, footer, gallery */
+
+  /* ── Lines (always 0.5px) ─────────────────────────────── */
+  --il-line:        rgba(86, 23, 48, 0.18);      /* vinho-tinted divider */
+  --il-line-blue:   rgba(123, 159, 184, 0.20);
+  --il-line-dark:   rgba(30, 26, 20, 0.08);      /* neutral content divider */
+
+  /* ── Type families ────────────────────────────────────── */
+  --il-font-display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  --il-font-body:    'Barlow', system-ui, sans-serif;
+  --il-font-serif:   'Cormorant Garamond', Georgia, serif; /* italic-only */
+
+  /* ── Semantic typography ──────────────────────────────── */
+  --il-display-xl:  600 88px/0.92 var(--il-font-display);  /* hero */
+  --il-display-l:   600 72px/0.92 var(--il-font-display);  /* page title */
+  --il-h1:          500 40px/1.05 var(--il-font-display);
+  --il-h2:          500 26px/1.1  var(--il-font-display);
+  --il-serif-accent: italic 300 40px/1.2 var(--il-font-serif);
+  --il-body-l:      300 14px/1.85 var(--il-font-body);
+  --il-body-m:      300 12.5px/1.8 var(--il-font-body);
+  --il-label:       400 9px/1.2 var(--il-font-display);    /* caps, +0.3em track */
+  --il-nav:         300 10px/1.2 var(--il-font-display);   /* caps, +0.18em track */
+  --il-mono:        400 11px/1.5 ui-monospace, monospace;
+
+  /* ── Letter-spacing scale ─────────────────────────────── */
+  --il-track-headline: -0.02em;
+  --il-track-normal:    0;
+  --il-track-nav:      0.18em;
+  --il-track-label:    0.3em;
+
+  /* ── Spacing (8px scale) ──────────────────────────────── */
+  --il-space-1:  8px;
+  --il-space-2:  16px;
+  --il-space-3:  24px;   /* gutter */
+  --il-space-4:  32px;
+  --il-space-6:  48px;   /* site side padding, section margin */
+  --il-space-9:  72px;   /* vertical section padding */
+  --il-space-12: 96px;
+  --il-space-20: 160px;
+
+  /* ── Radii ────────────────────────────────────────────── */
+  --il-radius-none: 0;
+  --il-radius-chip: 2px;  /* maximum anywhere */
+
+  /* ── Motion ───────────────────────────────────────────── */
+  --il-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --il-ease-enter:    cubic-bezier(0, 0, 0.2, 1);
+  --il-ease-exit:     cubic-bezier(0.4, 0, 1, 1);
+  --il-dur-instant: 100ms;
+  --il-dur-fast:    200ms;
+  --il-dur-base:    300ms;
+  --il-dur-deliberate: 400ms;
+  --il-dur-slow:    500ms;
+
+  /* ── Borders ──────────────────────────────────────────── */
+  --il-border-hair:   0.5px solid var(--il-line);
+  --il-border-dark:   0.5px solid var(--il-line-dark);
+  --il-border-gold:   0.5px solid var(--il-gold);
+  --il-border-blue:   0.5px solid var(--il-line-blue);
+
+  /* Shadows — Ilumiluz uses almost none. Keep subtle for modals only. */
+  --il-shadow-subtle: 0 1px 0 var(--il-line);
+}
+
+/* Base element resets to Ilumiluz defaults */
+body.ilumiluz {
+  font: var(--il-body-l);
+  color: var(--il-text);
+  background: var(--il-off);
+  -webkit-font-smoothing: antialiased;
+}
+.ilumiluz h1, .il-h1 { font: var(--il-h1); text-transform: uppercase; letter-spacing: var(--il-track-headline); color: var(--il-deep); }
+.ilumiluz h2, .il-h2 { font: var(--il-h2); text-transform: uppercase; letter-spacing: 0.02em; color: var(--il-deep); }
+.il-display-xl { font: var(--il-display-xl); text-transform: uppercase; letter-spacing: var(--il-track-headline); color: var(--il-deep); }
+.il-serif     { font: var(--il-serif-accent); color: var(--il-gold); }    /* italic only */
+.il-label     { font: var(--il-label); letter-spacing: var(--il-track-label); text-transform: uppercase; color: var(--il-gold); }
+.il-eyebrow   { font: var(--il-label); letter-spacing: var(--il-track-label); text-transform: uppercase; color: var(--il-gold); display: inline-flex; align-items: center; gap: 12px; }
+.il-eyebrow::before { content: ''; display: block; width: 32px; height: 0.5px; background: currentColor; }
+
+/* Body copy */
+.il-body   { font: var(--il-body-l); color: var(--il-text); }
+.il-muted  { font: var(--il-body-m); color: var(--il-muted); }
+
+/* Divider */
+.il-divider { height: 0.5px; background: var(--il-gold); opacity: 0.3; border: 0; }

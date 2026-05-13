@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>06 Movimento — Ilumiluz DS</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  .mov-section { padding: 64px 48px; border-bottom: 0.5px solid var(--line); }
+
+  /* EASING */
+  .easing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); margin-top: 40px; }
+  .easing-card { background: var(--off); padding: 40px; }
+  .easing-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 500; font-size: 15px; text-transform: uppercase;
+    color: var(--deep); margin-bottom: 8px;
+  }
+  .easing-value { font-family: monospace; font-size: 11px; color: var(--gold); margin-bottom: 16px; }
+  .easing-demo { height: 40px; display: flex; align-items: center; position: relative; overflow: hidden; }
+  .easing-ball {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--gold); position: absolute; left: 0;
+    animation: none; cursor: pointer;
+  }
+  .easing-card:hover .easing-ball { animation-duration: 0.8s; animation-fill-mode: both; }
+  .ease-standard:hover .easing-ball { animation-name: moveStandard; animation-timing-function: cubic-bezier(0.4,0,0.2,1); }
+  .ease-enter:hover .easing-ball { animation-name: moveStandard; animation-timing-function: cubic-bezier(0,0,0.2,1); }
+  .ease-exit:hover .easing-ball { animation-name: moveStandard; animation-timing-function: cubic-bezier(0.4,0,1,1); }
+  @keyframes moveStandard { 0%{left:0} 50%{left:calc(100% - 12px)} 100%{left:0} }
+  .easing-use { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+  /* DURATIONS */
+  .duration-table { margin-top: 40px; }
+  .dur-row { display: grid; grid-template-columns: 120px 80px 1fr 1fr; align-items: center; gap: 24px; padding: 16px 0; border-bottom: 0.5px solid var(--line-dark); }
+  .dur-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 500; font-size: 13px; text-transform: uppercase; color: var(--deep); }
+  .dur-val { font-family: monospace; font-size: 12px; color: var(--gold); }
+  .dur-bar-wrap { height: 4px; background: rgba(201,169,110,0.1); border-radius: 2px; overflow: hidden; }
+  .dur-bar { height: 100%; background: var(--gold); border-radius: 2px; }
+  .dur-use { font-size: 12px; color: var(--muted); }
+
+  /* HOVER DEMOS */
+  .hover-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 40px; }
+  .hover-demo-wrap { }
+  .hover-demo-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 12px;
+  }
+  .hover-demo-box { padding: 24px; background: var(--off); border: 0.5px solid var(--line); }
+
+  /* LINK UNDERLINE HOVER */
+  .demo-link-underline {
+    display: inline-flex; align-items: center; gap: 0;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--deep); cursor: pointer; position: relative;
+    padding-bottom: 4px;
+  }
+  .demo-link-underline::after {
+    content: ''; position: absolute; bottom: 0; left: 0;
+    width: 100%; height: 0.5px; background: var(--gold);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  }
+  .demo-link-underline:hover::after { transform: scaleX(1); }
+
+  /* LINE EXPAND HOVER */
+  .demo-line-expand {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--deep); cursor: pointer;
+    transition: gap 0.3s cubic-bezier(0.4,0,0.2,1);
+  }
+  .demo-line-expand-bar { width: 28px; height: 0.5px; background: var(--gold); transition: width 0.35s cubic-bezier(0.4,0,0.2,1); }
+  .demo-line-expand:hover { gap: 20px; }
+  .demo-line-expand:hover .demo-line-expand-bar { width: 52px; }
+
+  /* CARD BORDER HOVER */
+  .demo-card-border {
+    border: 0.5px solid var(--line); padding: 20px;
+    cursor: pointer; transition: border-color 0.3s ease;
+    position: relative; overflow: hidden;
+  }
+  .demo-card-border::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+    height: 1.5px; background: var(--gold);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  }
+  .demo-card-border:hover { border-color: rgba(201,169,110,0.4); }
+  .demo-card-border:hover::after { transform: scaleX(1); }
+  .demo-card-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 500; font-size: 14px; text-transform: uppercase; color: var(--deep); margin-bottom: 6px; }
+  .demo-card-text { font-size: 12px; color: var(--muted); }
+
+  /* ARROW HOVER */
+  .demo-arrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    font-family: 'Barlow Condensed', sans-serif;
+    color: var(--deep); cursor: pointer;
+  }
+  .demo-arrow-icon { font-size: 16px; transition: transform 0.25s ease; }
+  .demo-arrow:hover .demo-arrow-icon { transform: translate(4px,-4px); }
+
+  /* FADE IN UP DEMO */
+  .demo-fadein-wrap { overflow: hidden; }
+  .demo-fadein {
+    padding: 20px; background: rgba(201,169,110,0.05);
+    border-left: 1.5px solid var(--gold);
+    opacity: 0; transform: translateY(12px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .demo-fadein.visible { opacity: 1; transform: translateY(0); }
+  .demo-fadein-text { font-size: 13px; color: var(--text); font-family: 'Cormorant Garamond', serif; font-style: italic; }
+
+  /* SCALE HOVER */
+  .demo-scale {
+    display: inline-block; width: 60px; height: 80px;
+    background: linear-gradient(160deg, #EDE6D8, #C8B898);
+    cursor: pointer;
+    transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+    position: relative; overflow: hidden;
+  }
+  .demo-scale::after {
+    content: ''; position: absolute; inset: 0;
+    background: rgba(201,169,110,0);
+    transition: background 0.3s ease;
+  }
+  .demo-scale:hover { transform: scale(1.06); }
+  .demo-scale:hover::after { background: rgba(201,169,110,0.1); }
+
+  /* ENTRANCE ANIMATIONS */
+  .entrance-section { padding: 64px 48px; border-bottom: 0.5px solid var(--line); }
+  .entrance-demo { margin-top: 40px; display: flex; flex-direction: column; gap: 16px; }
+  .entrance-row {
+    display: grid; grid-template-columns: 160px 1fr 200px;
+    gap: 24px; align-items: center;
+    padding: 16px 0; border-bottom: 0.5px solid var(--line-dark);
+  }
+  .entrance-name { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; text-transform: uppercase; color: var(--deep); }
+  .entrance-preview { }
+  .entrance-spec { font-family: monospace; font-size: 10px; color: var(--ether); }
+
+  @keyframes demoFadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes demoFadeIn { from{opacity:0} to{opacity:1} }
+  @keyframes demoSlideIn { from{transform:translateX(-16px);opacity:0} to{transform:translateX(0);opacity:1} }
+  @keyframes demoScaleIn { from{transform:scale(0.94);opacity:0} to{transform:scale(1);opacity:1} }
+
+  .anim-play { cursor: pointer; }
+  .anim-play:hover .anim-elem { animation-duration: 0.5s; animation-fill-mode: both; }
+  .anim-play:nth-child(1):hover .anim-elem { animation-name: demoFadeUp; }
+  .anim-play:nth-child(2):hover .anim-elem { animation-name: demoFadeIn; }
+  .anim-play:nth-child(3):hover .anim-elem { animation-name: demoSlideIn; }
+  .anim-play:nth-child(4):hover .anim-elem { animation-name: demoScaleIn; }
+  .anim-elem {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 500; font-size: 18px; text-transform: uppercase;
+    color: var(--deep);
+  }
+
+  /* PAGE TRANSITION */
+  .transition-section { padding: 64px 48px; border-bottom: 0.5px solid var(--line); }
+  .transition-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); margin-top: 40px; }
+  .transition-card { background: var(--off); padding: 40px; }
+  .transition-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 500; font-size: 16px; text-transform: uppercase; color: var(--deep); margin-bottom: 12px; }
+  .transition-desc { font-size: 12.5px; color: var(--muted); line-height: 1.7; margin-bottom: 20px; }
+  .transition-code {
+    background: rgba(30,26,20,0.04); padding: 16px;
+    font-family: monospace; font-size: 11px; color: var(--ether);
+    line-height: 1.7; border-left: 2px solid var(--ether);
+  }
+
+  /* STAGGER DEMO */
+  .stagger-demo { margin-top: 40px; }
+  .stagger-trigger {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); cursor: pointer; margin-bottom: 24px; display: inline-block;
+  }
+  .stagger-items { display: flex; flex-direction: column; gap: 1px; background: var(--line); }
+  .stagger-item {
+    background: var(--off); padding: 16px 24px;
+    font-size: 13px; color: var(--text);
+    opacity: 0; transform: translateY(8px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  .stagger-item.shown { opacity: 1; transform: translateY(0); }
+  .stagger-item:nth-child(1) { transition-delay: 0s; }
+  .stagger-item:nth-child(2) { transition-delay: 0.07s; }
+  .stagger-item:nth-child(3) { transition-delay: 0.14s; }
+  .stagger-item:nth-child(4) { transition-delay: 0.21s; }
+</style>
+</head>
+<body>
+
+<nav class="ds-nav">
+  <a href="index.html" class="ds-nav-logo">ilumiluz <span>/ design system</span></a>
+  <div class="ds-nav-links">
+    <a href="index.html">Visão Geral</a>
+    <a href="01-fundacao.html">Fundação</a>
+    <a href="02-tipografia.html">Tipografia</a>
+    <a href="03-cores.html">Cores</a>
+    <a href="04-componentes.html">Componentes</a>
+    <a href="05-voz.html">Voz & Tom</a>
+    <a href="06-movimento.html" class="active">Movimento</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-bg">MOVE</div>
+  <p class="page-num fade-up">06 — Movimento</p>
+  <h1 class="page-title fade-up-2">Movimento<br><em>& Interação</em></h1>
+  <p class="page-subtitle fade-up-3">Movimento na Ilumiluz é contenção expressiva. Cada transição tem propósito — nada é decorativo, nada é brusco.</p>
+</div>
+
+<!-- FILOSOFIA -->
+<div class="mov-section" style="background:var(--deep);border-color:rgba(201,169,110,0.15);">
+  <p class="ds-section-label" style="color:var(--ether-light);">Filosofia de movimento</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:40px;margin-top:8px;">
+    <div>
+      <p style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:500;text-transform:uppercase;color:rgba(240,236,228,0.6);margin-bottom:10px;">Suave</p>
+      <p style="font-size:12px;line-height:1.75;color:rgba(184,205,217,0.5);">Nenhuma transição deve chamar atenção para si mesma. O movimento serve ao conteúdo — nunca o interrompe.</p>
+    </div>
+    <div>
+      <p style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:500;text-transform:uppercase;color:rgba(240,236,228,0.6);margin-bottom:10px;">Intencional</p>
+      <p style="font-size:12px;line-height:1.75;color:rgba(184,205,217,0.5);">Cada animação comunica algo: confirmação de interação, entrada de conteúdo, estado de carregamento. Nunca por estética pura.</p>
+    </div>
+    <div>
+      <p style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:500;text-transform:uppercase;color:rgba(240,236,228,0.6);margin-bottom:10px;">Lento o suficiente</p>
+      <p style="font-size:12px;line-height:1.75;color:rgba(184,205,217,0.5);">O ritmo da Ilumiluz é pausado. Transições muito rápidas (< 150ms) criam frieza. Prefira 250-400ms para gestos principais.</p>
+    </div>
+  </div>
+</div>
+
+<!-- EASING -->
+<div class="mov-section">
+  <p class="ds-section-label">Curvas de easing</p>
+  <p class="ds-section-title">3 curvas essenciais</p>
+  <p class="ds-section-desc">Passe o mouse sobre cada card para ver a curva em ação.</p>
+  <div class="easing-grid">
+    <div class="easing-card ease-standard">
+      <p class="easing-name">Standard</p>
+      <p class="easing-value">cubic-bezier(0.4, 0, 0.2, 1)</p>
+      <div class="easing-demo"><div class="easing-ball"></div></div>
+      <p class="easing-use">A curva padrão de tudo. Hover de cards, transições de cor, expansão de linhas. Rápida de sair, suave de chegar.</p>
+    </div>
+    <div class="easing-card ease-enter">
+      <p class="easing-name">Enter (Decelerate)</p>
+      <p class="easing-value">cubic-bezier(0, 0, 0.2, 1)</p>
+      <div class="easing-demo"><div class="easing-ball" style="background:var(--ether);"></div></div>
+      <p class="easing-use">Elementos que entram na tela — animações de scroll, modais que abrem, conteúdo que aparece.</p>
+    </div>
+    <div class="easing-card ease-exit">
+      <p class="easing-name">Exit (Accelerate)</p>
+      <p class="easing-value">cubic-bezier(0.4, 0, 1, 1)</p>
+      <div class="easing-demo"><div class="easing-ball" style="background:var(--muted);"></div></div>
+      <p class="easing-use">Elementos que saem — notificações, tooltips, elementos que desaparecem. Rápido e limpo.</p>
+    </div>
+  </div>
+</div>
+
+<!-- DURATIONS -->
+<div class="mov-section">
+  <p class="ds-section-label">Durações</p>
+  <p class="ds-section-title">Escala de tempo</p>
+  <div class="duration-table">
+    <div class="dur-row" style="background:rgba(201,169,110,0.03);">
+      <p style="font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);">NOME</p>
+      <p style="font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);">VALOR</p>
+      <p style="font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);">ESCALA</p>
+      <p style="font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);">USAR PARA</p>
+    </div>
+    <div class="dur-row">
+      <p class="dur-name">Instant</p>
+      <p class="dur-val">100ms</p>
+      <div class="dur-bar-wrap"><div class="dur-bar" style="width:8%;"></div></div>
+      <p class="dur-use">Estados :active, scale(0.98), feedback imediato</p>
+    </div>
+    <div class="dur-row">
+      <p class="dur-name">Fast</p>
+      <p class="dur-val">200ms</p>
+      <div class="dur-bar-wrap"><div class="dur-bar" style="width:16%;"></div></div>
+      <p class="dur-use">Hover de cor, opacity, bordas — micro-feedback</p>
+    </div>
+    <div class="dur-row">
+      <p class="dur-name">Base</p>
+      <p class="dur-val">300ms</p>
+      <div class="dur-bar-wrap"><div class="dur-bar" style="width:24%;"></div></div>
+      <p class="dur-use">Maioria dos hovers — underline, card border, botões</p>
+    </div>
+    <div class="dur-row">
+      <p class="dur-name">Deliberate</p>
+      <p class="dur-val">400ms</p>
+      <div class="dur-bar-wrap"><div class="dur-bar" style="width:32%;"></div></div>
+      <p class="dur-use">Expansão de linha CTA, animações de entrada principais</p>
+    </div>
+    <div class="dur-row">
+      <p class="dur-name">Slow</p>
+      <p class="dur-val">500ms</p>
+      <div class="dur-bar-wrap"><div class="dur-bar" style="width:40%;"></div></div>
+      <p class="dur-use">Page load stagger, scroll-triggered reveal</p>
+    </div>
+    <div class="dur-row">
+      <p class="dur-name">Graceful</p>
+      <p class="dur-val">700ms+</p>
+      <div class="dur-bar-wrap"><div class="dur-bar" style="width:56%;background:var(--ether);"></div></div>
+      <p class="dur-use">Transições de página, hero entrance. Use raramente.</p>
+    </div>
+  </div>
+</div>
+
+<!-- HOVER DEMOS -->
+<div class="mov-section">
+  <p class="ds-section-label">Hover — Padrões interativos</p>
+  <p class="ds-section-title">Passe o mouse para ver</p>
+  <div class="hover-grid">
+    <div class="hover-demo-wrap">
+      <p class="hover-demo-label">Nav link — underline da esquerda</p>
+      <div class="hover-demo-box" style="display:flex;align-items:center;gap:32px;">
+        <span class="demo-link-underline">Coleção</span>
+        <span class="demo-link-underline">Sobre</span>
+        <span class="demo-link-underline">Contato</span>
+      </div>
+    </div>
+    <div class="hover-demo-wrap">
+      <p class="hover-demo-label">CTA ghost — linha que expande</p>
+      <div class="hover-demo-box" style="display:flex;align-items:center;">
+        <span class="demo-line-expand"><span class="demo-line-expand-bar"></span>Criar uma joia</span>
+      </div>
+    </div>
+    <div class="hover-demo-wrap">
+      <p class="hover-demo-label">Card — borda dourada no bottom</p>
+      <div class="demo-card-border">
+        <p class="demo-card-title">Colar Portal</p>
+        <p class="demo-card-text">Ouro 18k com esmeralda</p>
+      </div>
+    </div>
+    <div class="hover-demo-wrap">
+      <p class="hover-demo-label">Link externo — seta diagonal</p>
+      <div class="hover-demo-box" style="display:flex;align-items:center;">
+        <span class="demo-arrow">Ver no Instagram <span class="demo-arrow-icon">↗</span></span>
+      </div>
+    </div>
+    <div class="hover-demo-wrap">
+      <p class="hover-demo-label">Imagem de produto — zoom sutil</p>
+      <div class="hover-demo-box" style="display:flex;align-items:center;justify-content:center;">
+        <div class="demo-scale"></div>
+      </div>
+    </div>
+    <div class="hover-demo-wrap">
+      <p class="hover-demo-label">Conteúdo — fade in on scroll</p>
+      <div class="hover-demo-box">
+        <div id="fadeTarget" class="demo-fadein">
+          <p class="demo-fadein-text">"O metal começa como uma ideia."</p>
+        </div>
+        <button onclick="triggerFade()" style="margin-top:12px;font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);background:none;border:none;cursor:pointer;">▶ Animar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ENTRANCE ANIMATIONS -->
+<div class="entrance-section">
+  <p class="ds-section-label">Animações de entrada</p>
+  <p class="ds-section-title">Page load — stagger</p>
+  <p class="ds-section-desc">Elementos entram em sequência com delay de 80-100ms entre cada um. Cria sensação de composição progressiva.</p>
+
+  <div class="stagger-demo">
+    <span class="stagger-trigger" onclick="triggerStagger()">▶ Reproduzir animação de entrada</span>
+    <div class="stagger-items" id="staggerContainer">
+      <div class="stagger-item">É a tua luz que ilumina o mundo</div>
+      <div class="stagger-item">Joias para quem vive com intenção.</div>
+      <div class="stagger-item">Design autoral, memória e matéria.</div>
+      <div class="stagger-item">Criar uma joia →</div>
+    </div>
+  </div>
+</div>
+
+<!-- TRANSITIONS -->
+<div class="transition-section">
+  <p class="ds-section-label">CSS — Referência rápida</p>
+  <p class="ds-section-title">Transições prontas para uso</p>
+  <div class="transition-cards">
+    <div class="transition-card">
+      <p class="transition-title">Hover de cor (200ms)</p>
+      <p class="transition-desc">Para qualquer mudança de cor — texto, fundo, borda.</p>
+      <div class="transition-code">transition: color 0.2s ease,<br>           background 0.2s ease,<br>           border-color 0.2s ease;</div>
+    </div>
+    <div class="transition-card">
+      <p class="transition-title">Linha CTA (350ms)</p>
+      <p class="transition-desc">Para o padrão de linha que expande nos botões ghost.</p>
+      <div class="transition-code">transition: width 0.35s<br>  cubic-bezier(0.4, 0, 0.2, 1);</div>
+    </div>
+    <div class="transition-card">
+      <p class="transition-title">Card borda (300ms)</p>
+      <p class="transition-desc">Border e pseudo-elemento bottom no hover de cards.</p>
+      <div class="transition-code">transition: border-color 0.3s ease;<br><br>/* pseudo ::after */<br>transition: transform 0.35s<br>  cubic-bezier(0.4, 0, 0.2, 1);</div>
+    </div>
+    <div class="transition-card">
+      <p class="transition-title">Imagem zoom (400ms)</p>
+      <p class="transition-desc">Scale sutil em imagens de produto — nunca acima de 1.08.</p>
+      <div class="transition-code">transition: transform 0.4s<br>  cubic-bezier(0.4, 0, 0.2, 1);<br><br>/* hover */<br>transform: scale(1.05);</div>
+    </div>
+    <div class="transition-card">
+      <p class="transition-title">Fade-up de entrada (500ms)</p>
+      <p class="transition-desc">Para elementos que entram no viewport — scroll ou page load.</p>
+      <div class="transition-code">@keyframes fadeUp {<br>  from { opacity: 0;<br>    transform: translateY(16px); }<br>  to { opacity: 1;<br>    transform: translateY(0); }<br>}<br>animation: fadeUp 0.5s ease both;</div>
+    </div>
+    <div class="transition-card">
+      <p class="transition-title">Stagger delay</p>
+      <p class="transition-desc">Para listas de elementos em sequência — intervalo de 80ms.</p>
+      <div class="transition-code">.item:nth-child(1) { delay: 0s }<br>.item:nth-child(2) { delay: 0.08s }<br>.item:nth-child(3) { delay: 0.16s }<br>.item:nth-child(4) { delay: 0.24s }</div>
+    </div>
+  </div>
+</div>
+
+<script>
+function triggerFade() {
+  const el = document.getElementById('fadeTarget');
+  el.classList.remove('visible');
+  void el.offsetWidth;
+  setTimeout(() => el.classList.add('visible'), 50);
+}
+window.addEventListener('load', () => {
+  document.getElementById('fadeTarget').classList.add('visible');
+});
+
+function triggerStagger() {
+  const items = document.querySelectorAll('#staggerContainer .stagger-item');
+  items.forEach(item => { item.classList.remove('shown'); });
+  void items[0].offsetWidth;
+  items.forEach((item, i) => {
+    setTimeout(() => item.classList.add('shown'), i * 80);
+  });
+}
+window.addEventListener('load', () => {
+  setTimeout(triggerStagger, 200);
+});
+</script>
+
+<footer class="ds-footer">
+  <span class="ds-footer-left">06 — Movimento & Interação</span>
+  <span class="ds-footer-logo">ilumiluz</span>
+  <a href="index.html" style="font-size:11px;color:rgba(184,205,217,0.4);text-decoration:none;">← Voltar ao índice</a>
+</footer>
+
+</body>
+</html>

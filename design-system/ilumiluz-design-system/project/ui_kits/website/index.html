@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ilumiluz — Joias para quem vive com intenção</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;1,300;1,400&family=Jost:wght@200;300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --il-off:#F2F2F2; --il-white:#FAF8F5; --il-warm-mid:#EDE6D8;
+  --il-muted:#8A857E; --il-text:#3D3830; --il-deep:#1E1A14;
+  --il-gold-wash:#F5ECF0; --il-gold-pale:#E8C9D4; --il-gold-light:#C9839A; --il-gold:#561730; --il-gold-dark:#2E0A18;
+  --il-ether-pale:#E4EFF5; --il-ether-light:#B8CDD9; --il-ether:#7B9FB8; --il-ether-mid:#5F8BA8; --il-ether-deep:#2A4A5E;
+  --il-line:rgba(86,23,48,.18); --il-line-blue:rgba(123,159,184,.22); --il-line-dark:rgba(30,26,20,.08);
+  --il-ease:cubic-bezier(.4,0,.2,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--il-off);color:var(--il-text);font-family:'Barlow',system-ui,sans-serif;font-weight:300;-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--il-gold);color:var(--il-deep)}
+.il-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--il-gold);display:inline-flex;align-items:center;gap:12px}
+.il-eyebrow::before{content:'';width:28px;height:.5px;background:var(--il-gold)}
+.il-h{font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:-0.02em;text-transform:uppercase;color:var(--il-deep);margin:0}
+.il-h em{font-style:italic;font-family:'Cormorant Garamond',serif;font-weight:300;color:var(--il-gold);text-transform:none;letter-spacing:0}
+.il-body{font-size:13.5px;line-height:1.85;color:var(--il-muted);margin:0}
+.il-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--il-gold);margin:0}
+.il-ghost{display:inline-flex;align-items:center;gap:14px;font-family:'Barlow Condensed',sans-serif;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--il-deep);cursor:pointer;background:none;border:none;padding:0;transition:gap .3s var(--il-ease)}
+.il-ghost > i{width:32px;height:.5px;background:var(--il-gold);transition:width .35s var(--il-ease);display:block;font-style:normal}
+.il-ghost:hover{gap:20px}.il-ghost:hover > i{width:56px}
+.il-navlink::after{content:'';position:absolute;left:0;right:0;bottom:0;height:.5px;background:var(--il-gold);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--il-ease)}
+.il-navlink:hover{color:var(--il-deep)}
+.il-navlink:hover::after,.il-navlink.on::after{transform:scaleX(1)}
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const ASSET = '../../assets/';
+
+function Nav({ current, onNavigate }) {
+  const links = ['Coleção', 'Sobre', 'Processo', 'Contato'];
+  const [scrolled, setScrolled] = React.useState(false);
+  React.useEffect(() => {
+    const h = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', h);
+    return () => window.removeEventListener('scroll', h);
+  }, []);
+  return (
+    <nav style={{position:'sticky', top:0, zIndex:30,
+      background: scrolled ? 'rgba(242,242,242,0.95)' : 'transparent',
+      backdropFilter: scrolled ? 'blur(10px)' : 'none',
+      borderBottom: scrolled ? '0.5px solid var(--il-line)' : '0.5px solid transparent',
+      transition: 'background .3s, border-color .3s'}}>
+      <div style={{maxWidth:1280, margin:'0 auto', padding:'22px 48px', display:'flex', alignItems:'center', justifyContent:'space-between'}}>
+        <a href="#" onClick={e=>{e.preventDefault(); onNavigate('Coleção')}}>
+          <img src="../../assets/logo-ilumiluz.svg" alt="Ilumiluz" style={{height:28, width:'auto', display:'block'}}/>
+        </a>
+        <div style={{display:'flex', gap:30, alignItems:'center'}}>
+          {links.map(l => (
+            <a key={l} href="#" onClick={e=>{e.preventDefault(); onNavigate(l)}}
+               className={`il-navlink ${current===l?'on':''}`}
+               style={{fontFamily:"'Barlow Condensed',sans-serif", fontSize:10.5, letterSpacing:'.22em', textTransform:'uppercase',
+                 color: current===l ? 'var(--il-deep)' : 'var(--il-muted)', paddingBottom:4, position:'relative', cursor:'pointer'}}>{l}</a>
+          ))}
+          <span style={{width:1, height:14, background:'var(--il-line-dark)'}}/>
+          <a href="#" style={{fontFamily:"'Barlow Condensed',sans-serif", fontSize:10.5, letterSpacing:'.22em', textTransform:'uppercase', color:'var(--il-gold)'}}>PT · EN</a>
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+function Hero() {
+  return (
+    <section style={{padding:'64px 48px 96px', position:'relative'}}>
+      <div style={{maxWidth:1280, margin:'0 auto', display:'grid', gridTemplateColumns:'1fr 1fr', gap:72, alignItems:'center'}}>
+        <div style={{position:'relative'}}>
+          <div style={{position:'absolute', left:-48, top:6, width:'.5px', height:80, background:'var(--il-gold)'}}/>
+          <p className="il-eyebrow" style={{marginBottom:28}}>É a tua luz que ilumina o mundo</p>
+          <h1 className="il-h" style={{fontSize:84, lineHeight:.92, marginBottom:28}}>Joias para<br/>quem vive com <em>intenção.</em></h1>
+          <p className="il-body" style={{maxWidth:440, marginBottom:40}}>Ilumiluz é um ateliê de joias contemporâneas criadas com intenção. Peças sob medida que marcam momentos, traduzem histórias e acompanham quem você é — ou está se tornando.</p>
+          <div style={{display:'flex', gap:40, alignItems:'center'}}>
+            <a className="il-ghost" href="#"><i/>Criar uma joia</a>
+            <a className="il-ghost" style={{color:'var(--il-muted)'}} href="#"><i style={{background:'var(--il-muted)'}}/>Ver coleção</a>
+          </div>
+        </div>
+        <div style={{position:'relative'}}>
+          <div style={{aspectRatio:'4/5', backgroundImage:`url(${ASSET}joia-hero.png)`, backgroundSize:'contain', backgroundPosition:'center', backgroundRepeat:'no-repeat', backgroundColor:'transparent'}}/>
+          <div style={{position:'absolute', top:28, right:-16, writingMode:'vertical-rl', transform:'rotate(180deg)', fontFamily:"'Barlow Condensed',sans-serif", fontSize:10, letterSpacing:'.35em', textTransform:'uppercase', color:'var(--il-muted)'}}>Coleção 01 — Presença</div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ProductCard({img, tag, title, desc}) {
+  const [h, setH] = React.useState(false);
+  return (
+    <article onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)}
+      style={{background:'var(--il-off)', border:'.5px solid', borderColor: h ? 'var(--il-gold)' : 'var(--il-line)', overflow:'hidden', cursor:'pointer', transition:'border-color .3s', position:'relative'}}>
+      <div style={{height:280, overflow:'hidden', background:'var(--il-warm-mid)'}}>
+        <div style={{height:'100%', width:'100%', backgroundImage:`url(${ASSET}${img})`, backgroundSize:'cover', backgroundPosition:'center', transform: h ? 'scale(1.05)' : 'scale(1)', transition:'transform .5s var(--il-ease)'}}/>
+      </div>
+      <div style={{padding:'22px 26px 26px'}}>
+        <p className="il-label" style={{marginBottom:10}}>{tag}</p>
+        <h3 style={{fontFamily:"'Cormorant Garamond',serif", fontStyle:'italic', fontWeight:300, fontSize:24, color:'var(--il-deep)', margin:'0 0 10px'}}>{title}</h3>
+        <p style={{fontSize:12.5, lineHeight:1.7, color:'var(--il-muted)', margin:0}}>{desc}</p>
+        <div style={{marginTop:18, display:'flex', alignItems:'center', gap:10, fontFamily:"'Barlow Condensed',sans-serif", fontSize:9, letterSpacing:'.22em', textTransform:'uppercase', color:'var(--il-deep)', opacity: h?1:0, transition:'opacity .3s'}}>
+          <span style={{width:16, height:'.5px', background:'var(--il-gold)'}}/>Ver peça
+        </div>
+      </div>
+      <span style={{position:'absolute', left:0, right:0, bottom:0, height:1.5, background:'var(--il-gold)', transform: h ? 'scaleX(1)' : 'scaleX(0)', transformOrigin:'left', transition:'transform .35s var(--il-ease)'}}/>
+    </article>
+  );
+}
+
+function Collection() {
+  const items = [
+    { img:'colecao-essencial-refeito.png', tag:'Sob medida', title:'O Essencial, Refeito', desc:'Metal reimaginado. Uma peça pensada para marcar um novo ciclo.' },
+    { img:'colecao-joias-significado.png', tag:'Transformação', title:'Joias com História', desc:'Peças herdadas que ganham nova forma sem perder a memória.' },
+    { img:'produto-colar-portal.png', tag:'Pronta entrega', title:'Colar Portal', desc:'Ouro 18k com esmeralda brasileira. Peça sob consulta.' },
+  ];
+  return (
+    <section style={{padding:'96px 48px', borderTop:'.5px solid var(--il-line)'}}>
+      <div style={{maxWidth:1280, margin:'0 auto'}}>
+        <div style={{display:'flex', justifyContent:'space-between', alignItems:'flex-end', marginBottom:56}}>
+          <div><p className="il-eyebrow" style={{marginBottom:20}}>Coleção</p><h2 className="il-h" style={{fontSize:44, lineHeight:1}}>Criações <em>em curso.</em></h2></div>
+          <a className="il-ghost" href="#"><i/>Ver tudo</a>
+        </div>
+        <div style={{display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:24}}>
+          {items.map((it,i)=> <ProductCard key={i} {...it}/>)}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Manifesto() {
+  return (
+    <section style={{padding:'120px 48px'}}>
+      <div style={{maxWidth:1000, margin:'0 auto', display:'grid', gridTemplateColumns:'1fr 1fr', gap:72, alignItems:'center'}}>
+        <div style={{aspectRatio:'3/4', backgroundImage:`url(${ASSET}manifesto-colar-folhas.png)`, backgroundSize:'cover', backgroundPosition:'center', border:'.5px solid var(--il-line)'}}/>
+        <div>
+          <p className="il-eyebrow" style={{marginBottom:24}}>Sobre a Ilumiluz</p>
+          <p style={{fontFamily:"'Cormorant Garamond',serif", fontStyle:'italic', fontWeight:300, fontSize:32, lineHeight:1.35, color:'var(--il-deep)', margin:'0 0 28px'}}>Joias não existem apenas para adornar.</p>
+          <p className="il-body" style={{marginBottom:18, maxWidth:460}}>Na Ilumiluz, cada peça nasce de uma conversa. De histórias pessoais, memórias afetivas, intenções e símbolos que merecem ganhar forma.</p>
+          <p className="il-body" style={{marginBottom:36, maxWidth:460}}>Acreditamos que uma joia pode ser um ponto de presença — algo que ancora, fortalece e atravessa ciclos ao lado de quem a usa.</p>
+          <a className="il-ghost" href="#"><i/>Conhecer o ateliê</a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Process() {
+  const steps = [
+    { n:'01', name:'Escuta', body:'Uma conversa para entender histórias, símbolos e intenções.' },
+    { n:'02', name:'Desenho', body:'A ideia ganha forma visual e é validada junto com você.' },
+    { n:'03', name:'Criação', body:'A peça é desenvolvida artesanalmente, com precisão e cuidado.' },
+    { n:'04', name:'Entrega', body:'O resultado de um processo tão importante quanto a peça em si.' },
+  ];
+  return (
+    <section style={{padding:'96px 48px', borderTop:'.5px solid var(--il-line)', background:'#EBEBEB'}}>
+      <div style={{maxWidth:1280, margin:'0 auto'}}>
+        <div style={{marginBottom:56}}>
+          <p className="il-eyebrow" style={{marginBottom:20}}>Processo</p>
+          <h2 className="il-h" style={{fontSize:44}}>Cada joia nasce de um <em>processo.</em></h2>
+        </div>
+        <div style={{display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:1, background:'var(--il-line)'}}>
+          {steps.map(s=>(
+            <div key={s.n} style={{background:'#EBEBEB', padding:'32px 28px', minHeight:220}}>
+              <p style={{fontFamily:"'Barlow Condensed',sans-serif", fontSize:40, fontWeight:700, lineHeight:1, color:'rgba(86,23,48,0.15)', margin:'0 0 18px'}}>{s.n}</p>
+              <p style={{fontFamily:"'Barlow Condensed',sans-serif", fontWeight:500, fontSize:17, textTransform:'uppercase', letterSpacing:'.04em', color:'var(--il-deep)', margin:'0 0 14px'}}>{s.name}</p>
+              <p style={{fontSize:12.5, lineHeight:1.75, color:'var(--il-muted)', margin:0}}>{s.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Gallery() {
+  const Tile = ({img, span=1}) => (
+    <div style={{gridRow: span===2 ? 'span 2' : 'auto', backgroundImage:`url(${ASSET}${img})`, backgroundSize:'cover', backgroundPosition:'center', border:'.5px solid var(--il-line)'}}/>
+  );
+  return (
+    <section style={{padding:'96px 48px', borderTop:'.5px solid var(--il-line)'}}>
+      <div style={{maxWidth:1280, margin:'0 auto'}}>
+        <div style={{marginBottom:56, display:'flex', justifyContent:'space-between', alignItems:'flex-end'}}>
+          <div><p className="il-eyebrow" style={{marginBottom:20}}>Galeria</p><h2 className="il-h" style={{fontSize:44}}>Matéria, <em>memória.</em></h2></div>
+          <p className="il-body" style={{maxWidth:320}}>Fragmentos do ateliê — mãos, metal, luz, pausa.</p>
+        </div>
+        <div style={{display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:16, gridAutoRows:'230px'}}>
+          <Tile img="galeria-anel-botanico.png" span={2}/>
+          <Tile img="galeria-brincos-triangulo.png"/>
+          <Tile img="conversa-maos-artesao.png"/>
+          <div style={{background:'#E6E6E6', color:'var(--il-deep)', padding:'32px 28px', display:'flex', flexDirection:'column', justifyContent:'center'}}>
+            <p style={{fontFamily:"'Cormorant Garamond',serif", fontStyle:'italic', fontWeight:300, fontSize:22, lineHeight:1.5, color:'var(--il-deep)', margin:'0 0 18px', borderLeft:'1px solid var(--il-gold)', paddingLeft:20}}>"O luxo, aqui, está na atenção. No tempo. No sentido."</p>
+            <p style={{fontFamily:"'Barlow Condensed',sans-serif", fontSize:9, letterSpacing:'.3em', textTransform:'uppercase', color:'var(--il-muted)', margin:0}}>— Manifesto Ilumiluz</p>
+          </div>
+          <Tile img="sobre-colar-pedras.png"/>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Field({label, value, onChange, placeholder}) {
+  return (
+    <label style={{display:'flex', flexDirection:'column', gap:8}}>
+      <span style={{fontFamily:"'Barlow Condensed',sans-serif", fontSize:9, letterSpacing:'.25em', textTransform:'uppercase', color:'var(--il-gold)'}}>{label}</span>
+      <input value={value} onChange={e=>onChange(e.target.value)} placeholder={placeholder}
+        style={{background:'transparent', border:'none', borderBottom:'.5px solid var(--il-line-dark)', padding:'12px 0', fontFamily:"'Barlow',sans-serif", fontSize:13.5, fontWeight:300, color:'var(--il-deep)', outline:'none', transition:'border-color .25s'}}
+        onFocus={e=>e.target.style.borderBottomColor='var(--il-gold)'} onBlur={e=>e.target.style.borderBottomColor='var(--il-line-dark)'}/>
+    </label>
+  );
+}
+function FieldArea({label, value, onChange, placeholder}) {
+  return (
+    <label style={{display:'flex', flexDirection:'column', gap:8}}>
+      <span style={{fontFamily:"'Barlow Condensed',sans-serif", fontSize:9, letterSpacing:'.25em', textTransform:'uppercase', color:'var(--il-gold)'}}>{label}</span>
+      <textarea value={value} onChange={e=>onChange(e.target.value)} placeholder={placeholder} rows={4}
+        style={{background:'transparent', border:'.5px solid var(--il-line-dark)', padding:14, fontFamily:"'Barlow',sans-serif", fontSize:13.5, fontWeight:300, color:'var(--il-deep)', outline:'none', resize:'vertical', transition:'border-color .25s'}}
+        onFocus={e=>e.target.style.borderColor='var(--il-gold)'} onBlur={e=>e.target.style.borderColor='var(--il-line-dark)'}/>
+    </label>
+  );
+}
+
+function ContactSection() {
+  const [sent, setSent] = React.useState(false);
+  const [form, setForm] = React.useState({ name:'', email:'', story:'' });
+  return (
+    <section style={{padding:'120px 48px', background:'#E8E8E8', color:'var(--il-deep)'}}>
+      <div style={{maxWidth:1100, margin:'0 auto', display:'grid', gridTemplateColumns:'1fr 1fr', gap:80, alignItems:'start'}}>
+        <div>
+          <p style={{fontFamily:"'Barlow Condensed',sans-serif", fontSize:10, letterSpacing:'.3em', textTransform:'uppercase', color:'var(--il-gold)', margin:'0 0 24px', display:'flex', alignItems:'center', gap:12}}>
+            <span style={{width:28, height:'.5px', background:'var(--il-gold)'}}/> Contato
+          </p>
+          <h2 style={{fontFamily:"'Barlow Condensed',sans-serif", fontWeight:600, fontSize:56, lineHeight:.95, letterSpacing:'-0.02em', textTransform:'uppercase', color:'var(--il-deep)', margin:'0 0 28px'}}>
+            Tudo começa com<br/>uma <em style={{fontStyle:'italic', fontFamily:"'Cormorant Garamond',serif", fontWeight:300, fontSize:62, color:'var(--il-gold)', textTransform:'none', letterSpacing:0}}>conversa.</em>
+          </h2>
+          <p style={{fontSize:13.5, lineHeight:1.85, color:'var(--il-muted)', maxWidth:440, margin:'0 0 34px'}}>Se este é o momento de criar algo que dure — entre em contato. Respondemos a cada mensagem com o tempo que ela merece.</p>
+          <div style={{display:'flex', flexDirection:'column', gap:14, fontSize:12.5, color:'var(--il-muted)'}}>
+            <div style={{display:'flex', gap:16, alignItems:'baseline'}}><span className="il-label" style={{color:'var(--il-gold)', minWidth:70}}>Ateliê</span>São Paulo, SP</div>
+            <div style={{display:'flex', gap:16, alignItems:'baseline'}}><span className="il-label" style={{color:'var(--il-gold)', minWidth:70}}>Horário</span>Ter–Sáb · Com hora marcada</div>
+            <div style={{display:'flex', gap:16, alignItems:'baseline'}}><span className="il-label" style={{color:'var(--il-gold)', minWidth:70}}>Instagram</span>@ilumiluz</div>
+          </div>
+        </div>
+        <form onSubmit={e=>{e.preventDefault(); setSent(true)}} style={{display:'flex', flexDirection:'column', gap:22}}>
+          <Field label="Seu nome" value={form.name} onChange={v=>setForm({...form,name:v})} placeholder="Como prefere ser chamada?"/>
+          <Field label="Email" value={form.email} onChange={v=>setForm({...form,email:v})} placeholder="seu@email.com"/>
+          <FieldArea label="Sua história" value={form.story} onChange={v=>setForm({...form,story:v})} placeholder="Conte sobre a joia que deseja criar ou transformar..."/>
+          <button className="il-ghost" type="submit" style={{color:'var(--il-deep)', marginTop:8, alignSelf:'flex-start'}}><i/>{sent ? 'Mensagem enviada' : 'Enviar mensagem'}</button>
+        </form>
+      </div>
+    </section>
+  );
+}
+
+// ── Share Button — Ilumiluz style ──────────────────────────────────────────
+function ShareButton() {
+  const [open, setOpen] = React.useState(false);
+  const [copied, setCopied] = React.useState(false);
+  const ref = React.useRef(null);
+
+  React.useEffect(() => {
+    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(window.location.href).catch(()=>{});
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const networks = [
+    { label: 'Instagram', href: 'https://instagram.com/ilumiluz' },
+    { label: 'WhatsApp', href: 'https://wa.me/5511975155235' },
+  ];
+
+  return (
+    <div ref={ref} style={{display:'inline-flex', alignItems:'center', gap:8, position:'relative'}}>
+      {/* main pill */}
+      <button onClick={() => setOpen(o=>!o)} style={{
+        display:'inline-flex', alignItems:'center', gap:10,
+        fontFamily:"'Barlow Condensed',sans-serif", fontSize:9, letterSpacing:'.28em', textTransform:'uppercase',
+        color: open ? 'var(--il-off)' : 'var(--il-gold)',
+        background: open ? 'var(--il-gold)' : 'transparent',
+        border:'.5px solid var(--il-gold)', padding:'10px 20px',
+        cursor:'pointer', transition:'background .25s, color .25s',
+      }}>
+        <span style={{width:16, height:'.5px', background:'currentColor', display:'block'}}/>
+        Partilhar
+      </button>
+
+      {/* expanded options */}
+      {open && (
+        <div style={{display:'flex', gap:6, animation:'il-fadein .2s ease'}}>
+          {networks.map(n => (
+            <a key={n.label} href={n.href} target="_blank" rel="noopener" style={{
+              fontFamily:"'Barlow Condensed',sans-serif", fontSize:9, letterSpacing:'.22em', textTransform:'uppercase',
+              color:'var(--il-gold)', border:'.5px solid var(--il-gold)',
+              padding:'10px 16px', background:'transparent', cursor:'pointer',
+              transition:'background .2s, color .2s', display:'inline-block',
+              textDecoration:'none',
+            }}
+            onMouseEnter={e=>{e.currentTarget.style.background='var(--il-gold)'; e.currentTarget.style.color='#F2F2F2'}}
+            onMouseLeave={e=>{e.currentTarget.style.background='transparent'; e.currentTarget.style.color='var(--il-gold)'}}
+            >{n.label}</a>
+          ))}
+          <button onClick={handleCopy} style={{
+            fontFamily:"'Barlow Condensed',sans-serif", fontSize:9, letterSpacing:'.22em', textTransform:'uppercase',
+            color: copied ? '#F2F2F2' : 'var(--il-gold)',
+            border:'.5px solid var(--il-gold)',
+            padding:'10px 16px', background: copied ? 'var(--il-gold)' : 'transparent',
+            cursor:'pointer', transition:'background .2s, color .2s',
+          }}>{copied ? 'Copiado' : 'Copiar link'}</button>
+        </div>
+      )}
+      <style>{`@keyframes il-fadein{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}`}</style>
+    </div>
+  );
+}
+
+function FooterCol({title, links}) {
+  return (
+    <div>
+      <p style={{fontFamily:"'Barlow Condensed',sans-serif", fontSize:9, letterSpacing:'.3em', textTransform:'uppercase', color:'var(--il-gold)', margin:'0 0 20px'}}>{title}</p>
+      <ul style={{listStyle:'none', padding:0, margin:0, display:'flex', flexDirection:'column', gap:12}}>
+        {links.map(l=>(
+          <li key={l}><a href="#" style={{fontSize:12.5, color:'var(--il-muted)', transition:'color .2s'}}
+            onMouseEnter={e=>e.currentTarget.style.color='var(--il-deep)'}
+            onMouseLeave={e=>e.currentTarget.style.color='var(--il-muted)'}>{l}</a></li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+// ── Entropy — partícula adaptada para Ilumiluz ──────────────────────────────
+function Entropy({ size = 500 }) {
+  const canvasRef = React.useRef(null);
+  React.useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = size * dpr;
+    canvas.height = size * dpr;
+    canvas.style.width = size + 'px';
+    canvas.style.height = size + 'px';
+    ctx.scale(dpr, dpr);
+
+    // Ilumiluz palette — fundo claro
+    const GOLD   = [86, 23, 48];   // --il-wine logo
+    const ETHER  = [95, 139, 168];  // --il-ether-mid
+
+    class Particle {
+      constructor(x, y, order) {
+        this.x = x; this.y = y;
+        this.ox = x; this.oy = y;
+        this.size = order ? 1.8 : 1.4;
+        this.order = order;
+        this.vx = (Math.random() - .5) * 1.8;
+        this.vy = (Math.random() - .5) * 1.8;
+        this.influence = 0;
+        this.neighbors = [];
+      }
+      update() {
+        if (this.order) {
+          const dx = this.ox - this.x, dy = this.oy - this.y;
+          let cx = 0, cy = 0;
+          this.neighbors.forEach(n => {
+            if (!n.order) {
+              const d = Math.hypot(this.x - n.x, this.y - n.y);
+              const s = Math.max(0, 1 - d / 100);
+              cx += n.vx * s; cy += n.vy * s;
+              this.influence = Math.max(this.influence, s);
+            }
+          });
+          this.x += dx * .05 * (1 - this.influence) + cx * this.influence;
+          this.y += dy * .05 * (1 - this.influence) + cy * this.influence;
+          this.influence *= .99;
+        } else {
+          this.vx += (Math.random() - .5) * .4;
+          this.vy += (Math.random() - .5) * .4;
+          this.vx *= .95; this.vy *= .95;
+          this.x += this.vx; this.y += this.vy;
+          if (this.x < size / 2 || this.x > size) this.vx *= -1;
+          if (this.y < 0 || this.y > size) this.vy *= -1;
+          this.x = Math.max(size / 2, Math.min(size, this.x));
+          this.y = Math.max(0, Math.min(size, this.y));
+        }
+      }
+      draw(ctx) {
+        const [r, g, b] = this.order ? GOLD : ETHER;
+        const a = this.order ? (.75 - this.influence * .4) : .65;
+        ctx.fillStyle = `rgba(${r},${g},${b},${a})`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    const particles = [];
+    const gridSize = 22, spacing = size / gridSize;
+    for (let i = 0; i < gridSize; i++)
+      for (let j = 0; j < gridSize; j++)
+        particles.push(new Particle(spacing * i + spacing / 2, spacing * j + spacing / 2, spacing * i + spacing / 2 < size / 2));
+
+    function updateNeighbors() {
+      particles.forEach(p => {
+        p.neighbors = particles.filter(o => o !== p && Math.hypot(p.x - o.x, p.y - o.y) < 100);
+      });
+    }
+
+    let t = 0, raf;
+    function animate() {
+      ctx.clearRect(0, 0, size, size);
+      if (t % 30 === 0) updateNeighbors();
+      particles.forEach(p => {
+        p.update(); p.draw(ctx);
+        p.neighbors.forEach(n => {
+          const d = Math.hypot(p.x - n.x, p.y - n.y);
+          if (d < 50) {
+            const [r, g, b] = GOLD;
+            ctx.strokeStyle = `rgba(${r},${g},${b},${.18 * (1 - d / 50)})`;
+            ctx.lineWidth = .5;
+            ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(n.x, n.y); ctx.stroke();
+          }
+        });
+      });
+      // divisor central
+      ctx.strokeStyle = 'rgba(86,23,48,0.18)';
+      ctx.lineWidth = .5;
+      ctx.beginPath(); ctx.moveTo(size / 2, 0); ctx.lineTo(size / 2, size); ctx.stroke();
+      t++;
+      raf = requestAnimationFrame(animate);
+    }
+    animate();
+    return () => cancelAnimationFrame(raf);
+  }, [size]);
+  return <canvas ref={canvasRef} style={{display:'block'}}/>;
+}
+
+function EntropySection() {
+  return (
+    <section style={{background:'#EBEBEB', padding:'96px 48px', borderTop:'.5px solid var(--il-line)'}}>
+      <div style={{maxWidth:1280, margin:'0 auto', display:'grid', gridTemplateColumns:'1fr 1fr', gap:72, alignItems:'center'}}>
+        <div>
+          <p style={{fontFamily:"'Barlow Condensed',sans-serif", fontSize:10, letterSpacing:'.3em', textTransform:'uppercase', color:'var(--il-gold)', margin:'0 0 28px', display:'flex', alignItems:'center', gap:12}}>
+            <span style={{width:28, height:'.5px', background:'var(--il-gold)'}}/>Presença &amp; Entropia
+          </p>
+          <h2 style={{fontFamily:"'Barlow Condensed',sans-serif", fontWeight:600, fontSize:52, lineHeight:.95, letterSpacing:'-0.02em', textTransform:'uppercase', color:'var(--il-deep)', margin:'0 0 28px'}}>
+            Ordem e caos<br/>em <em style={{fontStyle:'italic', fontFamily:"'Cormorant Garamond',serif", fontWeight:300, fontSize:58, color:'var(--il-gold)', textTransform:'none', letterSpacing:0}}>equilíbrio.</em>
+          </h2>
+          <p style={{fontSize:13.5, lineHeight:1.85, color:'var(--il-muted)', maxWidth:440, margin:'0 0 20px'}}>
+            A Ilumiluz vive entre dois mundos — a sofisticação atemporal da joalheria artesanal e a precisão contemporânea do design autoral. Cada peça é esse equilíbrio em metal.
+          </p>
+          <p style={{fontFamily:"'Cormorant Garamond',serif", fontStyle:'italic', fontWeight:300, fontSize:20, lineHeight:1.5, color:'var(--il-gold)', margin:0, borderLeft:'1px solid var(--il-gold)', paddingLeft:20}}>
+            "Do desenho ao metal — tradição e tecnologia, presença e intenção."
+          </p>
+        </div>
+        <div style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
+          <Entropy size={460}/>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer style={{background:'#E0E0E0', color:'var(--il-deep)', padding:'72px 48px 40px'}}>
+      <div style={{maxWidth:1280, margin:'0 auto'}}>
+        <div style={{display:'grid', gridTemplateColumns:'2fr 1fr 1fr 1fr', gap:48, paddingBottom:56, borderBottom:'.5px solid var(--il-line)'}}>
+          <div>
+            <img src="../../assets/logo-ilumiluz.svg" alt="Ilumiluz" style={{height:36, width:'auto', display:'block', marginBottom:18}}/>
+            <p style={{fontFamily:"'Cormorant Garamond',serif", fontStyle:'italic', fontWeight:300, fontSize:18, color:'var(--il-gold)', margin:'0 0 24px'}}>É a tua luz que ilumina o mundo.</p>
+            <p style={{fontSize:12, lineHeight:1.75, color:'var(--il-muted)', maxWidth:340, margin:0}}>Ateliê de joias contemporâneas. Peças sob medida e transformação de joias herdadas. São Paulo — por hora marcada.</p>
+          </div>
+          <FooterCol title="Navegar" links={['Coleção','Sobre','Processo','Contato']}/>
+          <FooterCol title="Ateliê" links={['Agendar visita','Transformar joia','Catálogo','WhatsApp']}/>
+          <FooterCol title="Seguir" links={['Instagram','Pinterest','Email','Newsletter']}/>
+        </div>
+        <div style={{marginTop:28, display:'flex', justifyContent:'space-between', fontFamily:"'Barlow Condensed',sans-serif", fontSize:10, letterSpacing:'.2em', textTransform:'uppercase', color:'var(--il-muted)'}}>
+          <span>© 2026 Ilumiluz</span><span>Feito com presença</span><span>Política de privacidade</span>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+// ── Aurora Background — efeito sutil em vinho/rose ─────────────────────────
+function AuroraBackground() {
+  return (
+    <div style={{position:'fixed', inset:0, zIndex:0, pointerEvents:'none', overflow:'hidden'}}>
+      <div style={{
+        position:'absolute', inset:'-10px',
+        opacity: 0.06,
+        filter: 'blur(24px)',
+        willChange: 'transform',
+        backgroundImage: [
+          'repeating-linear-gradient(100deg, #F2F2F2 0%, #F2F2F2 7%, transparent 10%, transparent 12%, #F2F2F2 16%)',
+          'repeating-linear-gradient(100deg, #561730 10%, #8C3050 15%, #C9839A 20%, #F5ECF0 25%, #561730 30%)'
+        ].join(','),
+        backgroundSize: '300% 300%, 200% 200%',
+        backgroundPosition: '50% 50%, 50% 50%',
+        animation: 'il-aurora 50s linear infinite',
+        maskImage: 'radial-gradient(ellipse at 80% 0%, black 10%, transparent 70%)',
+        WebkitMaskImage: 'radial-gradient(ellipse at 80% 0%, black 10%, transparent 70%)',
+      }}/>
+      <div style={{
+        position:'absolute', inset:'-10px',
+        opacity: 0.04,
+        filter: 'blur(32px)',
+        backgroundImage: [
+          'repeating-linear-gradient(100deg, #F2F2F2 0%, #F2F2F2 7%, transparent 10%, transparent 12%, #F2F2F2 16%)',
+          'repeating-linear-gradient(100deg, #2E0A18 10%, #561730 18%, #8C3050 24%, #E8C9D4 30%, #2E0A18 38%)'
+        ].join(','),
+        backgroundSize: '200% 200%, 100% 100%',
+        backgroundPosition: '50% 50%, 50% 50%',
+        backgroundAttachment: 'fixed',
+        mixBlendMode: 'normal',
+        animation: 'il-aurora 70s linear infinite reverse',
+      }}/>
+      <style>{`
+        @keyframes il-aurora {
+          from { background-position: 50% 50%, 50% 50%; }
+          to   { background-position: 350% 50%, 350% 50%; }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+function App() {
+  const [current, setCurrent] = React.useState('Coleção');
+  const refs = {
+    'Coleção': React.useRef(null), 'Sobre': React.useRef(null),
+    'Processo': React.useRef(null), 'Contato': React.useRef(null),
+  };
+  const go = (name) => {
+    setCurrent(name);
+    const el = refs[name] && refs[name].current;
+    if (el) window.scrollTo({top: el.offsetTop - 70, behavior: 'smooth'});
+  };
+  return (
+    <div data-screen-label="Ilumiluz Home" style={{position:'relative'}}>
+      <AuroraBackground/>
+      <div style={{position:'relative', zIndex:1}}>
+      <Nav current={current} onNavigate={go}/>
+      <div ref={refs['Coleção']}><Hero/></div>
+      <Collection/>
+      <div ref={refs['Sobre']}><Manifesto/></div>
+      <div ref={refs['Processo']}><Process/></div>
+      <Gallery/>
+      <EntropySection/>
+      <div ref={refs['Contato']}><ContactSection/></div>
+      <Footer/>
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

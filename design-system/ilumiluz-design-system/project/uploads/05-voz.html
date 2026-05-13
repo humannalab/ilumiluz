@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>05 Voz & Tom — Ilumiluz DS</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  .voz-section { padding: 64px 48px; border-bottom: 0.5px solid var(--line); }
+
+  /* MANIFESTO BLOCK */
+  .manifesto-block {
+    background: var(--deep); padding: 80px 48px;
+    border-bottom: 0.5px solid rgba(201,169,110,0.15);
+  }
+  .manifesto-inner { max-width: 640px; margin: 0 auto; text-align: center; }
+  .manifesto-line-top { width: 0.5px; height: 48px; background: var(--gold); margin: 0 auto 40px; }
+  .manifesto-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-weight: 300;
+    font-size: 30px; line-height: 1.5;
+    color: var(--gold-light);
+    margin-bottom: 32px;
+  }
+  .manifesto-attr {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: rgba(184,205,217,0.4);
+  }
+
+  /* PILARES */
+  .pilares { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); }
+  .pilar { background: var(--off); padding: 40px 32px; }
+  .pilar-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 48px; font-weight: 700; line-height: 1;
+    color: rgba(201,169,110,0.1); margin-bottom: 16px;
+  }
+  .pilar-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 500; font-size: 16px; text-transform: uppercase;
+    letter-spacing: 0.05em; color: var(--deep); margin-bottom: 12px;
+  }
+  .pilar-body { font-size: 12px; line-height: 1.75; color: var(--muted); }
+
+  /* COMPARE BLOCKS */
+  .compare-section { padding: 64px 48px; border-bottom: 0.5px solid var(--line); }
+  .compare-pairs { display: flex; flex-direction: column; gap: 1px; background: var(--line); }
+  .compare-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); }
+  .compare-half { background: var(--off); padding: 28px 32px; }
+  .compare-half.bad { background: rgba(180,80,60,0.03); }
+  .compare-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+    padding: 3px 8px; display: inline-block; margin-bottom: 12px; border-radius: 1px;
+  }
+  .compare-tag.good { color: var(--ether); background: rgba(123,159,184,0.1); }
+  .compare-tag.bad { color: #A04530; background: rgba(180,80,60,0.08); }
+  .compare-text { font-size: 13.5px; line-height: 1.65; color: var(--text); }
+  .compare-text.bad-text { color: var(--muted); text-decoration: line-through; }
+  .compare-note { font-size: 11px; color: var(--muted); margin-top: 8px; font-style: italic; }
+
+  /* COPY PATTERNS */
+  .patterns-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); }
+  .pattern-card { background: var(--off); padding: 40px; }
+  .pattern-type {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 20px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .pattern-type::before { content:''; width:16px; height:0.5px; background:var(--gold); }
+  .pattern-example {
+    border-left: 1px solid var(--line); padding-left: 20px;
+    margin-bottom: 16px;
+  }
+  .pattern-example p { font-size: 14px; line-height: 1.6; color: var(--deep); }
+  .pattern-rule { font-size: 11.5px; color: var(--muted); line-height: 1.6; margin-top: 12px; }
+
+  /* VOCABULARY */
+  .vocab-section { padding: 64px 48px; border-bottom: 0.5px solid var(--line); }
+  .vocab-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 40px; }
+  .vocab-col-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 500; font-size: 14px; text-transform: uppercase;
+    color: var(--deep); margin-bottom: 20px;
+    padding-bottom: 12px; border-bottom: 0.5px solid var(--line);
+  }
+  .vocab-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .vocab-item { display: flex; gap: 12px; align-items: baseline; }
+  .vocab-word {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 18px; color: var(--gold); min-width: 140px;
+  }
+  .vocab-def { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .vocab-avoid {
+    font-size: 12px; color: var(--muted);
+    padding: 10px 0; border-bottom: 0.5px solid var(--line-dark);
+    display: flex; gap: 16px; align-items: baseline;
+  }
+  .vocab-avoid-word { font-size: 13px; color: #A04530; min-width: 140px; text-decoration: line-through; }
+
+  /* COPY IN USE */
+  .copy-pages { border-top: 0.5px solid var(--line); }
+  .copy-page { padding: 56px 48px; border-bottom: 0.5px solid var(--line); display: grid; grid-template-columns: 200px 1fr; gap: 64px; }
+  .copy-page-meta { }
+  .copy-page-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 500; font-size: 14px; text-transform: uppercase;
+    color: var(--deep); margin-bottom: 8px;
+  }
+  .copy-page-desc { font-size: 11.5px; color: var(--muted); line-height: 1.6; }
+  .copy-page-content { }
+  .copy-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 12px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .copy-eyebrow::before { content:''; width:16px; height:0.5px; background:var(--gold); }
+  .copy-h { font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 40px; line-height: 0.95; letter-spacing: -0.01em; text-transform: uppercase; color: var(--deep); margin-bottom: 16px; }
+  .copy-h em { font-style: italic; font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 44px; color: var(--gold); text-transform: none; }
+  .copy-body { font-size: 13px; line-height: 1.8; color: var(--muted); max-width: 480px; margin-bottom: 24px; }
+  .copy-cta { display: inline-flex; align-items: center; gap: 12px; font-family: 'Barlow Condensed', sans-serif; font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--deep); cursor: pointer; }
+  .copy-cta::before { content:''; width:24px; height:0.5px; background:var(--gold); }
+</style>
+</head>
+<body>
+
+<nav class="ds-nav">
+  <a href="index.html" class="ds-nav-logo">ilumiluz <span>/ design system</span></a>
+  <div class="ds-nav-links">
+    <a href="index.html">Visão Geral</a>
+    <a href="01-fundacao.html">Fundação</a>
+    <a href="02-tipografia.html">Tipografia</a>
+    <a href="03-cores.html">Cores</a>
+    <a href="04-componentes.html">Componentes</a>
+    <a href="05-voz.html" class="active">Voz & Tom</a>
+    <a href="06-movimento.html">Movimento</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-bg">VOZ</div>
+  <p class="page-num fade-up">05 — Voz & Tom</p>
+  <h1 class="page-title fade-up-2">Voz<br><em>& Tom</em></h1>
+  <p class="page-subtitle fade-up-3">A Ilumiluz fala com presença — direta, sem excessos, sem forçar emoção. Cada palavra é escolhida como uma joia: essencial, permanente.</p>
+</div>
+
+<!-- MANIFESTO -->
+<div class="manifesto-block">
+  <div class="manifesto-inner">
+    <div class="manifesto-line-top"></div>
+    <p class="manifesto-text">"A Ilumiluz não é só uma joalheria. É um ateliê contemporâneo onde design, tecnologia e metal se encontram."</p>
+    <p class="manifesto-attr">Manifesto de Marca — Ilumiluz</p>
+  </div>
+</div>
+
+<!-- PILARES -->
+<div class="voz-section">
+  <p class="ds-section-label">Pilares de voz</p>
+  <p class="ds-section-title">Os 4 princípios da linguagem</p>
+  <div class="pilares" style="margin-top:40px;">
+    <div class="pilar">
+      <p class="pilar-num">01</p>
+      <p class="pilar-title">Presença sem excesso</p>
+      <p class="pilar-body">Cada frase carrega peso. Sem adjetivos decorativos, sem superlativo, sem promessas vazias. A Ilumiluz diz o que precisa — e cala.</p>
+    </div>
+    <div class="pilar">
+      <p class="pilar-num">02</p>
+      <p class="pilar-title">Silêncio intencional</p>
+      <p class="pilar-body">Assim como o espaço em branco é parte do design, o que não é dito também comunica. Evitar explicar demais é uma forma de elegância.</p>
+    </div>
+    <div class="pilar">
+      <p class="pilar-num">03</p>
+      <p class="pilar-title">Tempo como valor</p>
+      <p class="pilar-body">A linguagem reflete o ritmo do ateliê. Textos curtos, pausas, frases que terminam antes de esgotar o assunto. Deixa espaço para a pessoa chegar.</p>
+    </div>
+    <div class="pilar">
+      <p class="pilar-num">04</p>
+      <p class="pilar-title">Sensível, não sentimental</p>
+      <p class="pilar-body">A Ilumiluz fala de memória, símbolo e transformação — sem forçar emoção. Sentimento aparece no significado, não nas palavras que o descrevem.</p>
+    </div>
+  </div>
+</div>
+
+<!-- COMPARAÇÕES -->
+<div class="compare-section">
+  <p class="ds-section-label">Fazer e evitar — Exemplos reais</p>
+  <div class="compare-pairs">
+    <div class="compare-pair">
+      <div class="compare-half">
+        <span class="compare-tag good">✓ Ilumiluz escreve assim</span>
+        <p class="compare-text">Se este é o momento de criar algo que dure — entre em contato.</p>
+        <p class="compare-note">Convida sem pressionar. Deixa o timing da pessoa.</p>
+      </div>
+      <div class="compare-half bad">
+        <span class="compare-tag bad">✗ Nunca assim</span>
+        <p class="compare-text bad-text">Não perca esta oportunidade única! Crie sua joia dos sonhos hoje mesmo e transforme sua vida!</p>
+        <p class="compare-note">Urgência artificial, superlativo vazio, apelo emocional forçado.</p>
+      </div>
+    </div>
+    <div class="compare-pair">
+      <div class="compare-half">
+        <span class="compare-tag good">✓ Ilumiluz escreve assim</span>
+        <p class="compare-text">Peças esquecidas, herdadas ou que já não representam quem você é podem ganhar nova forma — e um novo significado. O metal permanece. A história se transforma.</p>
+        <p class="compare-note">Concreto, poético sem exagero. A força está na última frase.</p>
+      </div>
+      <div class="compare-half bad">
+        <span class="compare-tag bad">✗ Nunca assim</span>
+        <p class="compare-text bad-text">Transforme suas joias antigas em peças incríveis, cheias de amor e significado, que vão te fazer sentir incrível todos os dias!</p>
+        <p class="compare-note">Adjetivos vazios, repetição de "incrível", tom de venda.</p>
+      </div>
+    </div>
+    <div class="compare-pair">
+      <div class="compare-half">
+        <span class="compare-tag good">✓ Ilumiluz escreve assim</span>
+        <p class="compare-text">Tudo começa com uma conversa.</p>
+        <p class="compare-note">Frase curta, abertura, sem sobrecarga. O suficiente.</p>
+      </div>
+      <div class="compare-half bad">
+        <span class="compare-tag bad">✗ Nunca assim</span>
+        <p class="compare-text bad-text">Nosso exclusivo e personalizado processo começa com uma profunda e significativa conversa para entender completamente suas necessidades e desejos.</p>
+        <p class="compare-note">Corporativo, inflado, perde a naturalidade.</p>
+      </div>
+    </div>
+    <div class="compare-pair">
+      <div class="compare-half">
+        <span class="compare-tag good">✓ Ilumiluz escreve assim</span>
+        <p class="compare-text">O luxo, aqui, está na atenção. No tempo. No sentido.</p>
+        <p class="compare-note">Ritmo intencional. Três fragmentos que respiram.</p>
+      </div>
+      <div class="compare-half bad">
+        <span class="compare-tag bad">✗ Nunca assim</span>
+        <p class="compare-text bad-text">Oferecemos um serviço de alta qualidade com foco na satisfação total do cliente e na entrega de resultados excepcionais.</p>
+        <p class="compare-note">Genérico, empresarial, poderia ser qualquer marca.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COPY PATTERNS -->
+<div class="voz-section">
+  <p class="ds-section-label">Padrões de copy</p>
+  <p class="ds-section-title">Estruturas que funcionam</p>
+  <div class="patterns-grid" style="margin-top:40px;">
+    <div class="pattern-card">
+      <p class="pattern-type">Eyebrow / Label</p>
+      <div class="pattern-example">
+        <p>É a tua luz que ilumina o mundo</p>
+      </div>
+      <div class="pattern-example">
+        <p>Sobre a Ilumiluz</p>
+      </div>
+      <p class="pattern-rule">Minúsculo ou capitalizado. Nunca gritado. Serve como contexto, não como headline.</p>
+    </div>
+    <div class="pattern-card">
+      <p class="pattern-type">Headlines de seção</p>
+      <div class="pattern-example">
+        <p>Joias não existem apenas para adornar.</p>
+      </div>
+      <div class="pattern-example">
+        <p>Cada joia nasce de uma conversa.</p>
+      </div>
+      <p class="pattern-rule">Afirmação direta. Sem interrogações, sem exclamações. Permite pausa.</p>
+    </div>
+    <div class="pattern-card">
+      <p class="pattern-type">CTA — Call to action</p>
+      <div class="pattern-example">
+        <p>Criar uma joia →</p>
+      </div>
+      <div class="pattern-example">
+        <p>Agendar conversa →</p>
+      </div>
+      <p class="pattern-rule">Verbo no infinitivo, ação concreta, sem exclamação. A seta é suficiente para indicar movimento.</p>
+    </div>
+    <div class="pattern-card">
+      <p class="pattern-type">Processo / Etapas</p>
+      <div class="pattern-example">
+        <p>Escuta — Uma conversa para entender histórias, símbolos e intenções.</p>
+      </div>
+      <p class="pattern-rule">Nome da etapa em destaque. Traço longo como separador. Uma frase direta que explica sem detalhar demais.</p>
+    </div>
+    <div class="pattern-card">
+      <p class="pattern-type">Manifesto / Abertura</p>
+      <div class="pattern-example">
+        <p>Acreditamos que uma joia pode ser um ponto de presença — algo que ancora, fortalece e atravessa ciclos ao lado de quem a usa.</p>
+      </div>
+      <p class="pattern-rule">Primeira pessoa do plural. Crença, não promessa. Parágrafo denso seguido de pausa.</p>
+    </div>
+    <div class="pattern-card">
+      <p class="pattern-type">Contato / Fechamento</p>
+      <div class="pattern-example">
+        <p>Se este é o momento de criar algo que dure — entre em contato.</p>
+      </div>
+      <p class="pattern-rule">Condicional suave ("se este é o momento"). Não pressiona. Deixa espaço para o tempo da pessoa.</p>
+    </div>
+  </div>
+</div>
+
+<!-- VOCABULÁRIO -->
+<div class="vocab-section">
+  <p class="ds-section-label">Vocabulário de marca</p>
+  <div class="vocab-cols">
+    <div>
+      <p class="vocab-col-title">Palavras da Ilumiluz</p>
+      <ul class="vocab-list">
+        <li class="vocab-item"><span class="vocab-word">presença</span><span class="vocab-def">Qualidade de estar de fato. Não decoração.</span></li>
+        <li class="vocab-item"><span class="vocab-word">intenção</span><span class="vocab-def">Propósito por trás de cada peça criada.</span></li>
+        <li class="vocab-item"><span class="vocab-word">transformação</span><span class="vocab-def">Processo de dar novo sentido ao existente.</span></li>
+        <li class="vocab-item"><span class="vocab-word">escuta</span><span class="vocab-def">O início de todo projeto — ouvir antes de criar.</span></li>
+        <li class="vocab-item"><span class="vocab-word">símbolo</span><span class="vocab-def">O que a joia representa além da matéria.</span></li>
+        <li class="vocab-item"><span class="vocab-word">memória</span><span class="vocab-def">História afetiva que guia a criação.</span></li>
+        <li class="vocab-item"><span class="vocab-word">ateliê</span><span class="vocab-def">Não "loja" — espaço de criação.</span></li>
+        <li class="vocab-item"><span class="vocab-word">metal</span><span class="vocab-def">Matéria-prima com significado poético.</span></li>
+      </ul>
+    </div>
+    <div>
+      <p class="vocab-col-title" style="color:#A04530;">Palavras a evitar</p>
+      <div class="vocab-avoid"><span class="vocab-avoid-word">exclusivo / única</span><span class="vocab-def">Clichê de luxury genérico</span></div>
+      <div class="vocab-avoid"><span class="vocab-avoid-word">incrível / lindo / perfeito</span><span class="vocab-def">Adjetivos vazios sem especificidade</span></div>
+      <div class="vocab-avoid"><span class="vocab-avoid-word">high-end / premium</span><span class="vocab-def">Jargão de posicionamento explícito</span></div>
+      <div class="vocab-avoid"><span class="vocab-avoid-word">não perca / aproveite</span><span class="vocab-def">Urgência artificial — não é o tom</span></div>
+      <div class="vocab-avoid"><span class="vocab-avoid-word">artigo de luxo</span><span class="vocab-def">Objetifica a joia, retira o sentido</span></div>
+      <div class="vocab-avoid"><span class="vocab-avoid-word">cliente</span><span class="vocab-def">Prefira "pessoa", "quem usa" ou o nome</span></div>
+      <div class="vocab-avoid"><span class="vocab-avoid-word">produto</span><span class="vocab-def">Na Ilumiluz, são "peças" ou "criações"</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- COPY DAS PÁGINAS -->
+<div class="copy-pages">
+  <div style="padding:40px 48px;border-bottom:0.5px solid var(--line);">
+    <p class="ds-section-label">Copy aprovado — páginas do site</p>
+  </div>
+  <div class="copy-page">
+    <div class="copy-page-meta">
+      <p class="copy-page-name">Home</p>
+      <p class="copy-page-desc">Hero principal — identidade e CTA</p>
+    </div>
+    <div class="copy-page-content">
+      <p class="copy-eyebrow">É a tua luz que ilumina o mundo</p>
+      <h2 class="copy-h">Joias para<br>quem vive com <em>intenção.</em></h2>
+      <p class="copy-body">Ilumiluz é um ateliê de joias contemporâneas criadas com intenção. Peças sob medida que marcam momentos, traduzem histórias e acompanham quem você é — ou está se tornando.</p>
+      <span class="copy-cta">Criar uma joia</span>
+    </div>
+  </div>
+  <div class="copy-page">
+    <div class="copy-page-meta">
+      <p class="copy-page-name">Sobre</p>
+      <p class="copy-page-desc">Manifesto da marca</p>
+    </div>
+    <div class="copy-page-content">
+      <p class="copy-eyebrow">A Ilumiluz</p>
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:26px;font-weight:300;line-height:1.4;color:var(--deep);margin-bottom:20px;">Joias não existem apenas para adornar.</p>
+      <p class="copy-body">Na Ilumiluz, cada peça nasce de uma conversa. De histórias pessoais, memórias afetivas, intenções e símbolos que merecem ganhar forma.<br><br>Acreditamos que uma joia pode ser um ponto de presença — algo que ancora, fortalece e atravessa ciclos ao lado de quem a usa.</p>
+    </div>
+  </div>
+  <div class="copy-page">
+    <div class="copy-page-meta">
+      <p class="copy-page-name">Processo</p>
+      <p class="copy-page-desc">Etapas de criação</p>
+    </div>
+    <div class="copy-page-content">
+      <p class="copy-eyebrow">Processo</p>
+      <h2 class="copy-h" style="font-size:32px;margin-bottom:28px;">Cada joia nasce de um processo <em>profundo.</em></h2>
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div style="display:grid;grid-template-columns:80px 1fr;gap:20px;padding:16px 0;border-bottom:0.5px solid var(--line-dark);">
+          <p style="font-family:'Barlow Condensed',sans-serif;font-weight:500;font-size:13px;text-transform:uppercase;color:var(--deep);">Escuta</p>
+          <p style="font-size:12.5px;color:var(--muted);line-height:1.7;">Uma conversa para entender histórias, símbolos e intenções.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 1fr;gap:20px;padding:16px 0;border-bottom:0.5px solid var(--line-dark);">
+          <p style="font-family:'Barlow Condensed',sans-serif;font-weight:500;font-size:13px;text-transform:uppercase;color:var(--deep);">Desenho</p>
+          <p style="font-size:12.5px;color:var(--muted);line-height:1.7;">A ideia ganha forma visual e é validada junto com você.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 1fr;gap:20px;padding:16px 0;border-bottom:0.5px solid var(--line-dark);">
+          <p style="font-family:'Barlow Condensed',sans-serif;font-weight:500;font-size:13px;text-transform:uppercase;color:var(--deep);">Criação</p>
+          <p style="font-size:12.5px;color:var(--muted);line-height:1.7;">A peça é desenvolvida artesanalmente, com precisão e cuidado.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 1fr;gap:20px;padding:16px 0;">
+          <p style="font-family:'Barlow Condensed',sans-serif;font-weight:500;font-size:13px;text-transform:uppercase;color:var(--deep);">Entrega</p>
+          <p style="font-size:12.5px;color:var(--muted);line-height:1.7;">O resultado de um processo tão importante quanto a peça em si.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="ds-footer">
+  <span class="ds-footer-left">05 — Voz & Tom</span>
+  <span class="ds-footer-logo">ilumiluz</span>
+  <a href="06-movimento.html" style="font-size:11px;color:rgba(184,205,217,0.4);text-decoration:none;">06 Movimento →</a>
+</footer>
+
+</body>
+</html>

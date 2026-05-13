@@ -1,0 +1,23 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><link rel="stylesheet" href="../colors_and_type.css"><style>
+body{margin:0;padding:28px 32px;background:var(--il-off);box-sizing:border-box;font-family:'Barlow',sans-serif}
+.l{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--il-gold);margin:0 0 18px;display:flex;align-items:center;gap:10px}
+.l::before{content:'';width:24px;height:.5px;background:var(--il-gold)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--il-line)}
+.c{background:var(--il-off);padding:16px}
+.n{font-family:'Barlow Condensed',sans-serif;font-weight:500;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--il-deep);margin:0 0 6px}
+.v{font-family:ui-monospace,monospace;font-size:10px;color:var(--il-gold);margin:0 0 10px}
+.demo{height:36px;position:relative;overflow:hidden;background:rgba(86,23,48,.08)}
+.ball{width:12px;height:12px;border-radius:50%;background:var(--il-gold);position:absolute;top:12px;left:0;animation:mv 2.4s infinite}
+.std .ball{animation-timing-function:cubic-bezier(.4,0,.2,1)}
+.ent .ball{animation-timing-function:cubic-bezier(0,0,.2,1);background:var(--il-ether)}
+.ext .ball{animation-timing-function:cubic-bezier(.4,0,1,1);background:var(--il-muted)}
+@keyframes mv{0%{left:0}50%{left:calc(100% - 12px)}100%{left:0}}
+.u{font-size:10.5px;line-height:1.5;color:var(--il-muted);margin:10px 0 0}
+</style></head><body>
+<p class="l">Motion — easing curves</p>
+<div class="grid">
+<div class="c std"><p class="n">Standard</p><p class="v">(.4, 0, .2, 1)</p><div class="demo"><div class="ball"></div></div><p class="u">Default — hovers, colors</p></div>
+<div class="c ent"><p class="n">Enter</p><p class="v">(0, 0, .2, 1)</p><div class="demo"><div class="ball"></div></div><p class="u">Elements arriving</p></div>
+<div class="c ext"><p class="n">Exit</p><p class="v">(.4, 0, 1, 1)</p><div class="demo"><div class="ball"></div></div><p class="u">Elements leaving</p></div>
+</div>
+</body></html>

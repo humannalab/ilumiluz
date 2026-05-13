@@ -46,30 +46,46 @@ import { withSentryConfig } from "@sentry/nextjs";
  *
  * frame-ancestors 'none' substitui (e é mais forte que) X-Frame-Options.
  */
+const isDev = process.env.NODE_ENV === "development";
+
+// CSP para a loja (tudo exceto /studio)
 const csp = [
   "default-src 'self'",
   // 'unsafe-inline' necessário pra hydration scripts do Next.js.
-  // Iteração 3: migrar pra nonce-based via middleware.
+  // Iteração futura: migrar pra nonce-based via middleware.
   "script-src 'self' 'unsafe-inline'",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https://lh3.googleusercontent.com https://avatars.githubusercontent.com https://cdn.sanity.io",
   "font-src 'self' data:",
-  // Fetch/XHR só pra nosso próprio domínio
   "connect-src 'self'",
-  // Forms só submetem pra nós (nada externo)
   "form-action 'self'",
-  // Ninguém pode embarcar nosso site em iframe (anti-clickjacking)
   "frame-ancestors 'none'",
-  // base href fixo
   "base-uri 'self'",
-  // Sem plugins (Flash/Java/etc)
   "object-src 'none'",
-  // HTTP→HTTPS automático em recursos
   "upgrade-insecure-requests",
 ].join("; ");
 
-const securityHeaders = [
-  { key: "Content-Security-Policy", value: csp },
+// CSP permissivo só para /studio — Sanity Studio exige eval + CDN externos.
+// Aplicado apenas à rota /studio; não afeta a loja.
+const studioCsp = [
+  "default-src 'self'",
+  // unsafe-eval necessário: styled-components (usado pelo Sanity) gera CSS em runtime.
+  // unsafe-inline necessário: Next.js hydration + estilos inline do Studio.
+  // core.sanity-cdn.com: bridge.js embutido na página pelo next-sanity.
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://core.sanity-cdn.com",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "img-src 'self' data: blob: https://cdn.sanity.io https://lh3.googleusercontent.com https://avatars.githubusercontent.com",
+  "font-src 'self' data: https://fonts.gstatic.com",
+  // api.sanity.io: GROQ queries e mutações. wss: atualizações em tempo real.
+  "connect-src 'self' https://*.api.sanity.io wss://*.api.sanity.io https://api.sanity.io" + (isDev ? " ws://localhost:3001 ws://localhost:3000" : ""),
+  "form-action 'self'",
+  "frame-ancestors 'none'",
+  "base-uri 'self'",
+  "object-src 'none'",
+  "upgrade-insecure-requests",
+].join("; ");
+
+const sharedHeaders = [
   { key: "X-Frame-Options", value: "DENY" },
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
@@ -82,14 +98,18 @@ const securityHeaders = [
     value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
   },
   { key: "X-DNS-Prefetch-Control", value: "on" },
-  // Cross-origin isolation. "same-origin" é o setting mais forte que
-  // ainda permite popups (necessário pro fluxo Stripe Checkout que abre
-  // em nova aba). Pra "same-origin-allow-popups" se quebrar algo.
   { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
-  // CORP "same-site" permite que subdomínios (futuro: api.barthofinance.com,
-  // app.barthofinance.com) carreguem recursos. Em "same-origin" seria
-  // mais restritivo mas quebra qualquer multi-domain setup.
   { key: "Cross-Origin-Resource-Policy", value: "same-site" },
+];
+
+const securityHeaders = [
+  { key: "Content-Security-Policy", value: csp },
+  ...sharedHeaders,
+];
+
+const studioHeaders = [
+  { key: "Content-Security-Policy", value: studioCsp },
+  ...sharedHeaders,
 ];
 
 const nextConfig: NextConfig = {
@@ -98,14 +118,18 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "lh3.googleusercontent.com" },
       { protocol: "https", hostname: "avatars.githubusercontent.com" },
       { protocol: "https", hostname: "cdn.sanity.io" },
-
     ],
   },
   async headers() {
     return [
       {
-        // Aplica a TODAS as rotas
-        source: "/:path*",
+        // /studio e todos os seus sub-paths — CSP permissivo para o Studio
+        source: "/studio/:path*",
+        headers: studioHeaders,
+      },
+      {
+        // Tudo o resto — CSP estrito da loja
+        source: "/((?!studio).*)",
         headers: securityHeaders,
       },
     ];

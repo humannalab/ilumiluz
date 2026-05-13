@@ -1,16 +1,15 @@
 import { db } from "@/lib/db";
 
 /**
- * Rate limiting baseado em janela deslizante usando a tabela RateLimit
- * do Prisma. Funciona em ambiente serverless (sem in-memory state).
+ * Rate limiting baseado na tabela RateLimit do Prisma.
+ * Funciona em ambiente serverless (sem in-memory state).
  *
- * Estratégia: cada chave (ex: "signup:ip:1.2.3.4") tem um contador e o
- * timestamp de início da janela. Quando o intervalo expira, o contador
- * é resetado automaticamente na próxima verificação.
+ * Estratégia: cada chave (ex: "signup:ip:1.2.3.4") tem um contador e
+ * um `resetAt`. Quando `resetAt` passa, a janela expirou e o contador
+ * é zerado na próxima requisição.
  *
- * Não é distribuído de forma atômica (poderia haver pequena race entre
- * múltiplas requisições simultâneas), mas pra abuso típico (humano,
- * brute force, scripts simples) é suficiente. Pra escala maior, migrar
+ * Não é distribuído de forma atômica, mas pra abuso típico (humano,
+ * brute-force, scripts simples) é suficiente. Pra escala maior, migrar
  * pra Upstash Redis com `@upstash/ratelimit`.
  */
 export interface RateLimitResult {
@@ -24,31 +23,30 @@ export async function checkRateLimit(
   options: { max: number; windowMs: number }
 ): Promise<RateLimitResult> {
   const now = new Date();
-  const windowAgo = new Date(now.getTime() - options.windowMs);
+  const nextResetAt = new Date(now.getTime() + options.windowMs);
 
-  // Tenta encontrar e atualizar atomicamente. Se a janela expirou, reset.
   const existing = await db.rateLimit.findUnique({ where: { key } });
 
-  if (!existing || existing.windowStart < windowAgo) {
-    // Janela nova ou expirada — reseta
+  // Janela nova ou expirada — reseta
+  if (!existing || existing.resetAt <= now) {
     await db.rateLimit.upsert({
       where: { key },
-      create: { key, count: 1, windowStart: now },
-      update: { count: 1, windowStart: now },
+      create: { key, count: 1, resetAt: nextResetAt },
+      update: { count: 1, resetAt: nextResetAt },
     });
     return {
       allowed: true,
       remaining: options.max - 1,
-      resetAt: new Date(now.getTime() + options.windowMs),
+      resetAt: nextResetAt,
     };
   }
 
-  // Janela ainda ativa — verifica se passou do limite
+  // Janela ainda ativa — passou do limite?
   if (existing.count >= options.max) {
     return {
       allowed: false,
       remaining: 0,
-      resetAt: new Date(existing.windowStart.getTime() + options.windowMs),
+      resetAt: existing.resetAt,
     };
   }
 
@@ -61,7 +59,7 @@ export async function checkRateLimit(
   return {
     allowed: true,
     remaining: Math.max(0, options.max - updated.count),
-    resetAt: new Date(existing.windowStart.getTime() + options.windowMs),
+    resetAt: existing.resetAt,
   };
 }
 
@@ -83,7 +81,7 @@ export function getRequestIp(req: Request): string {
 
 /**
  * Resposta padrão 429 Too Many Requests.
- * O cliente recebe um Retry-After com segundos pra esperar.
+ * O cliente recebe um Retry-After com segundos para esperar.
  */
 export function rateLimitResponse(result: RateLimitResult, message?: string) {
   const retryAfter = Math.max(

@@ -1,0 +1,36 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><link rel="stylesheet" href="../colors_and_type.css"><style>
+body{margin:0;padding:28px 32px;background:var(--il-off);box-sizing:border-box}
+.l{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--il-gold);margin:0 0 18px;display:flex;align-items:center;gap:10px}
+.l::before{content:'';width:24px;height:.5px;background:var(--il-gold)}
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:26px}
+.chip{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;padding:6px 12px;border:.5px solid var(--il-line-dark);color:var(--il-text);border-radius:2px;background:transparent}
+.chip.gold{border-color:var(--il-line);color:var(--il-gold)}
+.chip.blue{border-color:var(--il-line-blue);color:var(--il-ether)}
+.chip.dark{border-color:rgba(30,26,20,0.12);color:var(--il-muted)}
+.chip.filled{background:var(--il-deep);color:var(--il-off);border-color:var(--il-deep)}
+
+.dgroup{display:flex;flex-direction:column;gap:14px;margin-top:10px}
+.drow{display:flex;align-items:center;gap:20px}
+.dn{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--il-muted);min-width:120px}
+.dg{flex:1;height:.5px;background:var(--il-gold);opacity:.3}
+.dn2{flex:1;height:.5px;background:var(--il-text);opacity:.08}
+.dn3{flex:1;height:.5px;background:var(--il-ether);opacity:.35}
+.da{display:flex;align-items:center;gap:12px;flex:1}
+.da-ln{width:32px;height:.5px;background:var(--il-gold)}
+.da-tx{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--il-gold)}
+</style></head><body>
+<p class="l">Chips &amp; Dividers</p>
+<div class="chips">
+<span class="chip gold">Sob medida</span>
+<span class="chip">Ouro 18k</span>
+<span class="chip blue">Pronta entrega</span>
+<span class="chip dark">Prata</span>
+<span class="chip filled">Destacado</span>
+</div>
+<div class="dgroup">
+<div class="drow"><span class="dn">Ouro — seção</span><div class="dg"></div></div>
+<div class="drow"><span class="dn">Neutro — conteúdo</span><div class="dn2"></div></div>
+<div class="drow"><span class="dn">Azul — citação</span><div class="dn3"></div></div>
+<div class="drow"><span class="dn">Acento + label</span><div class="da"><div class="da-ln"></div><span class="da-tx">Sobre a Ilumiluz</span></div></div>
+</div>
+</body></html>

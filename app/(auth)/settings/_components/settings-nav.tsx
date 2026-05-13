@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { User, CreditCard, Lock } from "lucide-react";
+import { User, ShoppingBag, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const TABS = [
-  { href: "/settings/account", label: "Conta", icon: User },
-  { href: "/settings/security", label: "Segurança", icon: Lock },
-  { href: "/settings/billing", label: "Assinatura", icon: CreditCard },
+  { href: "/settings/account",  label: "Conta",     icon: User },
+  { href: "/settings/security", label: "Segurança",  icon: Lock },
+  { href: "/conta/pedidos",     label: "Pedidos",    icon: ShoppingBag },
 ];
 
 export function SettingsNav() {

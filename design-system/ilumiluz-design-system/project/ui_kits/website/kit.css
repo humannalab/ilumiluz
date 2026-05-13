@@ -1,0 +1,37 @@
+/* Ilumiluz UI kit — shared layout + component styles, derived from upstream design system */
+:root{
+  --il-off:#F2F2F2; --il-white:#FAF8F5; --il-warm-mid:#EDE6D8;
+  --il-muted:#8A857E; --il-text:#3D3830; --il-deep:#1E1A14;
+  --il-gold-wash:#F5ECF0; --il-gold-pale:#E8C9D4; --il-gold-light:#C9839A; --il-gold:#561730; --il-gold-dark:#2E0A18;
+  --il-ether-pale:#E4EFF5; --il-ether-light:#B8CDD9; --il-ether:#7B9FB8; --il-ether-mid:#5F8BA8; --il-ether-deep:#2A4A5E;
+  --il-line:rgba(86,23,48,.18); --il-line-blue:rgba(123,159,184,.22); --il-line-dark:rgba(30,26,20,.08);
+  --il-ease:cubic-bezier(.4,0,.2,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--il-off);color:var(--il-text);font-family:'Barlow',system-ui,sans-serif;font-weight:300;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--il-gold);color:var(--il-deep)}
+
+.il-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--il-gold);display:inline-flex;align-items:center;gap:12px}
+.il-eyebrow::before{content:'';width:28px;height:.5px;background:var(--il-gold)}
+.il-h{font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:-0.02em;text-transform:uppercase;color:var(--il-deep);margin:0}
+.il-h em{font-style:italic;font-family:'Cormorant Garamond',serif;font-weight:300;color:var(--il-gold);text-transform:none;letter-spacing:0}
+.il-body{font-size:13.5px;line-height:1.85;color:var(--il-muted);margin:0}
+.il-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--il-gold);margin:0}
+
+/* BUTTONS */
+.il-ghost{display:inline-flex;align-items:center;gap:14px;font-family:'Barlow Condensed',sans-serif;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--il-deep);cursor:pointer;background:none;border:none;padding:0;transition:gap .3s var(--il-ease)}
+.il-ghost > i{width:32px;height:.5px;background:var(--il-gold);transition:width .35s var(--il-ease);display:block;font-style:normal}
+.il-ghost:hover{gap:20px}.il-ghost:hover > i{width:56px}
+.il-out{display:inline-flex;font-family:'Barlow Condensed',sans-serif;font-size:10.5px;letter-spacing:.25em;text-transform:uppercase;color:var(--il-deep);border:.5px solid var(--il-deep);padding:13px 28px;cursor:pointer;background:none;transition:background .25s,color .25s}
+.il-out:hover{background:var(--il-deep);color:var(--il-off)}
+.il-gold{display:inline-flex;font-family:'Barlow Condensed',sans-serif;font-size:10.5px;letter-spacing:.25em;text-transform:uppercase;color:var(--il-gold);border:.5px solid var(--il-gold);padding:13px 28px;cursor:pointer;background:none;transition:background .25s,color .25s}
+.il-gold:hover{background:var(--il-gold);color:#fff}
+.il-solid{display:inline-flex;font-family:'Barlow Condensed',sans-serif;font-size:10.5px;letter-spacing:.25em;text-transform:uppercase;color:var(--il-off);background:var(--il-ether-deep);padding:14px 30px;cursor:pointer;border:none;transition:background .25s}
+.il-solid:hover{background:#1E3648}
+
+/* CHIP */
+.il-chip{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:.22em;text-transform:uppercase;padding:6px 12px;border:.5px solid var(--il-line);color:var(--il-gold);border-radius:2px;background:transparent}
+.il-chip.blue{border-color:var(--il-line-blue);color:var(--il-ether)}
+.il-chip.dark{border-color:rgba(30,26,20,.12);color:var(--il-muted)}

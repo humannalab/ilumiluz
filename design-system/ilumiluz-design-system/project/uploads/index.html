@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ilumiluz — Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A96E;
+    --gold-light: #E0C99A;
+    --gold-pale: #F2E8D0;
+    --ether: #7B9FB8;
+    --ether-deep: #2A4A5E;
+    --ether-pale: #E4EFF5;
+    --silver: #9A9EA6;
+    --off: #F7F3EC;
+    --deep: #1E1A14;
+    --text: #3D3830;
+    --muted: #8A857E;
+    --line: rgba(201,169,110,0.2);
+    --line-blue: rgba(123,159,184,0.2);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+    background: var(--off);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  .ds-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 48px;
+    background: var(--off);
+    border-bottom: 0.5px solid var(--line);
+    backdrop-filter: blur(8px);
+  }
+  .ds-nav-logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 300; font-size: 13px; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--deep);
+    display: flex; align-items: center; gap: 16px;
+  }
+  .ds-nav-logo span { color: var(--muted); font-size: 11px; }
+  .ds-nav-links { display: flex; gap: 4px; }
+  .ds-nav-links a {
+    font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted); text-decoration: none;
+    padding: 8px 16px; border-radius: 2px;
+    transition: all 0.2s ease;
+  }
+  .ds-nav-links a:hover, .ds-nav-links a.active {
+    color: var(--deep); background: rgba(201,169,110,0.1);
+  }
+
+  /* HERO */
+  .ds-hero {
+    padding: 160px 48px 96px;
+    position: relative; overflow: hidden;
+    border-bottom: 0.5px solid var(--line);
+  }
+  .ds-hero-bg-num {
+    position: absolute; right: -20px; top: 40px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 320px; line-height: 1;
+    color: rgba(201,169,110,0.04); pointer-events: none;
+    letter-spacing: -0.05em;
+  }
+  .ds-hero-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px; letter-spacing: 0.35em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 24px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .ds-hero-eyebrow::before {
+    content: ''; display: block; width: 32px; height: 0.5px; background: var(--gold);
+  }
+  .ds-hero h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600; font-size: 88px; line-height: 0.92;
+    letter-spacing: -0.02em; text-transform: uppercase;
+    color: var(--deep); margin-bottom: 8px;
+  }
+  .ds-hero h1 em {
+    font-style: italic; font-family: 'Cormorant Garamond', serif;
+    font-weight: 300; font-size: 96px;
+    color: var(--gold); text-transform: none; letter-spacing: 0;
+  }
+  .ds-hero-sub {
+    font-size: 13px; color: var(--muted); line-height: 1.7;
+    max-width: 400px; margin-top: 32px; margin-bottom: 56px;
+  }
+  .ds-hero-meta {
+    display: flex; gap: 48px; align-items: flex-end;
+  }
+  .ds-hero-meta-item { }
+  .ds-hero-meta-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 4px;
+  }
+  .ds-hero-meta-value {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px; font-weight: 500; color: var(--deep);
+  }
+  .ds-hero-meta-value.blue { color: var(--ether-deep); }
+  .ds-hero-meta-value.gold { color: var(--gold); }
+
+  /* GRID PAGES */
+  .ds-pages {
+    padding: 80px 48px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+  }
+  .ds-page-card {
+    background: var(--off);
+    padding: 40px;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s ease;
+  }
+  .ds-page-card::before {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 2px; background: var(--gold);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  }
+  .ds-page-card:hover { background: rgba(201,169,110,0.04); }
+  .ds-page-card:hover::before { transform: scaleX(1); }
+  .ds-page-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px; letter-spacing: 0.2em; color: var(--gold);
+    margin-bottom: 24px;
+  }
+  .ds-page-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 500; font-size: 26px; letter-spacing: 0.02em;
+    text-transform: uppercase; color: var(--deep);
+    margin-bottom: 12px; line-height: 1.1;
+  }
+  .ds-page-desc {
+    font-size: 12px; line-height: 1.7; color: var(--muted);
+    margin-bottom: 32px;
+  }
+  .ds-page-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .ds-page-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase;
+    padding: 4px 10px;
+    border: 0.5px solid var(--line-blue);
+    color: var(--ether); border-radius: 1px;
+  }
+  .ds-page-tag.gold-tag { border-color: var(--line); color: var(--gold); }
+  .ds-page-arrow {
+    position: absolute; bottom: 40px; right: 40px;
+    font-size: 18px; color: var(--muted);
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+  .ds-page-card:hover .ds-page-arrow { transform: translate(4px,-4px); color: var(--gold); }
+
+  /* INTRO COPY */
+  .ds-intro {
+    padding: 80px 48px;
+    display: grid; grid-template-columns: 1fr 2fr;
+    gap: 80px; align-items: start;
+    border-top: 0.5px solid var(--line);
+  }
+  .ds-intro-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold);
+    position: sticky; top: 100px;
+  }
+  .ds-intro-content { }
+  .ds-intro-lead {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 28px; font-weight: 300;
+    line-height: 1.45; color: var(--deep);
+    margin-bottom: 32px;
+    border-left: 1px solid var(--gold);
+    padding-left: 24px;
+  }
+  .ds-intro-body {
+    font-size: 13px; line-height: 1.85; color: var(--muted);
+    columns: 2; column-gap: 40px;
+  }
+  .ds-intro-body p { margin-bottom: 16px; }
+
+  /* FOOTER */
+  .ds-footer {
+    background: var(--ether-deep);
+    padding: 40px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid rgba(123,159,184,0.2);
+  }
+  .ds-footer-left {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(184,205,217,0.4);
+  }
+  .ds-footer-right {
+    font-size: 11px; color: rgba(184,205,217,0.3);
+  }
+  .ds-footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 20px;
+    color: var(--gold-light);
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .ds-hero-eyebrow { animation: fadeUp 0.6s ease both; }
+  .ds-hero h1 { animation: fadeUp 0.6s 0.1s ease both; }
+  .ds-hero-sub { animation: fadeUp 0.6s 0.2s ease both; }
+  .ds-hero-meta { animation: fadeUp 0.6s 0.3s ease both; }
+</style>
+</head>
+<body>
+
+<nav class="ds-nav">
+  <div class="ds-nav-logo">ilumiluz <span>/ design system</span></div>
+  <div class="ds-nav-links">
+    <a href="index.html" class="active">Visão Geral</a>
+    <a href="01-fundacao.html">Fundação</a>
+    <a href="02-tipografia.html">Tipografia</a>
+    <a href="03-cores.html">Cores</a>
+    <a href="04-componentes.html">Componentes</a>
+    <a href="05-voz.html">Voz & Tom</a>
+    <a href="06-movimento.html">Movimento</a>
+  </div>
+</nav>
+
+<section class="ds-hero">
+  <div class="ds-hero-bg-num">DS</div>
+  <p class="ds-hero-eyebrow">Ilumiluz — Design System v1.0</p>
+  <h1>Design<br><em>System</em></h1>
+  <p class="ds-hero-sub">Documentação completa de fundação visual, tipografia, cores, componentes, voz e comportamentos interativos da marca Ilumiluz.</p>
+  <div class="ds-hero-meta">
+    <div class="ds-hero-meta-item">
+      <p class="ds-hero-meta-label">Versão</p>
+      <p class="ds-hero-meta-value">1.0</p>
+    </div>
+    <div class="ds-hero-meta-item">
+      <p class="ds-hero-meta-label">Seções</p>
+      <p class="ds-hero-meta-value gold">06</p>
+    </div>
+    <div class="ds-hero-meta-item">
+      <p class="ds-hero-meta-label">Paleta</p>
+      <p class="ds-hero-meta-value blue">3 tons</p>
+    </div>
+    <div class="ds-hero-meta-item">
+      <p class="ds-hero-meta-label">Fontes</p>
+      <p class="ds-hero-meta-value">2 famílias</p>
+    </div>
+  </div>
+</section>
+
+<section class="ds-pages">
+  <a href="01-fundacao.html" class="ds-page-card">
+    <p class="ds-page-num">01</p>
+    <p class="ds-page-title">Fundação &<br>Grid</p>
+    <p class="ds-page-desc">Princípios de espaço, grid, proporções e a lógica estrutural que governa toda a composição visual da marca.</p>
+    <div class="ds-page-tags">
+      <span class="ds-page-tag">Grid</span>
+      <span class="ds-page-tag">Espaçamento</span>
+      <span class="ds-page-tag gold-tag">Proporções</span>
+    </div>
+    <span class="ds-page-arrow">↗</span>
+  </a>
+  <a href="02-tipografia.html" class="ds-page-card">
+    <p class="ds-page-num">02</p>
+    <p class="ds-page-title">Tipografia</p>
+    <p class="ds-page-desc">Barlow Condensed e Cormorant Garamond — as duas famílias tipográficas, seus papéis, escalas e regras de uso.</p>
+    <div class="ds-page-tags">
+      <span class="ds-page-tag gold-tag">Display</span>
+      <span class="ds-page-tag gold-tag">Body</span>
+      <span class="ds-page-tag">Hierarquia</span>
+    </div>
+    <span class="ds-page-arrow">↗</span>
+  </a>
+  <a href="03-cores.html" class="ds-page-card">
+    <p class="ds-page-num">03</p>
+    <p class="ds-page-title">Cores &<br>Paleta</p>
+    <p class="ds-page-desc">Ouro Champagne, Azul Éter e Prata Oxidada. Tokens, valores e a proporção correta de uso para cada tom.</p>
+    <div class="ds-page-tags">
+      <span class="ds-page-tag gold-tag">Primária</span>
+      <span class="ds-page-tag">Contraste</span>
+      <span class="ds-page-tag">Tokens</span>
+    </div>
+    <span class="ds-page-arrow">↗</span>
+  </a>
+  <a href="04-componentes.html" class="ds-page-card">
+    <p class="ds-page-num">04</p>
+    <p class="ds-page-title">Componentes</p>
+    <p class="ds-page-desc">Botões, cards, inputs, navegação, citações. Cada componente com estados default, hover, focus e active.</p>
+    <div class="ds-page-tags">
+      <span class="ds-page-tag">Botões</span>
+      <span class="ds-page-tag">Cards</span>
+      <span class="ds-page-tag">Inputs</span>
+      <span class="ds-page-tag gold-tag">Estados</span>
+    </div>
+    <span class="ds-page-arrow">↗</span>
+  </a>
+  <a href="05-voz.html" class="ds-page-card">
+    <p class="ds-page-num">05</p>
+    <p class="ds-page-title">Voz & Tom</p>
+    <p class="ds-page-desc">Como a Ilumiluz escreve — princípios de linguagem, copy patterns, o que dizer e o que evitar.</p>
+    <div class="ds-page-tags">
+      <span class="ds-page-tag gold-tag">Princípios</span>
+      <span class="ds-page-tag">Copy</span>
+      <span class="ds-page-tag">Exemplos</span>
+    </div>
+    <span class="ds-page-arrow">↗</span>
+  </a>
+  <a href="06-movimento.html" class="ds-page-card">
+    <p class="ds-page-num">06</p>
+    <p class="ds-page-title">Movimento &<br>Interação</p>
+    <p class="ds-page-desc">Hover, transições, animações de entrada. Curvas de easing, durações e a filosofia de movimento da marca.</p>
+    <div class="ds-page-tags">
+      <span class="ds-page-tag">Hover</span>
+      <span class="ds-page-tag">Easing</span>
+      <span class="ds-page-tag gold-tag">Transições</span>
+    </div>
+    <span class="ds-page-arrow">↗</span>
+  </a>
+</section>
+
+<section class="ds-intro">
+  <div class="ds-intro-label">Sobre este documento</div>
+  <div class="ds-intro-content">
+    <p class="ds-intro-lead">"Um sistema de design não é uma coleção de regras. É a gramática de uma linguagem visual."</p>
+    <div class="ds-intro-body">
+      <p>Este documento define a linguagem visual completa da Ilumiluz — as decisões que tornam cada peça de comunicação reconhecível, coerente e alinhada com o posicionamento de ateliê contemporâneo.</p>
+      <p>A Ilumiluz vive entre dois mundos: a sofisticação atemporal da joalheria artesanal e a precisão contemporânea do design autoral com tecnologia. Este sistema reflete exatamente essa tensão.</p>
+      <p>Tipografia condensada e bold dialoga com serifas itálicas delicadas. Espaço generoso convive com pontos de cor intensa. Estrutura editorial encontra gesto artesanal. Cada decisão aqui foi tomada para sustentar essa dualidade.</p>
+      <p>Use este guia como referência para qualquer touchpoint da marca: site, Instagram, embalagem, comunicação — qualquer superfície onde a Ilumiluz se apresenta ao mundo.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="ds-footer">
+  <span class="ds-footer-left">Ilumiluz Design System — v1.0 — 2026</span>
+  <span class="ds-footer-logo">ilumiluz</span>
+  <span class="ds-footer-right">Documento interno de marca</span>
+</footer>
+
+</body>
+</html>

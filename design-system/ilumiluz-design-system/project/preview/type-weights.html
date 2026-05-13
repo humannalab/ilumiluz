@@ -1,0 +1,50 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Cormorant+Garamond:ital,wght@1,300;1,400&family=Barlow:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+body{margin:0;padding:28px 32px;background:var(--il-off);box-sizing:border-box}
+.l{font-family:'Tenor Sans',sans-serif;font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--il-gold);margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.l::before{content:'';width:24px;height:0.5px;background:var(--il-gold)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--il-line);margin-bottom:28px}
+.c{background:var(--il-off);padding:18px 16px}
+.s{font-family:'Tenor Sans',sans-serif;font-size:44px;line-height:1;color:var(--il-deep);margin:0 0 10px}
+.n{font-family:'Tenor Sans',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--il-muted);margin:0 0 2px}
+.u{font-size:10.5px;color:var(--il-muted);line-height:1.5;margin:0}
+
+/* pairing demo */
+.demo{padding:24px 0;border-top:0.5px solid var(--il-line)}
+.eyebrow{font-family:'Tenor Sans',sans-serif;font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--il-gold);display:inline-flex;align-items:center;gap:10px;margin:0 0 20px}
+.eyebrow::before{content:'';width:24px;height:0.5px;background:var(--il-gold)}
+.h1{font-family:'Tenor Sans',sans-serif;font-size:54px;line-height:1.0;letter-spacing:.01em;color:var(--il-deep);margin:0 0 8px}
+.h1 em{font-style:italic;font-family:'Cormorant Garamond',serif;font-weight:300;font-size:60px;color:var(--il-gold);letter-spacing:0}
+.body{font-family:'Tenor Sans',sans-serif;font-size:13px;line-height:1.85;color:var(--il-muted);margin:14px 0 0;max-width:440px}
+.cta{margin-top:20px;display:inline-flex;align-items:center;gap:12px;font-family:'Tenor Sans',sans-serif;font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--il-deep)}
+.cta::before{content:'';width:28px;height:0.5px;background:var(--il-gold)}
+</style></head><body>
+<p class="l">Tenor Sans — proposta tipográfica</p>
+<div class="grid">
+  <div class="c">
+    <p class="s">Aa</p>
+    <p class="n">Regular 400</p>
+    <p class="u">Display, headings, nav, labels — único peso disponível</p>
+  </div>
+  <div class="c">
+    <p class="s" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:50px;color:var(--il-gold)">Aa</p>
+    <p class="n">Cormorant · italic 300</p>
+    <p class="u">Acento nos títulos, citações, manifesto</p>
+  </div>
+  <div class="c">
+    <p class="s" style="font-family:'Barlow',sans-serif;font-weight:300;font-size:36px;color:var(--il-muted)">Aa</p>
+    <p class="n">Barlow Light 300</p>
+    <p class="u">Corpo de texto longo, parágrafos corridos</p>
+  </div>
+</div>
+
+<div class="demo">
+  <p class="eyebrow">É a tua luz que ilumina o mundo</p>
+  <h2 class="h1">Joias para quem<br>vive com <em>intenção.</em></h2>
+  <p class="body">Ilumiluz é um ateliê de joias contemporâneas criadas com intenção. Peças sob medida que marcam momentos, traduzem histórias e acompanham quem você é — ou está se tornando.</p>
+  <div class="cta">Criar uma joia</div>
+</div>
+</body></html>

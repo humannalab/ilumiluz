@@ -1,0 +1,29 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><link rel="stylesheet" href="../colors_and_type.css"><style>
+body{margin:0;padding:28px 32px;background:var(--il-off);box-sizing:border-box;font-family:'Barlow',sans-serif}
+.l{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--il-gold);margin:0 0 18px;display:flex;align-items:center;gap:10px}
+.l::before{content:'';width:24px;height:.5px;background:var(--il-gold)}
+.row{display:flex;gap:18px;align-items:stretch;margin-bottom:20px}
+.col{flex:1;padding:24px;display:flex;flex-direction:column;gap:16px;align-items:flex-start;justify-content:center}
+.col.light{background:var(--il-off);border:.5px solid var(--il-line)}
+.col.dark{background:var(--il-deep)}
+.col.gold{background:var(--il-ether-deep)}
+.logo{width:180px;height:auto;display:block}
+.cap{font-family:'Barlow Condensed',sans-serif;font-size:8.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--il-muted)}
+.col.dark .cap,.col.gold .cap{color:rgba(224,201,154,.5)}
+</style></head><body>
+<p class="l">Wordmark — logotipo real</p>
+<div class="row">
+  <div class="col light">
+    <img class="logo" src="../assets/logo-ilumiluz.svg" alt="Ilumiluz">
+    <span class="cap">Sobre off-white</span>
+  </div>
+  <div class="col dark">
+    <img class="logo" src="../assets/logo-ilumiluz-branco.svg" alt="Ilumiluz">
+    <span class="cap">Sobre deep</span>
+  </div>
+  <div class="col gold">
+    <img class="logo" src="../assets/logo-ilumiluz-branco.svg" alt="Ilumiluz">
+    <span class="cap">Sobre ether-deep</span>
+  </div>
+</div>
+</body></html>

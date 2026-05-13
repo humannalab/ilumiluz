@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>03 Cores — Ilumiluz DS</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  /* COLOR HERO */
+  .color-hero {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    height: 280px; gap: 1px; background: var(--line);
+    border-bottom: 0.5px solid var(--line);
+  }
+  .color-band { padding: 40px; display: flex; flex-direction: column; justify-content: flex-end; position: relative; overflow: hidden; }
+  .color-band-gold { background: var(--gold); }
+  .color-band-ether { background: var(--ether-deep); }
+  .color-band-off { background: var(--off); border: none; }
+  .color-band-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600; font-size: 28px; text-transform: uppercase;
+    letter-spacing: 0.01em; line-height: 1;
+  }
+  .color-band-hex { font-family: monospace; font-size: 12px; margin-top: 6px; opacity: 0.7; }
+  .color-band-pct {
+    position: absolute; top: 32px; right: 32px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 48px; font-weight: 700;
+    opacity: 0.12; line-height: 1;
+  }
+  .on-gold { color: #2A1E0A; }
+  .on-blue { color: rgba(232,240,245,0.9); }
+  .on-off { color: var(--deep); }
+
+  /* SWATCHES GRID */
+  .swatches-section { padding: 72px 48px; border-bottom: 0.5px solid var(--line); }
+  .swatch-family { margin-bottom: 64px; }
+  .swatch-family-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 500; font-size: 14px; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--deep); margin-bottom: 24px;
+  }
+  .swatch-row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .swatch {
+    flex: 1; min-width: 80px; height: 80px;
+    border: 0.5px solid rgba(0,0,0,0.06);
+    display: flex; flex-direction: column;
+    justify-content: flex-end; padding: 8px;
+    position: relative; cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  .swatch:hover { transform: scale(1.04); }
+  .swatch-label { font-family: monospace; font-size: 9px; line-height: 1.4; }
+
+  /* TOKEN TABLE */
+  .token-section { padding: 72px 48px; border-bottom: 0.5px solid var(--line); }
+  .token-row {
+    display: grid; grid-template-columns: 40px 200px 200px 1fr;
+    gap: 16px; align-items: center;
+    padding: 14px 0; border-bottom: 0.5px solid var(--line-dark);
+  }
+  .token-dot { width: 16px; height: 16px; border-radius: 50%; }
+  .token-name { font-family: monospace; font-size: 12px; color: var(--gold); }
+  .token-value { font-family: monospace; font-size: 11px; color: var(--muted); }
+  .token-use { font-size: 12px; color: var(--muted); }
+
+  /* PROPORTION */
+  .proportion-section { padding: 72px 48px; border-bottom: 0.5px solid var(--line); }
+  .proportion-bar-wrap { display: flex; height: 64px; gap: 1px; border-radius: 2px; overflow: hidden; margin: 32px 0; }
+  .proportion-bar-off { flex: 90; background: var(--off); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; }
+  .proportion-bar-gold { flex: 6; background: var(--gold); display: flex; align-items: center; justify-content: center; }
+  .proportion-bar-blue { flex: 4; background: var(--ether-deep); display: flex; align-items: center; justify-content: center; }
+  .proportion-label { font-family: 'Barlow Condensed', sans-serif; font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; }
+
+  /* USAGE EXAMPLES */
+  .usage-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: var(--line); border-top: 0.5px solid var(--line); }
+  .usage-card { background: var(--off); padding: 40px; }
+  .usage-icon { width: 40px; height: 40px; border-radius: 50%; margin-bottom: 20px; }
+  .usage-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 500; font-size: 16px; text-transform: uppercase;
+    color: var(--deep); margin-bottom: 10px;
+  }
+  .usage-body { font-size: 12px; line-height: 1.7; color: var(--muted); margin-bottom: 16px; }
+  .usage-examples { display: flex; flex-direction: column; gap: 6px; }
+  .usage-ex { font-size: 11px; color: var(--muted); padding-left: 12px; border-left: 1.5px solid; }
+  .usage-ex.gold-ex { border-color: var(--gold); }
+  .usage-ex.blue-ex { border-color: var(--ether); }
+  .usage-ex.off-ex { border-color: var(--line-dark); }
+
+  /* COMBINATIONS */
+  .combo-section { padding: 72px 48px; border-bottom: 0.5px solid var(--line); }
+  .combo-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 40px; }
+  .combo-card { padding: 24px; border: 0.5px solid var(--line); }
+  .combo-preview { height: 80px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; }
+  .combo-label { font-family: 'Barlow Condensed', sans-serif; font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .combo-name { font-size: 12px; color: var(--text); }
+
+  /* DONT USE */
+  .dont-colors { padding: 48px; border-bottom: 0.5px solid var(--line); }
+  .dont-row { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 24px; }
+  .dont-swatch {
+    width: 80px; height: 80px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 24px; color: rgba(255,255,255,0.5);
+    position: relative;
+  }
+  .dont-swatch::after {
+    content: '✕'; position: absolute; font-size: 32px;
+    color: rgba(255,255,255,0.7);
+  }
+</style>
+</head>
+<body>
+
+<nav class="ds-nav">
+  <a href="index.html" class="ds-nav-logo">ilumiluz <span>/ design system</span></a>
+  <div class="ds-nav-links">
+    <a href="index.html">Visão Geral</a>
+    <a href="01-fundacao.html">Fundação</a>
+    <a href="02-tipografia.html">Tipografia</a>
+    <a href="03-cores.html" class="active">Cores</a>
+    <a href="04-componentes.html">Componentes</a>
+    <a href="05-voz.html">Voz & Tom</a>
+    <a href="06-movimento.html">Movimento</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-bg">COLOR</div>
+  <p class="page-num fade-up">03 — Cores</p>
+  <h1 class="page-title fade-up-2">Paleta<br><em>& Tokens</em></h1>
+  <p class="page-subtitle fade-up-3">Três intenções cromáticas — Ouro Champagne para sofisticação, Azul Éter para profundidade, Off White como silêncio visual.</p>
+</div>
+
+<!-- HERO BANDS -->
+<div class="color-hero">
+  <div class="color-band color-band-gold">
+    <span class="color-band-pct on-gold">90%</span>
+    <p class="color-band-name on-gold">Off White</p>
+    <p class="color-band-hex on-gold">#F7F3EC — Base dominante</p>
+  </div>
+  <div class="color-band color-band-ether">
+    <span class="color-band-pct on-blue">B</span>
+    <p class="color-band-name on-blue">Azul Éter</p>
+    <p class="color-band-hex on-blue">#2A4A5E — Contraste & profundidade</p>
+  </div>
+  <div class="color-band" style="background:var(--gold-pale);">
+    <span class="color-band-pct on-off">G</span>
+    <p class="color-band-name on-off">Ouro Champagne</p>
+    <p class="color-band-hex on-off">#C9A96E — Acento & calor</p>
+  </div>
+</div>
+
+<!-- PROPORÇÃO -->
+<div class="proportion-section">
+  <p class="ds-section-label">Regra de proporção</p>
+  <p class="ds-section-title">90 / 6 / 4</p>
+  <p class="ds-section-desc">A distribuição de cor no site segue uma proporção estrita. Cores vivas são pontos de ênfase — não decoração.</p>
+  <div class="proportion-bar-wrap">
+    <div class="proportion-bar-off">
+      <span class="proportion-label" style="color:var(--muted);">90% — Off White</span>
+    </div>
+    <div class="proportion-bar-gold">
+      <span class="proportion-label" style="color:rgba(42,30,10,0.6);font-size:8px;">6%</span>
+    </div>
+    <div class="proportion-bar-blue">
+      <span class="proportion-label" style="color:rgba(232,240,245,0.5);font-size:8px;">4%</span>
+    </div>
+  </div>
+  <p style="font-size:12px;color:var(--muted);">Off White domina. Ouro para calor e sofisticação. Azul para fechamento, profundidade e momentos de transição.</p>
+</div>
+
+<!-- SWATCHES COMPLETOS -->
+<div class="swatches-section">
+  <p class="ds-section-label">Família completa de cores</p>
+
+  <div class="swatch-family">
+    <p class="swatch-family-name">Ouro Champagne — Família primária</p>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#FAF5EA;">
+        <span class="swatch-label" style="color:#8A7040;">--gold-wash<br>#FAF5EA</span>
+      </div>
+      <div class="swatch" style="background:#F2E8D0;">
+        <span class="swatch-label" style="color:#8A7040;">--gold-pale<br>#F2E8D0</span>
+      </div>
+      <div class="swatch" style="background:#E0C99A;">
+        <span class="swatch-label" style="color:#6A5020;">--gold-light<br>#E0C99A</span>
+      </div>
+      <div class="swatch" style="background:#C9A96E;">
+        <span class="swatch-label" style="color:#3A2010;">--gold<br>#C9A96E</span>
+      </div>
+      <div class="swatch" style="background:#A8852A;">
+        <span class="swatch-label" style="color:#F2E8D0;">--gold-dark<br>#A8852A</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="swatch-family">
+    <p class="swatch-family-name">Azul Éter — Família de contraste</p>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#E4EFF5;">
+        <span class="swatch-label" style="color:#2A4A5E;">--ether-pale<br>#E4EFF5</span>
+      </div>
+      <div class="swatch" style="background:#B8CDD9;">
+        <span class="swatch-label" style="color:#2A4A5E;">--ether-light<br>#B8CDD9</span>
+      </div>
+      <div class="swatch" style="background:#7B9FB8;">
+        <span class="swatch-label" style="color:#1A2E3A;">--ether<br>#7B9FB8</span>
+      </div>
+      <div class="swatch" style="background:#5F8BA8;">
+        <span class="swatch-label" style="color:#E4EFF5;">--ether-mid<br>#5F8BA8</span>
+      </div>
+      <div class="swatch" style="background:#2A4A5E;">
+        <span class="swatch-label" style="color:#B8CDD9;">--ether-deep<br>#2A4A5E</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="swatch-family">
+    <p class="swatch-family-name">Neutros — Base e texto</p>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#FAF8F5;">
+        <span class="swatch-label" style="color:#8A857E;">--white<br>#FAF8F5</span>
+      </div>
+      <div class="swatch" style="background:#F7F3EC;">
+        <span class="swatch-label" style="color:#8A857E;">--off<br>#F7F3EC</span>
+      </div>
+      <div class="swatch" style="background:#EDE6D8;">
+        <span class="swatch-label" style="color:#6A6058;">--warm-mid<br>#EDE6D8</span>
+      </div>
+      <div class="swatch" style="background:#8A857E;">
+        <span class="swatch-label" style="color:#F7F3EC;">--muted<br>#8A857E</span>
+      </div>
+      <div class="swatch" style="background:#3D3830;">
+        <span class="swatch-label" style="color:#EDE6D8;">--text<br>#3D3830</span>
+      </div>
+      <div class="swatch" style="background:#1E1A14;">
+        <span class="swatch-label" style="color:#C9A96E;">--deep<br>#1E1A14</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOKEN TABLE -->
+<div class="token-section">
+  <p class="ds-section-label">Tokens CSS — Referência completa</p>
+  <table class="spec-table" style="margin-top:8px;">
+    <thead>
+      <tr>
+        <th style="width:40px;"></th>
+        <th>Token</th>
+        <th>Valor HEX</th>
+        <th>Uso</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><div style="width:16px;height:16px;background:#F7F3EC;border:0.5px solid #ddd;border-radius:50%;"></div></td><td><code>--off</code></td><td>#F7F3EC</td><td>Fundo base — 90% das superfícies</td></tr>
+      <tr><td><div style="width:16px;height:16px;background:#FAF5EA;border-radius:50%;border:0.5px solid #ddd;"></div></td><td><code>--gold-wash</code></td><td>#FAF5EA</td><td>Fundo de seções com leve calor</td></tr>
+      <tr><td><div style="width:16px;height:16px;background:#F2E8D0;border-radius:50%;"></div></td><td><code>--gold-pale</code></td><td>#F2E8D0</td><td>Fundo de cards de destaque dourado</td></tr>
+      <tr><td><div style="width:16px;height:16px;background:#E0C99A;border-radius:50%;"></div></td><td><code>--gold-light</code></td><td>#E0C99A</td><td>Textos em fundo escuro, logo no footer</td></tr>
+      <tr><td><div style="width:16px;height:16px;background:#C9A96E;border-radius:50%;"></div></td><td><code>--gold</code></td><td>#C9A96E</td><td>Labels, acentos, divisores, eyebrows</td></tr>
+      <tr><td><div style="width:16px;height:16px;background:#E4EFF5;border-radius:50%;border:0.5px solid #ccc;"></div></td><td><code>--ether-pale</code></td><td>#E4EFF5</td><td>Fundo de seções azuis suaves</td></tr>
+      <tr><td><div style="width:16px;height:16px;background:#7B9FB8;border-radius:50%;"></div></td><td><code>--ether</code></td><td>#7B9FB8</td><td>Divisores azuis, ícones, bordas de citação</td></tr>
+      <tr><td><div style="width:16px;height:16px;background:#2A4A5E;border-radius:50%;"></div></td><td><code>--ether-deep</code></td><td>#2A4A5E</td><td>Seção conversa, galeria, rodapé</td></tr>
+      <tr><td><div style="width:16px;height:16px;background:#1E1A14;border-radius:50%;"></div></td><td><code>--deep</code></td><td>#1E1A14</td><td>Títulos, hero escuro, textos de destaque</td></tr>
+      <tr><td><div style="width:16px;height:16px;background:#3D3830;border-radius:50%;"></div></td><td><code>--text</code></td><td>#3D3830</td><td>Corpo de texto principal</td></tr>
+      <tr><td><div style="width:16px;height:16px;background:#8A857E;border-radius:50%;"></div></td><td><code>--muted</code></td><td>#8A857E</td><td>Textos secundários, placeholders, captions</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- USOS -->
+<div class="usage-grid">
+  <div class="usage-card">
+    <div class="usage-icon" style="background:var(--gold);"></div>
+    <p class="usage-title">Ouro Champagne</p>
+    <p class="usage-body">Calor, sofisticação, presença. Sempre como detalhe — nunca como fundo de página inteira.</p>
+    <div class="usage-examples">
+      <span class="usage-ex gold-ex">Labels e eyebrows de seção</span>
+      <span class="usage-ex gold-ex">Linhas divisórias finas (0.5px)</span>
+      <span class="usage-ex gold-ex">Acento em títulos (itálico Cormorant)</span>
+      <span class="usage-ex gold-ex">Barra vertical no hero</span>
+      <span class="usage-ex gold-ex">Corrente e pingente em ilustrações</span>
+    </div>
+  </div>
+  <div class="usage-card">
+    <div class="usage-icon" style="background:var(--ether-deep);"></div>
+    <p class="usage-title">Azul Éter</p>
+    <p class="usage-body">Profundidade, fechamento, intenção. Entra no meio da página e fecha no rodapé — cria ritmo.</p>
+    <div class="usage-examples">
+      <span class="usage-ex blue-ex">Seção "Tudo começa com uma conversa"</span>
+      <span class="usage-ex blue-ex">Rodapé do site</span>
+      <span class="usage-ex blue-ex">Segunda foto da galeria</span>
+      <span class="usage-ex blue-ex">Barra de divisão de citações</span>
+      <span class="usage-ex blue-ex">Botão de produto destaque</span>
+    </div>
+  </div>
+  <div class="usage-card">
+    <div class="usage-icon" style="background:var(--off);border:0.5px solid var(--line);"></div>
+    <p class="usage-title">Off White</p>
+    <p class="usage-body">O silêncio visual da marca. Deixa o conteúdo respirar e as joias existirem sem concorrência.</p>
+    <div class="usage-examples">
+      <span class="usage-ex off-ex">Fundo de todas as páginas</span>
+      <span class="usage-ex off-ex">Cards e seções de conteúdo</span>
+      <span class="usage-ex off-ex">Background de imagens de produto</span>
+      <span class="usage-ex off-ex">Seção Sobre, hero principal</span>
+      <span class="usage-ex off-ex">Formulários e inputs</span>
+    </div>
+  </div>
+</div>
+
+<!-- COMBINAÇÕES APROVADAS -->
+<div class="combo-section">
+  <p class="ds-section-label">Combinações aprovadas</p>
+  <p class="ds-section-title">Texto sobre fundo — Contraste mínimo 4.5:1</p>
+  <div class="combo-grid">
+    <div class="combo-card">
+      <div class="combo-preview" style="background:var(--off);">
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:600;color:var(--deep);">Aa Ilumiluz</p>
+      </div>
+      <p class="combo-label">Padrão principal</p>
+      <p class="combo-name">--deep sobre --off</p>
+    </div>
+    <div class="combo-card">
+      <div class="combo-preview" style="background:var(--off);">
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:500;color:var(--gold);">Aa Ilumiluz</p>
+      </div>
+      <p class="combo-label">Labels e acentos</p>
+      <p class="combo-name">--gold sobre --off</p>
+    </div>
+    <div class="combo-card">
+      <div class="combo-preview" style="background:var(--ether-deep);">
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:500;color:#E4EFF5;">Aa Ilumiluz</p>
+      </div>
+      <p class="combo-label">Seções azuis</p>
+      <p class="combo-name">--ether-pale sobre --ether-deep</p>
+    </div>
+    <div class="combo-card">
+      <div class="combo-preview" style="background:var(--ether-deep);">
+        <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;font-weight:300;color:var(--gold-light);">Ilumiluz</p>
+      </div>
+      <p class="combo-label">Logo / serif em escuro</p>
+      <p class="combo-name">--gold-light sobre --ether-deep</p>
+    </div>
+  </div>
+</div>
+
+<footer class="ds-footer">
+  <span class="ds-footer-left">03 — Cores & Paleta</span>
+  <span class="ds-footer-logo">ilumiluz</span>
+  <a href="04-componentes.html" style="font-size:11px;color:rgba(184,205,217,0.4);text-decoration:none;">04 Componentes →</a>
+</footer>
+
+</body>
+</html>

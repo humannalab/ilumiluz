@@ -18,7 +18,7 @@ import {
 interface ActivityEvent {
   id: string;
   action: string;
-  ip: string | null;
+  ipAddress: string | null;
   userAgent: string | null;
   createdAt: Date;
 }
@@ -128,10 +128,10 @@ export function RecentActivity({ events }: Props) {
                     </p>
                     <p className="text-xs text-muted-foreground">
                       {describeDevice(event.userAgent)}
-                      {event.ip && (
+                      {event.ipAddress && (
                         <>
                           {" · IP "}
-                          <code className="text-xs">{event.ip}</code>
+                          <code className="text-xs">{event.ipAddress}</code>
                         </>
                       )}
                     </p>

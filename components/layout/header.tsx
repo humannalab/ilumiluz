@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { signOut, useSession } from "next-auth/react";
-import { useTheme } from "next-themes";
-import { LogOut, Settings, TicketCheck, ChevronDown } from "lucide-react";
+import { LogOut, Settings, ShieldCheck, ChevronDown } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -13,9 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { MobileNav } from "@/components/layout/mobile-nav";
-import { BarthoLogo } from "@/components/brand/bartho-dog";
 import { isAdmin as checkIsAdmin } from "@/lib/admin";
 
 function getInitials(name: string) {
@@ -30,30 +28,33 @@ function getInitials(name: string) {
 
 export function Header() {
   const { data: session } = useSession();
-  const { resolvedTheme } = useTheme();
   const email = session?.user?.email ?? "";
   const name = session?.user?.name?.trim() || email || "Usuário";
   const image = session?.user?.image ?? "";
   const isAdmin = checkIsAdmin(email);
   const initials = getInitials(name) || "?";
-  const isDark = resolvedTheme === "dark";
 
   return (
     <header className="flex h-16 shrink-0 items-center gap-2 border-b border-sidebar-border bg-sidebar px-4 md:justify-end md:px-6">
       {/* Mobile: hamburger + logo. Some no md+ (sidebar fixa cuida) */}
       <MobileNav />
       <Link
-        href="/dashboard"
+        href="/"
         className="md:hidden flex items-center"
-        aria-label="Início"
+        aria-label="Ilumiluz — página inicial"
       >
-        <BarthoLogo height={32} variant={isDark ? "negative" : "positive"} />
+        <Image
+          src="/logo-ilumiluz.svg"
+          alt="Ilumiluz"
+          width={90}
+          height={24}
+          priority
+        />
       </Link>
 
-      {/* Spacer pra empurrar avatar pra direita no mobile */}
+      {/* Spacer para empurrar avatar para a direita no mobile */}
       <div className="flex-1 md:hidden" />
 
-      <ThemeToggle />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <button
@@ -85,7 +86,6 @@ export function Header() {
           collisionPadding={16}
           className="w-64"
         >
-          {/* Header do dropdown — também útil em mobile onde o nome não aparece no trigger */}
           <DropdownMenuLabel className="font-normal">
             <div className="flex items-center gap-3 py-1">
               <Avatar className="h-10 w-10">
@@ -116,8 +116,8 @@ export function Header() {
 
           {isAdmin && (
             <DropdownMenuItem asChild>
-              <Link href="/admin/vouchers" className="cursor-pointer">
-                <TicketCheck className="mr-2 h-4 w-4" />
+              <Link href="/admin" className="cursor-pointer">
+                <ShieldCheck className="mr-2 h-4 w-4" />
                 Admin
               </Link>
             </DropdownMenuItem>
@@ -127,7 +127,7 @@ export function Header() {
 
           <DropdownMenuItem
             onClick={() => signOut({ callbackUrl: "/" })}
-            className="cursor-pointer text-expense focus:text-expense"
+            className="cursor-pointer text-destructive focus:text-destructive"
           >
             <LogOut className="mr-2 h-4 w-4" />
             Sair

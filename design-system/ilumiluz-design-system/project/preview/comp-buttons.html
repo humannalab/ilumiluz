@@ -1,0 +1,25 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><link rel="stylesheet" href="../colors_and_type.css"><style>
+body{margin:0;padding:28px 32px;background:var(--il-off);box-sizing:border-box;display:flex;flex-wrap:wrap;gap:36px;align-items:center}
+.l{flex:1 0 100%;font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--il-gold);margin:0 0 8px;display:flex;align-items:center;gap:10px}
+.l::before{content:'';width:24px;height:0.5px;background:var(--il-gold)}
+.g{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.cap{font-family:'Barlow Condensed',sans-serif;font-size:8.5px;letter-spacing:0.22em;text-transform:uppercase;color:var(--il-muted)}
+
+.btn-ghost{display:inline-flex;align-items:center;gap:14px;font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:var(--il-deep);cursor:pointer;background:none;border:none;padding:0;transition:gap .3s var(--il-ease-standard);text-decoration:none}
+.btn-ghost span{width:32px;height:.5px;background:var(--il-gold);transition:width .35s var(--il-ease-standard)}
+.btn-ghost:hover{gap:20px}.btn-ghost:hover span{width:56px}
+
+.btn-out{display:inline-flex;font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--il-deep);border:.5px solid var(--il-deep);padding:12px 28px;cursor:pointer;background:none;transition:background .25s,color .25s}
+.btn-out:hover{background:var(--il-deep);color:var(--il-off)}
+
+.btn-gold{display:inline-flex;font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--il-gold);border:.5px solid var(--il-gold);padding:12px 28px;cursor:pointer;background:none;transition:background .25s,color .25s}
+.btn-gold:hover{background:var(--il-gold);color:#fff}
+
+.btn-solid{display:inline-flex;font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--il-off);background:var(--il-ether-deep);padding:13px 28px;cursor:pointer;border:none}
+</style></head><body>
+<p class="l">Buttons</p>
+<div class="g"><a class="btn-ghost"><span></span>Criar uma joia</a><span class="cap">Ghost — primary</span></div>
+<div class="g"><a class="btn-out">Descobrir</a><span class="cap">Outline dark</span></div>
+<div class="g"><a class="btn-gold">Agendar conversa</a><span class="cap">Outline gold</span></div>
+<div class="g"><a class="btn-solid">Consultar via WhatsApp</a><span class="cap">Solid blue — transactional</span></div>
+</body></html>

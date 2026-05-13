@@ -1,0 +1,19 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><link rel="stylesheet" href="../colors_and_type.css"><style>
+body{margin:0;padding:28px 32px;background:var(--il-off);box-sizing:border-box;font-family:'Barlow',sans-serif}
+.l{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--il-gold);margin:0 0 18px;display:flex;align-items:center;gap:10px}
+.l::before{content:'';width:24px;height:.5px;background:var(--il-gold)}
+.nav{background:var(--il-off);border:.5px solid var(--il-line);padding:18px 32px;display:flex;justify-content:space-between;align-items:center}
+.logo{display:flex;align-items:center}
+.logo img{height:28px;width:auto;display:block}
+.lks{display:flex;gap:28px}
+.lk{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--il-muted);cursor:pointer;position:relative;padding-bottom:2px;transition:color .2s}
+.lk::after{content:'';position:absolute;bottom:0;left:0;right:0;height:.5px;background:var(--il-gold);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--il-ease-standard)}
+.lk:hover{color:var(--il-deep)}.lk:hover::after{transform:scaleX(1)}
+.lk.on{color:var(--il-deep)}.lk.on::after{transform:scaleX(1)}
+</style></head><body>
+<p class="l">Nav — top bar</p>
+<div class="nav">
+<span class="logo"><img src="../assets/logo-ilumiluz.svg" alt="Ilumiluz"/></span>
+<div class="lks"><span class="lk on">Coleção</span><span class="lk">Sobre</span><span class="lk">Processo</span><span class="lk">Contato</span></div>
+</div>
+</body></html>

@@ -41,12 +41,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       allowDangerousEmailAccountLinking: true,
     }),
     Resend({
-      apiKey: process.env.AUTH_RESEND_KEY!,
-      // Endereço "from" via env var pra trocar sem código quando o domínio
-      // próprio (barthofinance.com) for verificado. Default: sandbox.
-      from: process.env.RESEND_FROM_EMAIL ?? "Bartho Finance <onboarding@resend.dev>",
-      // Magic link já é "email-based" por natureza — vincula User existente
-      // pelo email automaticamente, sem precisar de allowDangerousEmailAccountLinking.
+      apiKey: process.env.RESEND_API_KEY!,
+      from: process.env.RESEND_FROM_EMAIL ?? "Ilumiluz <onboarding@resend.dev>",
     }),
     // Credentials: login com e-mail + senha + brute-force protection
     //
@@ -87,7 +83,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             lockedUntil: true,
             totpEnabled: true,
             totpSecret: true,
-            totpBackupCodes: true,
+            backupCodes: true,
           },
         });
         if (!user || !user.passwordHash) {
@@ -171,7 +167,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             if (normalized.length === 10) {
               backupUsedHash = await consumeBackupCode(
                 totpCode,
-                user.totpBackupCodes
+                user.backupCodes
               );
               totpOk = backupUsedHash !== null;
             }
@@ -192,7 +188,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             await db.user.update({
               where: { id: user.id },
               data: {
-                totpBackupCodes: user.totpBackupCodes.filter(
+                backupCodes: user.backupCodes.filter(
                   (h) => h !== backupUsedHash
                 ),
               },
@@ -203,7 +199,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               ip,
               userAgent,
               metadata: {
-                remaining: user.totpBackupCodes.length - 1,
+                remaining: user.backupCodes.length - 1,
               },
             });
           } else {
@@ -259,58 +255,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     error: "/login",
   },
   callbacks: {
-    // No JWT strategy o session callback recebe o token (não o user).
-    // Carregamos campos custom do banco quando necessário.
     async session({ session, token }) {
-      if (token.sub) {
-        session.user.id = token.sub;
-      }
-      // plan vem direto do token (injetado no jwt callback)
-      const plan = (token as unknown as { plan?: "FREE" | "TRIAL" | "PRO" }).plan;
-      if (plan) session.user.plan = plan;
+      if (token.sub) session.user.id = token.sub;
       return session;
     },
-    // Carrega o plan no token na primeira sign-in e em refreshes
     async jwt({ token, user }) {
-      // 1ª chamada após sign-in: user vem populado, salva o id
       if (user?.id) token.sub = user.id;
-      // Sempre que o token é refrescado, busca plan atualizado do banco
-      // (afeta UX quando user faz upgrade Stripe ou trial expira)
-      if (token.sub) {
-        const dbUser = await db.user.findUnique({
-          where: { id: token.sub },
-          select: { plan: true },
-        });
-        if (dbUser) {
-          (token as unknown as { plan: typeof dbUser.plan }).plan = dbUser.plan;
-        }
-      }
       return token;
     },
   },
   events: {
     async createUser({ user }) {
-      // Novo usuário (via Google ou Magic Link) ganha trial de 30 dias
-      // automaticamente. Acesso pago via Stripe acontece quando o trial
-      // expira.
-      //
-      // Defensivo: só seta trial se ainda não existir (cenários de
-      // migração ou re-criação).
-      const dbUser = await db.user.findUnique({
-        where: { id: user.id },
-        select: { plan: true, trialEndsAt: true },
-      });
-      if (!dbUser) return;
-
-      const TRIAL_DAYS = 30;
-      const updates: { plan?: "TRIAL"; trialEndsAt?: Date } = {};
-      if (dbUser.plan === "FREE") updates.plan = "TRIAL";
-      if (!dbUser.trialEndsAt) {
-        updates.trialEndsAt = new Date(Date.now() + TRIAL_DAYS * 24 * 60 * 60 * 1000);
-      }
-      if (Object.keys(updates).length > 0) {
-        await db.user.update({ where: { id: user.id }, data: updates });
-      }
       await logAudit({
         action: "auth.signup.success",
         userId: user.id,

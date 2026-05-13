@@ -16,7 +16,6 @@ export default async function AccountSettingsPage() {
       name: true,
       email: true,
       image: true,
-      plan: true,
       createdAt: true,
       passwordHash: true,
     },
@@ -52,10 +51,6 @@ export default async function AccountSettingsPage() {
           <div className="flex justify-between border-b border-border pb-3">
             <span className="text-muted-foreground">E-mail</span>
             <span className="font-medium text-foreground">{user.email}</span>
-          </div>
-          <div className="flex justify-between border-b border-border pb-3">
-            <span className="text-muted-foreground">Plano</span>
-            <span className="font-medium text-foreground">{user.plan}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-muted-foreground">Membro desde</span>

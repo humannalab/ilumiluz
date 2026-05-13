@@ -7,13 +7,19 @@ export const AuditAction = {
   // Auth
   AUTH_LOGIN_SUCCESS:      'auth.login.success',
   AUTH_LOGIN_FAILED:       'auth.login.failed',
+  AUTH_LOGIN_FAILURE:      'auth.login.failure',
+  AUTH_LOGIN_LOCKED:       'auth.login.locked',
   AUTH_LOGOUT:             'auth.logout',
   AUTH_SIGNUP:             'auth.signup',
+  AUTH_SIGNUP_SUCCESS:     'auth.signup.success',
   AUTH_PASSWORD_RESET:     'auth.password.reset',
   AUTH_PASSWORD_CHANGED:   'auth.password.changed',
   AUTH_TOTP_ENABLED:       'auth.totp.enabled',
   AUTH_TOTP_DISABLED:      'auth.totp.disabled',
   AUTH_TOTP_VERIFIED:      'auth.totp.verified',
+  AUTH_2FA_SUCCESS:        'auth.2fa.success',
+  AUTH_2FA_FAILURE:        'auth.2fa.failure',
+  AUTH_2FA_BACKUP_USED:    'auth.2fa.backup_used',
   AUTH_NEW_DEVICE:         'auth.new_device',
   AUTH_ACCOUNT_LOCKED:     'auth.account.locked',
 
@@ -46,14 +52,16 @@ export const AuditAction = {
 
 export type AuditActionType = (typeof AuditAction)[keyof typeof AuditAction]
 
-import { prisma } from './db'
+import { db as prisma } from './db'
+import { Prisma } from '@prisma/client'
 
 interface LogAuditParams {
-  userId?:   string
-  action:    AuditActionType
-  metadata?: Record<string, unknown>
-  ipAddress?: string
-  userAgent?: string
+  userId?:    string
+  action:     AuditActionType
+  metadata?:  Prisma.InputJsonObject
+  ipAddress?: string | null
+  ip?:        string | null  // alias — aceito de código legado
+  userAgent?: string | null
 }
 
 export async function logAudit({
@@ -61,12 +69,13 @@ export async function logAudit({
   action,
   metadata,
   ipAddress,
+  ip,
   userAgent,
 }: LogAuditParams): Promise<void> {
   // Falha silenciosa — auditoria nunca deve quebrar o fluxo principal
   try {
     await prisma.auditLog.create({
-      data: { userId, action, metadata, ipAddress, userAgent },
+      data: { userId, action, metadata, ipAddress: ipAddress ?? ip ?? null, userAgent },
     })
   } catch (err) {
     console.error('[audit] Failed to log action', action, err)

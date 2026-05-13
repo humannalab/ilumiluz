@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>01 Fundação — Ilumiluz DS</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  .principle-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); margin-bottom: 1px; }
+  .principle-card {
+    background: var(--off); padding: 48px;
+    position: relative; overflow: hidden;
+    transition: background 0.3s ease;
+  }
+  .principle-card:hover { background: rgba(201,169,110,0.03); }
+  .principle-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 64px; font-weight: 700;
+    color: rgba(201,169,110,0.07); position: absolute;
+    top: 16px; right: 24px; line-height: 1; letter-spacing: -0.03em;
+  }
+  .principle-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 500; font-size: 20px; text-transform: uppercase;
+    letter-spacing: 0.05em; color: var(--deep);
+    margin-bottom: 16px;
+  }
+  .principle-body { font-size: 12.5px; line-height: 1.8; color: var(--muted); }
+
+  /* GRID DEMO */
+  .grid-demo {
+    padding: 48px;
+    background: var(--off);
+    border-bottom: 0.5px solid var(--line);
+  }
+  .grid-visual {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .grid-col {
+    height: 48px;
+    background: rgba(201,169,110,0.08);
+    border: 0.5px solid rgba(201,169,110,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px; letter-spacing: 0.1em;
+    color: rgba(201,169,110,0.5);
+  }
+  .grid-span-4 { grid-column: span 4; background: rgba(201,169,110,0.15); }
+  .grid-span-8 { grid-column: span 8; background: rgba(123,159,184,0.1); }
+  .grid-span-3 { grid-column: span 3; }
+  .grid-span-6 { grid-column: span 6; }
+
+  /* SPACING SCALE */
+  .spacing-row {
+    display: flex; align-items: center; gap: 24px;
+    padding: 16px 0; border-bottom: 0.5px solid var(--line-dark);
+  }
+  .spacing-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 500; font-size: 13px; color: var(--deep);
+    min-width: 80px;
+  }
+  .spacing-bar-wrap { flex: 1; display: flex; align-items: center; gap: 16px; }
+  .spacing-bar { height: 4px; background: var(--gold); border-radius: 2px; transition: width 0.3s ease; }
+  .spacing-val {
+    font-family: monospace; font-size: 11px;
+    color: var(--gold); min-width: 60px;
+  }
+  .spacing-use { font-size: 11px; color: var(--muted); }
+
+  /* BORDER RADIUS */
+  .radius-grid { display: flex; gap: 32px; flex-wrap: wrap; padding: 48px; border-bottom: 0.5px solid var(--line); }
+  .radius-item { text-align: center; }
+  .radius-box {
+    width: 80px; height: 80px;
+    background: rgba(201,169,110,0.1);
+    border: 0.5px solid var(--gold);
+    margin-bottom: 12px;
+  }
+  .radius-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .radius-val { font-size: 11px; color: var(--gold); margin-top: 4px; font-family: monospace; }
+
+  /* PROP SPLIT */
+  .prop-split {
+    display: grid; grid-template-columns: 1fr 1fr;
+    border-bottom: 0.5px solid var(--line);
+  }
+  .prop-half { padding: 48px; }
+  .prop-half + .prop-half { border-left: 0.5px solid var(--line); }
+  .prop-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 24px;
+  }
+  .prop-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 500; font-size: 18px; text-transform: uppercase;
+    color: var(--deep); margin-bottom: 12px;
+  }
+  .prop-body { font-size: 12.5px; line-height: 1.8; color: var(--muted); }
+
+  /* DO / DON'T */
+  .do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); }
+  .do-card { background: var(--off); padding: 32px; }
+  .do-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+    padding: 4px 10px; margin-bottom: 20px; display: inline-block;
+    border-radius: 1px;
+  }
+  .do-tag.do { background: rgba(123,159,184,0.1); color: var(--ether-mid); }
+  .do-tag.dont { background: rgba(180,80,60,0.08); color: #A04530; }
+  .do-text { font-size: 12.5px; line-height: 1.75; color: var(--muted); }
+  .do-example {
+    margin-top: 20px; padding: 16px;
+    background: rgba(201,169,110,0.05);
+    border-left: 2px solid var(--gold);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 15px; color: var(--deep);
+  }
+  .dont-example {
+    margin-top: 20px; padding: 16px;
+    background: rgba(180,80,60,0.04);
+    border-left: 2px solid #C06040;
+    font-size: 12px; color: var(--muted);
+    text-decoration: line-through;
+  }
+</style>
+</head>
+<body>
+
+<nav class="ds-nav">
+  <a href="index.html" class="ds-nav-logo">ilumiluz <span>/ design system</span></a>
+  <div class="ds-nav-links">
+    <a href="index.html">Visão Geral</a>
+    <a href="01-fundacao.html" class="active">Fundação</a>
+    <a href="02-tipografia.html">Tipografia</a>
+    <a href="03-cores.html">Cores</a>
+    <a href="04-componentes.html">Componentes</a>
+    <a href="05-voz.html">Voz & Tom</a>
+    <a href="06-movimento.html">Movimento</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-bg">GRID</div>
+  <p class="page-num fade-up">01 — Fundação</p>
+  <h1 class="page-title fade-up-2">Fundação<br><em>& Grid</em></h1>
+  <p class="page-subtitle fade-up-3">Os princípios estruturais que sustentam toda a composição visual da Ilumiluz — espaço, proporção, respiro e intenção.</p>
+</div>
+
+<!-- PRINCÍPIOS -->
+<section class="ds-section">
+  <p class="ds-section-label">Princípios visuais</p>
+  <div class="principle-grid">
+    <div class="principle-card">
+      <span class="principle-num">01</span>
+      <p class="principle-title">Espaço como valor</p>
+      <p class="principle-body">O vazio não é ausência — é intenção. Assim como o luxo da Ilumiluz está no tempo e na atenção, o espaço em branco é a respiração visual da marca. Nunca comprima. Sempre deixe a peça existir sozinha.</p>
+    </div>
+    <div class="principle-card">
+      <span class="principle-num">02</span>
+      <p class="principle-title">Assimetria elegante</p>
+      <p class="principle-body">Layouts levemente assimétricos criam tensão visual sofisticada. Evite o equilíbrio perfeito e previsível — prefira composições que surpreendem dentro de uma estrutura coerente.</p>
+    </div>
+    <div class="principle-card">
+      <span class="principle-num">03</span>
+      <p class="principle-title">Linha como detalhe</p>
+      <p class="principle-body">Bordas de 0.5px e divisores finos são a assinatura estrutural da Ilumiluz. Nunca use bordas espessas para separar conteúdo — a linha existe para guiar o olho, não para bloquear o fluxo.</p>
+    </div>
+    <div class="principle-card">
+      <span class="principle-num">04</span>
+      <p class="principle-title">90/10 — off white e cor</p>
+      <p class="principle-body">90% da superfície é sempre off white (#F7F3EC). Os 10% de cor são pontos de ênfase — ouro para calor e sofisticação, azul para profundidade e intenção. Nunca use cor de forma decorativa; use-a com propósito.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GRID SYSTEM -->
+<section class="ds-section">
+  <p class="ds-section-label">Sistema de grid</p>
+  <p class="ds-section-title">12 Colunas</p>
+  <p class="ds-section-desc">Grid de 12 colunas com gutter de 24px e margens externas de 48px. Em mobile, colapsa para 4 colunas com margens de 24px.</p>
+
+  <div class="grid-demo">
+    <p style="font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;">Grid completo — 12 colunas</p>
+    <div class="grid-visual">
+      <div class="grid-col">1</div><div class="grid-col">2</div><div class="grid-col">3</div>
+      <div class="grid-col">4</div><div class="grid-col">5</div><div class="grid-col">6</div>
+      <div class="grid-col">7</div><div class="grid-col">8</div><div class="grid-col">9</div>
+      <div class="grid-col">10</div><div class="grid-col">11</div><div class="grid-col">12</div>
+    </div>
+
+    <p style="font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;margin-top:32px;">Layout 4+8 — mais usado (imagem + texto)</p>
+    <div class="grid-visual">
+      <div class="grid-col grid-span-4" style="font-size:10px;">4 col — imagem</div>
+      <div class="grid-col grid-span-8" style="font-size:10px;color:var(--ether);">8 col — conteúdo</div>
+    </div>
+
+    <p style="font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;margin-top:32px;">Layout 3+3+3+3 — grid de produtos</p>
+    <div class="grid-visual">
+      <div class="grid-col grid-span-3">3</div><div class="grid-col grid-span-3">3</div>
+      <div class="grid-col grid-span-3">3</div><div class="grid-col grid-span-3">3</div>
+    </div>
+  </div>
+</section>
+
+<!-- SPACING -->
+<section class="ds-section">
+  <p class="ds-section-label">Escala de espaçamento</p>
+  <p class="ds-section-title">Tokens de Espaço</p>
+  <p class="ds-section-desc">Escala multiplicadora baseada em 8px. Cada token tem um propósito específico — nunca use valores arbitrários.</p>
+
+  <div style="padding: 0 0 8px;">
+    <div class="spacing-row">
+      <span class="spacing-name">--space-1</span>
+      <div class="spacing-bar-wrap">
+        <div class="spacing-bar" style="width:8px;"></div>
+        <span class="spacing-val">8px</span>
+        <span class="spacing-use">Gap interno mínimo, ícone-texto</span>
+      </div>
+    </div>
+    <div class="spacing-row">
+      <span class="spacing-name">--space-2</span>
+      <div class="spacing-bar-wrap">
+        <div class="spacing-bar" style="width:16px;"></div>
+        <span class="spacing-val">16px</span>
+        <span class="spacing-use">Padding interno de chips e tags</span>
+      </div>
+    </div>
+    <div class="spacing-row">
+      <span class="spacing-name">--space-3</span>
+      <div class="spacing-bar-wrap">
+        <div class="spacing-bar" style="width:24px;"></div>
+        <span class="spacing-val">24px</span>
+        <span class="spacing-use">Gap entre elementos próximos</span>
+      </div>
+    </div>
+    <div class="spacing-row">
+      <span class="spacing-name">--space-4</span>
+      <div class="spacing-bar-wrap">
+        <div class="spacing-bar" style="width:32px;"></div>
+        <span class="spacing-val">32px</span>
+        <span class="spacing-use">Margem entre título e corpo</span>
+      </div>
+    </div>
+    <div class="spacing-row">
+      <span class="spacing-name">--space-6</span>
+      <div class="spacing-bar-wrap">
+        <div class="spacing-bar" style="width:48px;"></div>
+        <span class="spacing-val">48px</span>
+        <span class="spacing-use">Padding lateral do site, margens de seção</span>
+      </div>
+    </div>
+    <div class="spacing-row">
+      <span class="spacing-name">--space-9</span>
+      <div class="spacing-bar-wrap">
+        <div class="spacing-bar" style="width:72px;"></div>
+        <span class="spacing-val">72px</span>
+        <span class="spacing-use">Padding vertical de seções</span>
+      </div>
+    </div>
+    <div class="spacing-row">
+      <span class="spacing-name">--space-12</span>
+      <div class="spacing-bar-wrap">
+        <div class="spacing-bar" style="width:96px;"></div>
+        <span class="spacing-val">96px</span>
+        <span class="spacing-use">Hero, seções de destaque</span>
+      </div>
+    </div>
+    <div class="spacing-row">
+      <span class="spacing-name">--space-20</span>
+      <div class="spacing-bar-wrap">
+        <div class="spacing-bar" style="width:160px;"></div>
+        <span class="spacing-val">160px</span>
+        <span class="spacing-use">Topo de páginas internas (compensa nav fixed)</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BORDER RADIUS -->
+<div class="radius-grid">
+  <div class="radius-item">
+    <div class="radius-box" style="border-radius:0;"></div>
+    <p class="radius-label">Nenhum</p>
+    <p class="radius-val">0px</p>
+  </div>
+  <div class="radius-item">
+    <div class="radius-box" style="border-radius:2px;"></div>
+    <p class="radius-label">Mínimo</p>
+    <p class="radius-val">2px</p>
+  </div>
+  <div class="radius-item">
+    <div class="radius-box" style="border-radius:4px;"></div>
+    <p class="radius-label">Padrão</p>
+    <p class="radius-val">4px</p>
+  </div>
+</div>
+<p style="padding:16px 48px 48px;font-size:12px;color:var(--muted);border-bottom:0.5px solid var(--line);">A Ilumiluz usa bordas retas (0px) na maioria dos componentes. Apenas chips e tags usam 2px. Nunca use bordas arredondadas maiores — são inconsistentes com o posicionamento de marca.</p>
+
+<!-- DO / DON'T -->
+<section class="ds-section">
+  <p class="ds-section-label">Composição — Fazer e Evitar</p>
+  <div class="do-dont">
+    <div class="do-card">
+      <span class="do-tag do">✓ Fazer</span>
+      <p class="do-text">Espaço generoso ao redor de elementos visuais. Deixe as joias e o texto respirar.</p>
+      <div class="do-example">O luxo está no tempo, na atenção e no sentido.</div>
+    </div>
+    <div class="do-card">
+      <span class="do-tag dont">✗ Evitar</span>
+      <p class="do-text">Comprimir conteúdo, usar padding mínimo, empilhar elementos sem respiro visual.</p>
+      <div class="dont-example">Texto seguido de texto seguido de imagem sem margem nenhuma entre eles</div>
+    </div>
+    <div class="do-card">
+      <span class="do-tag do">✓ Fazer</span>
+      <p class="do-text">Usar linha de 0.5px para separar seções. Divisores sutis que guiam sem interromper.</p>
+      <div class="do-example" style="display:flex;align-items:center;gap:12px;font-size:12px;"><span style="width:32px;height:0.5px;background:var(--gold);"></span> separador</div>
+    </div>
+    <div class="do-card">
+      <span class="do-tag dont">✗ Evitar</span>
+      <p class="do-text">Bordas de 1px ou mais, linhas espessas, dividers decorativos ou coloridos sem função.</p>
+      <div class="dont-example" style="border:3px solid #ccc;padding:8px;font-size:11px;">borda pesada</div>
+    </div>
+  </div>
+</section>
+
+<footer class="ds-footer">
+  <span class="ds-footer-left">01 — Fundação & Grid</span>
+  <span class="ds-footer-logo">ilumiluz</span>
+  <a href="02-tipografia.html" style="font-size:11px;color:rgba(184,205,217,0.4);text-decoration:none;">02 Tipografia →</a>
+</footer>
+
+</body>
+</html>
