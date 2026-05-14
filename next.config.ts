@@ -145,7 +145,11 @@ const nextConfig: NextConfig = {
  */
 export default withSentryConfig(nextConfig, {
   org: "humanna-lab",
-project: "ilumiluz-store",
+  project: "ilumiluz-store",
+
+  // Não instrumenta o middleware automaticamente — evita crash quando
+  // NEXT_PUBLIC_SENTRY_DSN ainda não está configurada no Vercel.
+  autoInstrumentMiddleware: false,
 
   // Suprime logs do plugin no build local (só fala em CI)
   silent: !process.env.CI,
