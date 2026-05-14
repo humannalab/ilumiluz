@@ -1,5 +1,8 @@
 import type { NextConfig } from "next";
-import { withSentryConfig } from "@sentry/nextjs";
+// withSentryConfig desativado temporariamente — Sentry ainda não tem DSN
+// configurada no Vercel, e o wrap quebra o middleware Edge sem token.
+// Reabilitar quando SENTRY_DSN estiver configurado.
+// import { withSentryConfig } from "@sentry/nextjs";
 
 /**
  * Security headers aplicados em TODAS as rotas.
@@ -136,41 +139,7 @@ const nextConfig: NextConfig = {
   },
 };
 
-/**
- * Wrap com Sentry pra:
- * - Upload de source maps no build (precisa SENTRY_AUTH_TOKEN no env)
- * - Tunneling de eventos via /monitoring → escapa ad-blockers + mantém
- *   CSP estrito (sem precisar liberar ingest.sentry.io no connect-src)
- * - Annotation de componentes React pra stack traces mais legíveis
- */
-export default withSentryConfig(nextConfig, {
-  org: "humanna-lab",
-  project: "ilumiluz-store",
-
-  // Não instrumenta o middleware automaticamente — evita crash quando
-  // NEXT_PUBLIC_SENTRY_DSN ainda não está configurada no Vercel.
-  autoInstrumentMiddleware: false,
-
-  // Suprime logs do plugin no build local (só fala em CI)
-  silent: !process.env.CI,
-
-  // Upload source maps de mais lugares — pega chunks dinâmicos do App Router
-  widenClientFileUpload: true,
-
-  // Esconde source maps em produção (ainda upload pro Sentry, mas não
-  // expõe publicamente em /_next/static/*.map)
-  sourcemaps: {
-    deleteSourcemapsAfterUpload: true,
-  },
-
-  // Remove logger do Sentry do bundle de produção (-2kb)
-  disableLogger: true,
-
-  // Habilita monitoring automático de Cron jobs / ISR via Vercel
-  automaticVercelMonitors: true,
-
-  // Tunneling — eventos do client passam por /monitoring no nosso domínio
-  // antes de irem pro Sentry. Bypass de ad-blockers + permite manter CSP
-  // sem allowlist de ingest.sentry.io. Vercel rewrite handles isso.
-  tunnelRoute: "/monitoring",
-});
+// Sentry desativado até DSN estar configurado no Vercel.
+// Para reativar: descomentar o import withSentryConfig acima e
+// substituir `export default nextConfig` por `export default withSentryConfig(nextConfig, { ... })`.
+export default nextConfig;
