@@ -7,6 +7,7 @@ import { PortableText } from 'next-sanity'
 import Nav from '@/components/nav'
 import Footer from '@/components/footer'
 import ProductGallery from './product-gallery'
+import AddToCartButton from '@/components/cart/add-to-cart-button'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -123,15 +124,17 @@ export default async function ProductPage({ params }: Props) {
             {/* CTA */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               {product.inStock ? (
-                <button
-                  className="il-out"
-                  style={{ justifyContent: 'center' }}
-                  data-product-id={product._id}
-                  data-product-title={product.title}
-                  data-product-price={product.price}
-                >
-                  Adicionar ao carrinho →
-                </button>
+                <AddToCartButton
+                  sanityProductId={product._id}
+                  title={product.title}
+                  price={product.price}
+                  slug={product.slug.current}
+                  imageUrl={
+                    product.images?.[0]
+                      ? productImageUrl(product.images[0], 300)
+                      : undefined
+                  }
+                />
               ) : (
                 <button className="il-out" disabled style={{ justifyContent: 'center', opacity: 0.4 }}>
                   Indisponível

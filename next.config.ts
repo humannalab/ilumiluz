@@ -55,13 +55,16 @@ const isDev = process.env.NODE_ENV === "development";
 const csp = [
   "default-src 'self'",
   // 'unsafe-inline' necessário pra hydration scripts do Next.js.
-  // Iteração futura: migrar pra nonce-based via middleware.
-  "script-src 'self' 'unsafe-inline'",
+  // js.stripe.com: Stripe.js carregado pelo @stripe/stripe-js
+  "script-src 'self' 'unsafe-inline' https://js.stripe.com",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https://lh3.googleusercontent.com https://avatars.githubusercontent.com https://cdn.sanity.io",
   "font-src 'self' data:",
-  "connect-src 'self'",
+  // api.stripe.com: Payment Intent API. r/m.stripe.com: fraud detection.
+  "connect-src 'self' https://api.stripe.com https://r.stripe.com https://m.stripe.com",
   "form-action 'self'",
+  // js.stripe.com: Payment Element renderiza em iframe
+  "frame-src https://js.stripe.com",
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "object-src 'none'",
