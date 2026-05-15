@@ -80,9 +80,14 @@ const studioCsp = [
   "img-src 'self' data: blob: https://cdn.sanity.io https://lh3.googleusercontent.com https://avatars.githubusercontent.com",
   "font-src 'self' data: https://fonts.gstatic.com",
   // api.sanity.io: GROQ queries e mutações. wss: atualizações em tempo real.
-  "connect-src 'self' https://*.api.sanity.io wss://*.api.sanity.io https://api.sanity.io" + (isDev ? " ws://localhost:3001 ws://localhost:3000" : ""),
+  // telemetry.sanity.io: telemetria do Studio (bloqueado silenciosamente mas não deve crashar).
+  "connect-src 'self' https://*.api.sanity.io wss://*.api.sanity.io https://api.sanity.io https://telemetry.sanity.io" + (isDev ? " ws://localhost:3001 ws://localhost:3000" : ""),
   "form-action 'self'",
-  "frame-ancestors 'none'",
+  // frame-ancestors 'self': Sanity Studio v3 usa iframes same-origin para preview de documentos.
+  // 'none' bloqueia isso e causa "Failed to fetch iframe URL".
+  "frame-ancestors 'self'",
+  // frame-src 'self': permite que o Studio carregue iframes de preview da mesma origem.
+  "frame-src 'self'",
   "base-uri 'self'",
   "object-src 'none'",
   "upgrade-insecure-requests",
@@ -110,9 +115,27 @@ const securityHeaders = [
   ...sharedHeaders,
 ];
 
+// Headers do Studio: igual ao sharedHeaders mas SEM X-Frame-Options: DENY
+// (Sanity Studio usa iframes same-origin para preview; DENY bloqueia e causa crash)
 const studioHeaders = [
   { key: "Content-Security-Policy", value: studioCsp },
-  ...sharedHeaders,
+  // X-Frame-Options: SAMEORIGIN (em vez de DENY) permite iframes same-origin do Studio
+  { key: "X-Frame-Options", value: "SAMEORIGIN" },
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  {
+    key: "Strict-Transport-Security",
+    value: "max-age=63072000; includeSubDomains; preload",
+  },
+  {
+    key: "Permissions-Policy",
+    value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+  },
+  { key: "X-DNS-Prefetch-Control", value: "on" },
+  // Cross-Origin-Opener-Policy: unsafe-none para /studio — o Studio precisa de
+  // cross-origin window access para algumas funcionalidades de preview.
+  { key: "Cross-Origin-Opener-Policy", value: "unsafe-none" },
+  { key: "Cross-Origin-Resource-Policy", value: "same-site" },
 ];
 
 const nextConfig: NextConfig = {
